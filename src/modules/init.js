@@ -282,9 +282,7 @@ atEvery.prototype._init = function () {
     const shuoshuoContentMd = shuoshuoContent;
     atObject.set('atContentMd', shuoshuoContentMd);
     shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji);
-    const converte = new showdown.Converter();
-    converte.setOption('strikethrough', 1);
-    const shuoshuoContentHtml = converte.makeHtml(shuoshuoContent);
+    const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
     const atAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
     // alert(deFaultavatar);
     const userClient = new Client();
@@ -309,9 +307,7 @@ atEvery.prototype._init = function () {
   clickPre.onclick = function () {
     let unPre = document.getElementById('neirong').value;
     unPre = ArtitalkI18n.translateEmojis(unPre, atEmoji);
-    const converter = new showdown.Converter();
-    converter.setOption('strikethrough', 1);
-    const finishPre = converter.makeHtml(unPre);
+    const finishPre = ArtitalkSanitizer.markdownToHtml(unPre);
     document.getElementById('preview').innerHTML = finishPre;
   };
   deleteSus.onclick = function () {

@@ -31,6 +31,7 @@ const concatJS = () => (
         localeModulePath,
         'src/core/i18n.js',
         'src/core/dom.js',
+        'src/core/sanitize.js',
         'src/core/data.js',
         'src/main.js',
         'src/modules/init.js',

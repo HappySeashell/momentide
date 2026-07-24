@@ -12,7 +12,7 @@ const generatedDirectory = path.join(root, 'src/generated');
 const localeModulePath = path.join(generatedDirectory, 'artitalk-locales.js');
 const svgModulePath = path.join(generatedDirectory, 'artitalk-svg.js');
 const entryId = '\0artitalk-entry.ts';
-const ie8Compatibility = { overrideBrowserslist: ['ie 8'] };
+const exposeGlobals = 'globalThis.Artitalk = Artitalk; globalThis.atEvery = atEvery; globalThis.Logout = Logout; globalThis.insertEmoji = insertEmoji; globalThis.preview = preview;';
 const typescriptCompilerOptions = typescript.convertCompilerOptionsFromJson(
   require('./tsconfig.json').compilerOptions,
   root
@@ -118,13 +118,13 @@ module.exports = [
         file: 'dist/js/artitalk.js',
         format: 'iife',
         name: 'artitalk',
-        outro: 'globalThis.Artitalk = Artitalk; globalThis.atEvery = atEvery;'
+        outro: exposeGlobals
       },
       {
         file: 'dist/js/artitalk.min.js',
         format: 'iife',
         name: 'artitalk',
-        outro: 'globalThis.Artitalk = Artitalk; globalThis.atEvery = atEvery;',
+        outro: exposeGlobals,
         plugins: [terser({ maxWorkers: 1 })]
       }
     ],
@@ -141,8 +141,9 @@ module.exports = [
         extract: path.join(root, 'dist/css/artitalk.min.css'),
         plugins: [cssnano({
           preset: ['default', {
-            colormin: ie8Compatibility,
-            reduceInitial: ie8Compatibility
+            overrideBrowserslist: ['ie 8'],
+            reduceTransforms: false,
+            convertValues: { angle: false, length: false }
           }]
         })],
         use: ['sass']

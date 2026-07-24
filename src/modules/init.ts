@@ -1,3 +1,9 @@
+const requiredElement = <T extends HTMLElement>(id: string): T => {
+  const element = document.getElementById(id);
+  if (!element) throw new Error(`Artitalk element not found: ${id}`);
+  return element as T;
+};
+
 atEvery.prototype._init = function () {
   const root = this;
   let {
@@ -34,7 +40,7 @@ atEvery.prototype._init = function () {
   color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
   pageSize = typeof (pageSize) === 'undefined' ? '5' : pageSize;
 
-  blackAndWhiteTheme = typeof (blackAndWhiteTheme) === 'undefined' || blackAndWhiteTheme === '' ? false : blackAndWhiteTheme;
+  blackAndWhiteTheme = typeof (blackAndWhiteTheme) === 'undefined' ? false : blackAndWhiteTheme;
   onLogin = typeof (onLogin) === 'function' ? onLogin : function () { };
   onShuoPublished = typeof (onShuoPublished) === 'function' ? onShuoPublished : function () { };
   onCommentsPublished = typeof (onCommentsPublished) === 'function' ? onCommentsPublished : function () { };
@@ -46,8 +52,8 @@ atEvery.prototype._init = function () {
       appKey: appKey,
       serverURL: serverURL
     });
-  } catch (error) {
-    const err = error.toString();
+  } catch (error: unknown) {
+    const err = String(error);
     console.error(err);
     if (err.indexOf('appId is not defined') != -1) {
       console.log('appId没找到');
@@ -56,10 +62,10 @@ atEvery.prototype._init = function () {
     }
   }
   // In & Out
-  function fadeIn (id) {
+  function fadeIn (id: string): void {
     ArtitalkDom.show(id);
   }
-  function fadeOut (id) {
+  function fadeOut (id: string): void {
     ArtitalkDom.hide(id);
   }
   function Show () {
@@ -115,34 +121,35 @@ atEvery.prototype._init = function () {
   var atOp = document.createElement('div');
   atOp.id = 'operare_artitalk';
   document.body.append(atOp);
-  document.getElementById('operare_artitalk').innerHTML = atOpHtml;
+  requiredElement('operare_artitalk').innerHTML = atOpHtml;
   motionHtml = motion === 0 ? '' : motionHtml;
   atHtml = motionHtml + atHtml;
-  document.getElementById('artitalk_main').innerHTML = atHtml;
+  requiredElement('artitalk_main').innerHTML = atHtml;
   // 开始加载说说
   root.seeContent(0, root.config);
-  const rmButton = document.getElementById('readmore');// readmore
-  const pubButton = document.getElementById('pubShuo');// publish shuo
-  const switchLogin = document.getElementById('switchUser');// login or exit
-  const cancelLogin = document.getElementById('celLogin');// cancel Login
-  const loginButton = document.getElementById('login');// Login
-  const hideUser = document.getElementById('hideuser');
-  const userBackgroundColor = document.getElementById('userBackgroundColor');
-  const saveUserBackgroundColor = document.getElementById('saveUserBackgroundColor');
-  const userBackgroundColorStatus = document.getElementById('userBackgroundColorStatus');
-  const loadEmoji = document.getElementById('loadEmoji');// Loading emoji
-  const switchTb = document.getElementById('switch_1');// Tieba emoji
-  const switchBB = document.getElementById('switch_2');// BiliBili emoji
-  const switchQQ = document.getElementById('switch_3');// QQ emoji
-  const switchCustom = document.getElementById('switch_4');// custom emoji
-  const beginPreview = document.getElementById('atPreview');// preview
-  const clickPre = document.getElementById('clickForPreview');// preview
-  const saveContent = document.getElementById('atSave');// savecontent
-  const deleteSus = document.getElementById('deleteSus');// Delete successful
-  const uploadSource = document.getElementById('uploadSource');// Upload image or video
-  const realUpload = document.getElementById('realUpload');
+  const rmButton = requiredElement('readmore');// readmore
+  const pubButton = requiredElement('pubShuo');// publish shuo
+  const switchLogin = requiredElement('switchUser');// login or exit
+  const cancelLogin = requiredElement('celLogin');// cancel Login
+  const loginButton = requiredElement('login');// Login
+  const hideUser = requiredElement('hideuser');
+  const userBackgroundColor = requiredElement<HTMLInputElement>('userBackgroundColor');
+  const saveUserBackgroundColor = requiredElement<HTMLInputElement>('saveUserBackgroundColor');
+  const userBackgroundColorStatus = requiredElement('userBackgroundColorStatus');
+  const loadEmoji = requiredElement('loadEmoji');// Loading emoji
+  const switchTb = requiredElement('switch_1');// Tieba emoji
+  const switchBB = requiredElement('switch_2');// BiliBili emoji
+  const switchQQ = requiredElement('switch_3');// QQ emoji
+  const switchCustom = requiredElement('switch_4');// custom emoji
+  const beginPreview = requiredElement('atPreview');// preview
+  const clickPre = requiredElement('clickForPreview');// preview
+  const saveContent = requiredElement('atSave');// savecontent
+  const deleteSus = requiredElement('deleteSus');// Delete successful
+  const uploadSource = requiredElement('uploadSource');// Upload image or video
+  const realUpload = requiredElement<HTMLInputElement>('realUpload');
   realUpload.onchange = function () {
-    root.beginUpload(this.files[0]);
+    const file = realUpload.files && realUpload.files[0];
+    if (file) root.beginUpload(file);
   };
   let pNum = 0;
   rmButton.onclick = function () {
@@ -152,23 +159,23 @@ atEvery.prototype._init = function () {
   pubButton.onclick = function () {
     const currentUser = ArtitalkData.currentUser();
     if (currentUser) {
-      if (document.getElementById('shuoshuo_input').style.display === '') {
+      if (requiredElement('shuoshuo_input').style.display === '') {
         fadeOut('shuoshuo_input');
       } else {
         fadeIn('shuoshuo_input');
       }
     } else {
-      document.getElementById('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
+      requiredElement('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
       Show();
     }
   };
   switchLogin.onclick = function () {
-    document.getElementById('logw').innerHTML = '';
+    requiredElement('logw').innerHTML = '';
     const currentUser = ArtitalkData.currentUser();
     fadeIn('shade');
     if (currentUser) {
       fadeIn('userinfo');
-      document.getElementById('status').innerHTML = loggedIn + ':\t' + currentUser.attributes.username;
+      requiredElement('status').innerHTML = loggedIn + ':\t' + currentUser.attributes.username;
       userBackgroundColor.value = currentUser.attributes.backgroundColor || getUserBackgroundColor(currentUser.id, color1, color2);
       userBackgroundColorStatus.innerHTML = '';
       fadeIn('tui');
@@ -182,30 +189,30 @@ atEvery.prototype._init = function () {
     Hide();
   };
   loginButton.onclick = function () {
-    const passWord = document.getElementById('pwd').value;
-    document.getElementById('logw').style.color = 'black';
-    document.getElementById('logw').innerHTML = 'loading...';
+    const passWord = requiredElement<HTMLInputElement>('pwd').value;
+    requiredElement('logw').style.color = 'black';
+    requiredElement('logw').innerHTML = 'loading...';
     if (passWord === '') {
-      document.getElementById('logw').style.color = 'red';
-      document.getElementById('logw').innerHTML = passwordRequired;
+      requiredElement('logw').style.color = 'red';
+      requiredElement('logw').innerHTML = passwordRequired;
       return;
     }
-    const userName = document.getElementById('username').value;
+    const userName = requiredElement<HTMLInputElement>('username').value;
     if (userName === '') {
-      document.getElementById('logw').style.color = 'red';
-      document.getElementById('logw').innerHTML = usernameRequired;
+      requiredElement('logw').style.color = 'red';
+      requiredElement('logw').innerHTML = usernameRequired;
       return;
     }
     ArtitalkData.login(userName, passWord).then((user) => {
-      document.getElementById('ccontent').innerHTML = '';
-      document.getElementById('neirong').value = '';
+      requiredElement('ccontent').innerHTML = '';
+      requiredElement<HTMLTextAreaElement>('neirong').value = '';
       fadeIn('lazy');
       root.seeContent(0, root.config);
       Hide();
       onLogin(userName);
-    }, (error) => {
+    }, (error: { message: string }) => {
       let errLogin = error.message;
-      document.getElementById('logw').style.color = 'red';
+      requiredElement('logw').style.color = 'red';
       // console.log(errLogin);
       if (errLogin.indexOf('mismatch') != -1) {
         errLogin = credentialsMismatch;
@@ -216,7 +223,7 @@ atEvery.prototype._init = function () {
       } else if (errLogin.indexOf('Please try later or reset your password.') != -1) {
         errLogin = tooManyLoginAttempts;
       }
-      document.getElementById('logw').innerHTML = errLogin;
+      requiredElement('logw').innerHTML = errLogin;
     });
   };
   hideUser.onclick = function () {
@@ -228,34 +235,34 @@ atEvery.prototype._init = function () {
     saveUserBackgroundColor.disabled = true;
     ArtitalkData.updateCurrentUser({ backgroundColor: selectedColor }).then(function () {
       userBackgroundColorStatus.innerHTML = colorSaved;
-      document.getElementById('ccontent').innerHTML = '';
+      requiredElement('ccontent').innerHTML = '';
       root.seeContent(0, root.config);
-    }).catch(function (error) {
+    }).catch(function (error: { message: string }) {
       userBackgroundColorStatus.innerHTML = error.message;
     }).then(function () {
       saveUserBackgroundColor.disabled = false;
     });
   };
   loadEmoji.onclick = function () {
-    document.getElementById('switch_1').classList.add('zuiliangdezai');
-    document.getElementById('switch_2').classList.remove('zuiliangdezai');
-    document.getElementById('switch_3').classList.remove('zuiliangdezai');
-    document.getElementById('switch_4').classList.remove('zuiliangdezai');
-    if (document.getElementById('shuoshuo_emojiswitch').style.display === 'none') {
+    requiredElement('switch_1').classList.add('zuiliangdezai');
+    requiredElement('switch_2').classList.remove('zuiliangdezai');
+    requiredElement('switch_3').classList.remove('zuiliangdezai');
+    requiredElement('switch_4').classList.remove('zuiliangdezai');
+    if (requiredElement('shuoshuo_emojiswitch').style.display === 'none') {
       fadeIn('shuoshuo_emoji_Tieba');
       fadeIn('shuoshuo_emojiswitch');
-      document.getElementById('shuoshuo_emoji_BiliBili').innerHTML = atEmojiB;
-      document.getElementById('shuoshuo_emoji_Tieba').innerHTML = atEmojiT;
-      document.getElementById('shuoshuo_emoji_QQ').innerHTML = atEmojiQ;
-      document.getElementById('shuoshuo_emoji_custom').innerHTML = atEmojiDefault;
-      document.getElementById('shuoshuo_emojiswitch').classList.add('pingjun');
+      requiredElement('shuoshuo_emoji_BiliBili').innerHTML = atEmojiB;
+      requiredElement('shuoshuo_emoji_Tieba').innerHTML = atEmojiT;
+      requiredElement('shuoshuo_emoji_QQ').innerHTML = atEmojiQ;
+      requiredElement('shuoshuo_emoji_custom').innerHTML = atEmojiDefault;
+      requiredElement('shuoshuo_emojiswitch').classList.add('pingjun');
     } else {
       fadeOut('shuoshuo_emoji_Tieba');
       fadeOut('shuoshuo_emoji_BiliBili');
       fadeOut('shuoshuo_emoji_custom');
       fadeOut('shuoshuo_emoji_QQ');
       fadeOut('shuoshuo_emojiswitch');
-      document.getElementById('shuoshuo_emojiswitch').classList.remove('pingjun');
+      requiredElement('shuoshuo_emojiswitch').classList.remove('pingjun');
     }
   };
   switchTb.onclick = function () {
@@ -284,7 +291,7 @@ atEvery.prototype._init = function () {
   };
   beginPreview.onclick = function () {
     clickPre.click();
-    const preCon = document.getElementById('preview');
+    const preCon = requiredElement('preview');
     if (preCon.className.indexOf('preview_now') !== -1) {
       preCon.classList.remove('preview_now');
     } else {
@@ -295,13 +302,14 @@ atEvery.prototype._init = function () {
     const currentUser = ArtitalkData.currentUser();
     if (!currentUser) {
       pubButton.click();
+      return;
     }
-    let shuoshuoContent = document.getElementById('neirong').value;
+    let shuoshuoContent = requiredElement<HTMLTextAreaElement>('neirong').value;
     if (shuoshuoContent === '') throw '说说内容不能为空';
     const atObject = ArtitalkData.createTalk();
     const shuoshuoContentMd = shuoshuoContent;
     atObject.set('atContentMd', shuoshuoContentMd);
-    shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji);
+    shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji) || '';
     const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
     const atAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
     // alert(deFaultavatar);
@@ -318,24 +326,24 @@ atEvery.prototype._init = function () {
     atObject.set('authorColor', currentUser.attributes.backgroundColor || '');
     fadeIn('lazy');
     atObject.save().then(function (res) {
-      document.getElementById('ccontent').innerHTML = '';
-      document.getElementById('neirong').value = '';
+      requiredElement('ccontent').innerHTML = '';
+      requiredElement<HTMLTextAreaElement>('neirong').value = '';
       fadeOut('preview');
       root.seeContent(0, root.config);
       fadeOut('shuoshuo_input');
 
-      onShuoPublished(currentUser.attributes.username, shuoshuoContent);
+      onShuoPublished(currentUser.attributes.username || '', shuoshuoContent);
     });
   };
   clickPre.onclick = function () {
-    let unPre = document.getElementById('neirong').value;
-    unPre = ArtitalkI18n.translateEmojis(unPre, atEmoji);
+    let unPre = requiredElement<HTMLTextAreaElement>('neirong').value;
+    unPre = ArtitalkI18n.translateEmojis(unPre, atEmoji) || '';
     const finishPre = ArtitalkSanitizer.markdownToHtml(unPre);
-    document.getElementById('preview').innerHTML = finishPre;
+    requiredElement('preview').innerHTML = finishPre;
   };
   deleteSus.onclick = function () {
     fadeOut('shanchu'); fadeOut('shade'); fadeIn('lazy');
-    document.getElementById('ccontent').innerHTML = '';
+    requiredElement('ccontent').innerHTML = '';
     root.seeContent(0, root.config);
   };
   uploadSource.onclick = function () {
@@ -347,33 +355,33 @@ atEvery.prototype._init = function () {
     if (currentUser) {
       // console.log(currentUser);
     } else {
-      document.getElementById('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
+      requiredElement('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
       Show();
       return;
     }
-    document.getElementById('realUpload').click();
+    requiredElement('realUpload').click();
   };
   // function beginUpload(file){
   //     console.log(file.files);
   // }
   atEvery.prototype.delete = function (id) {
-    function fadeOut (id) {
+    function fadeOut (id: string): void {
       ArtitalkDom.hide(id);
     }
-    function fadeIn (id) {
+    function fadeIn (id: string): void {
       ArtitalkDom.show(id);
     }
     const currentUser = ArtitalkData.currentUser();
     if (currentUser) {
       fadeIn('shade'); fadeIn('shanchur');
-      document.getElementById('delete1').innerHTML = '<input type="button" class="at_button" value="' + confirm + '" id="Delete"><input type="button" class="at_button" value="' + cancel + '" id="cancelDelete">';
+      requiredElement('delete1').innerHTML = '<input type="button" class="at_button" value="' + confirm + '" id="Delete"><input type="button" class="at_button" value="' + cancel + '" id="cancelDelete">';
     } else {
-      const pubButton = document.getElementById('pubShuo');
+      const pubButton = requiredElement('pubShuo');
       pubButton.click();
       return;
     }
-    const cancelDelete = document.getElementById('cancelDelete');
-    const rlyDelete = document.getElementById('Delete');
+    const cancelDelete = requiredElement('cancelDelete');
+    const rlyDelete = requiredElement('Delete');
     cancelDelete.onclick = function () {
       fadeOut('shade'); fadeOut('shanchur');
     };

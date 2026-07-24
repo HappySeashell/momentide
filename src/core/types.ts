@@ -30,14 +30,35 @@ interface ArtitalkOptions {
   onCommentsPublished?: (nickname: string, content: string) => void;
 }
 
+interface ArtitalkRecordAttributes {
+  [key: string]: unknown;
+  objectId?: string;
+  username?: string;
+  img?: string;
+  imgToken?: string;
+  backgroundColor?: string;
+  atContentMd?: string;
+  atContentHtml?: string;
+  userOs?: string;
+  avatar?: string;
+  authorId?: string;
+  authorName?: string;
+  authorColor?: string;
+  isPinned?: boolean;
+  commentContent?: string;
+  email?: string;
+  nick?: string;
+  adminAvatar?: string;
+}
+
 interface ArtitalkRecord {
-  id?: string;
+  id: string;
   createdAt: Date | string;
   updatedAt?: Date | string;
-  attributes: Record<string, unknown>;
+  attributes: ArtitalkRecordAttributes;
   set(key: string, value: unknown): void;
   save(): Promise<ArtitalkRecord>;
-  destroy?(): Promise<unknown>;
+  destroy(): Promise<unknown>;
 }
 
 interface ArtitalkUser extends ArtitalkRecord {}
@@ -80,7 +101,33 @@ interface ArtitalkI18n {
   translateEmojis(content: string | undefined, customEmojis?: ArtitalkEmojiMap): string | undefined;
 }
 
+interface ArtitalkUploadResponse {
+  data: {
+    url: string;
+  };
+}
+
 interface ArtitalkSanitizer {
   sanitizeHtml(html: string | undefined | null): string;
   markdownToHtml(markdown: string): string;
+}
+
+interface ArtitalkInstance {
+  config: ArtitalkOptions;
+  init(option?: ArtitalkOptions): this;
+  _init(): void;
+  seeContent(pageNum: number, option: ArtitalkOptions): void;
+  beginUpload(file: File): void;
+  delete(id: string): void;
+  atEdit(id: string): void;
+  togglePin(id: string, isPinned: boolean): void;
+  atEditsave(id: string): void;
+  saveComment(id: string, option?: ArtitalkOptions): void;
+  atReply(): void;
+  commentInit(id: string, option?: ArtitalkOptions): void;
+}
+
+interface AtEveryConstructor {
+  new (option?: ArtitalkOptions): ArtitalkInstance;
+  prototype: ArtitalkInstance;
 }

@@ -1,4 +1,4 @@
-atEvery.prototype.beginUpload = function (file) {
+atEvery.prototype.beginUpload = function (file: File): void {
   const imageUpload = (this.config && this.config.imageUpload) || {};
   const uploadApi = imageUpload.api || 'https://s.ee/api/v1/file/upload';
   const tokenHeader = imageUpload.tokenHeader || 'Authorization';
@@ -19,7 +19,7 @@ atEvery.prototype.beginUpload = function (file) {
     return;
   }
   let fileType = '';
-  const sourceSize = (file.size / 1024).toFixed(0);
+  const sourceSize = Number((file.size / 1024).toFixed(0));
   const sourceSizeLimit = 1024 * 50;
   if (sourceSize > sourceSizeLimit) {
     alert('资源上传最大限制为50M');
@@ -30,10 +30,10 @@ atEvery.prototype.beginUpload = function (file) {
   } else if (/\.(mp4|mov)$/.test(file.name)) {
     fileType = 'video';
   }
-  function fadeIn (id) {
+  function fadeIn (id: string): void {
     ArtitalkDom.show(id);
   }
-  function fadeOut (id) {
+  function fadeOut (id: string): void {
     ArtitalkDom.hide(id);
   }
   fadeIn('lazy');
@@ -43,7 +43,7 @@ atEvery.prototype.beginUpload = function (file) {
   xhr.withCredentials = false;
   xhr.addEventListener('readystatechange', function () {
     if (this.readyState === 4 && this.status === 200) {
-      const sourceUrl = eval('(' + this.responseText + ')');
+      const sourceUrl = eval('(' + this.responseText + ')') as ArtitalkUploadResponse;
       // let Md = "![]("+imgUrl.data.url+")";
       let sourceMd = '';
       // insertEmoji(imgMd);
@@ -53,14 +53,14 @@ atEvery.prototype.beginUpload = function (file) {
         sourceMd = '![](' + sourceUrl.data.url + ')';
       }
       insertEmoji(sourceMd);
-      document.getElementById('pubShuo').click();
+      requiredElement('pubShuo').click();
       fadeOut('lazy');
     } else if (this.readyState === 4 && this.status === 500) {
       fadeOut('lazy');
     }
   });
   xhr.open('POST', uploadApi);
-  const imgToken = ArtitalkData.currentUser().attributes.imgToken;
+  const imgToken = currentUser.attributes.imgToken;
   if (imgToken !== undefined) {
     xhr.setRequestHeader(tokenHeader, imgToken);
   }

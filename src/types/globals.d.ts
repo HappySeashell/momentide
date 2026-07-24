@@ -62,3 +62,5 @@ declare const Client: ClientConstructor;
 declare const showdown: ShowdownStatic;
 declare const ArtitalkLocales: Record<string, ArtitalkMessages>;
 declare const ArtitalkSvg: ArtitalkSvgModule;
+declare function md5(value: string): string;
+declare function insertEmoji(value: string): void;

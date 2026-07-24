@@ -841,914 +841,933 @@ const ArtitalkData = {
     }
 };
 ;
-function Artitalk (options) {
-  return new atEvery(options);
+"use strict";
+function Artitalk(options) {
+    return new atEvery(options);
 }
-function atEvery (option) {
-  const root = this;
-  root.init(option);
-  return root;
-}
-atEvery.prototype.init = function (option) {
-  const root = this;
-  root.config = option;
-  ArtitalkData.ensureReady(option, function () {
-    !!option && root._init();
+var atEvery = function (option) {
+    const root = this;
+    root.init(option);
     return root;
-  });
+};
+atEvery.prototype.init = function (option) {
+    const root = this;
+    root.config = option || {};
+    ArtitalkData.ensureReady(option, function () {
+        !!option && root._init();
+    });
+    return root;
 };
 ;
+"use strict";
+const requiredElement = (id) => {
+    const element = document.getElementById(id);
+    if (!element)
+        throw new Error(`Artitalk element not found: ${id}`);
+    return element;
+};
 atEvery.prototype._init = function () {
-  const root = this;
-  let {
-    appId,
-    appKey,
-    lang,
-    pageSize,
-    atEmoji,
-    bgImg,
-    motion,
-    cssUrl,
-    shuoPla,
-    avatarPla,
-    serverURL,
-    color1,
-    color2,
-    color3,
-    blackAndWhiteTheme,
-    onLogin,
-    onShuoPublished,
-    onCommentsPublished
-  } = root.config;
-  lang = ArtitalkI18n.normalizeLanguage(lang);
-  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoSizeError, imageFormatError, audioFormatError, videoFormatError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, backgroundColor, colorSaved } = ArtitalkI18n.getMessages(lang);
-  bgImg = typeof (bgImg) === 'undefined' || bgImg === '' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp' : bgImg;
-  let atEmojiDefault = '';
-  for (const key in atEmoji) {
-    atEmojiDefault = atEmojiDefault + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmoji[key] + "'/>";
-  }
-  shuoPla = typeof (shuoPla) === 'undefined' ? '' : shuoPla;
-  avatarPla = typeof (avatarPla) === 'undefined' ? '' : avatarPla;
-  color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
-  color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
-  color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
-  pageSize = typeof (pageSize) === 'undefined' ? '5' : pageSize;
-
-  blackAndWhiteTheme = typeof (blackAndWhiteTheme) === 'undefined' || blackAndWhiteTheme === '' ? false : blackAndWhiteTheme;
-  onLogin = typeof (onLogin) === 'function' ? onLogin : function () { };
-  onShuoPublished = typeof (onShuoPublished) === 'function' ? onShuoPublished : function () { };
-  onCommentsPublished = typeof (onCommentsPublished) === 'function' ? onCommentsPublished : function () { };
-
-  const apiUrl = '';
-  try {
-    ArtitalkData.init({
-      appId: appId,
-      appKey: appKey,
-      serverURL: serverURL
-    });
-  } catch (error) {
-    const err = error.toString();
-    console.error(err);
-    if (err.indexOf('appId is not defined') != -1) {
-      console.log('appId没找到');
-    } else if (err.indexOf('appKey is not defined') != -1) {
-      console.log('appKey没找到');
+    const root = this;
+    let { appId, appKey, lang, pageSize, atEmoji, bgImg, motion, cssUrl, shuoPla, avatarPla, serverURL, color1, color2, color3, blackAndWhiteTheme, onLogin, onShuoPublished, onCommentsPublished } = root.config;
+    lang = ArtitalkI18n.normalizeLanguage(lang);
+    const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoSizeError, imageFormatError, audioFormatError, videoFormatError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, backgroundColor, colorSaved } = ArtitalkI18n.getMessages(lang);
+    bgImg = typeof (bgImg) === 'undefined' || bgImg === '' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp' : bgImg;
+    let atEmojiDefault = '';
+    for (const key in atEmoji) {
+        atEmojiDefault = atEmojiDefault + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmoji[key] + "'/>";
     }
-  }
-  // In & Out
-  function fadeIn (id) {
-    ArtitalkDom.show(id);
-  }
-  function fadeOut (id) {
-    ArtitalkDom.hide(id);
-  }
-  function Show () {
-    fadeIn('shade');
-    fadeIn('shuoshuo-modal');
-  }
-  function Hide () {
-    fadeOut('shade');
-    fadeOut('shuoshuo-modal');
-  }
-  // Insert css
-  let atCss = '';
-
-  // If the black and white theme is enabled while the cssUrl is not defined, its style will be loaded after
-  //  the default atStyle, which makes it possible to preserve original settings.
-  // If the black and white theme is enabled yet the cssUrl is set, its style will be loaded before
-  //  the customized style, ensuring the user defined style will be accepted.
-  const blackAndWhiteStyle = '#artitalk_main{margin-top:5vh}#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel{font-size:large;font-weight:400;color:#3d3d3d;background:#fff!important;box-shadow:0 1px 12px rgb(0 0 0 / 30%);border-radius:12px}#artitalk_main p.shuoshuo_time{font-size:small;border-top:1px dashed}p.shuoshuo_time span:first-child{font-size:medium}p.shuoshuo_time span:nth-child(3)>span>span{vertical-align:inherit;color:#3d3d3d!important}#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel:after,#artitalk_main span.cbp_tmlabel>p:nth-child(4){display:none}#artitalk_main span.cbp_tmlabel>p{margin-bottom:5px}#artitalk_main .delete_right{right:2rem}#artitalk_main .shuoshuo_author_img img{border:none;box-shadow:0 0 6px rgb(0 0 0 / 30%)}#artitalk_main svg{width:1.5rem;height:1.5rem}#artitalk_main svg>path{fill:#3d3d3d}#artitalk_main .shuoshuo_text{background-image:url(https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp)!important;background-repeat:no-repeat;background-size:contain;color:#3d3d3d;box-shadow:0 0 12px rgb(0 0 0 / 30%);border:none;font-size:large;border-radius:12px}#artitalk_main .shuoshuo_inputs{color:#3d3d3d;box-shadow:0 0 12px rgb(0 0 0 / 30%);border:none;font-size:medium;border-radius:8px}#artitalk_main .at_button,#operare_artitalk .at_button{background-color:#fff;border:none;color:#3d3d3d;font-size:medium;font-weight:500;border-radius:8px;outline:0;box-shadow:0 0 8px rgb(0 0 0 / 30%)}#artitalk_main .at_button:hover,#operare_artitalk .at_button:hover{background-color:#fff}#artitalk_main .shuoshuo_emoji{border:none;padding:1rem;border-radius:12px 12px 0 0;box-shadow:0 -2px 4px rgb(0 0 0 / 30%);margin-top:2rem}#artitalk_main div#shuoshuo_emojiswitch{border:none;box-shadow:0 0 4px rgb(0 0 0 / 30%);border-radius:0 0 12px 12px}#artitalk_main .shuoshuo_emoji_part{font-size:medium;border-radius:inherit}#artitalk_main .shuoshuo_emoji_part:hover{background-color:#3d3d3daa}#artitalk_main .zuiliangdezai{background-color:#3d3d3d}#artitalk_main .shuoshuo_row{margin-top:2rem}#artitalk_main #preview{font-size:large;margin:2rem 0;padding:1rem 2rem;border-radius:12px;box-shadow:0 0 16px rgb(0 0 0 / 30%)}#artitalk_main .power a{font-size:1.5rem;font-weight:500;color:#3d3d3d;margin-left:.5rem}#artitalk_main .power>div{margin:0 .5rem;width:4rem;height:4rem;padding:8px;background-size:80%;background-repeat:no-repeat;background-position:center}#artitalk_main .power>div>svg{opacity:0}#pubComment,#pubShuo{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik01LjMyNDk3IDQzLjQ5OTZMMTMuODEgNDMuNDk5OEw0NC45MjI3IDEyLjM4NzFMMzYuNDM3NCAzLjkwMTg2TDUuMzI0NzEgMzUuMDE0Nkw1LjMyNDk3IDQzLjQ5OTZaIiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNy45NTIxIDEyLjM4NzJMMzYuNDM3NCAyMC44NzI1IiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+")}#switchUser{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0yNCA0NEMzNS4wNDU3IDQ0IDQ0IDM1LjA0NTcgNDQgMjRDNDQgMTIuOTU0MyAzNS4wNDU3IDQgMjQgNEMxMi45NTQzIDQgNCAxMi45NTQzIDQgMjRDNCAzNS4wNDU3IDEyLjk1NDMgNDQgMjQgNDRaIiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMSAzMUMzMSAzMSAyOSAzNSAyNCAzNUMxOSAzNSAxNyAzMSAxNyAzMSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMSAxOFYyMiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xNyAxOFYyMiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==")}#uploadSource{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMS42Nzc3IDIwLjI3MUM3LjI3NDc2IDIxLjMxODEgNCAyNS4yNzY2IDQgMzBDNCAzNS41MjI4IDguNDc3MTUgNDAgMTQgNDBDMTQuOTQ3NCA0MCAxNS44NjQgMzkuODY4MyAxNi43MzI1IDM5LjYyMjEiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMzYuMDU0NyAyMC4yNzFDNDAuNDU3NyAyMS4zMTgxIDQzLjczMjQgMjUuMjc2NiA0My43MzI0IDMwQzQzLjczMjQgMzUuNTIyOCAzOS4yNTUzIDQwIDMzLjczMjQgNDBDMzIuNzg1IDQwIDMxLjg2ODQgMzkuODY4MyAzMC45OTk5IDM5LjYyMjEiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMzYgMjBDMzYgMTMuMzcyNiAzMC42Mjc0IDggMjQgOEMxNy4zNzI2IDggMTIgMTMuMzcyNiAxMiAyMCIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xNy4wNjU0IDI3Ljg4MTJMMjMuOTk5OSAyMC45MjM4TDMxLjEzMTggMjguMDAwMiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNCAzOC4wMDAxVjI0LjQ2MTkiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=")}#operare_artitalk .c2{opacity:1}';
-
-  if (!document.getElementById('add-Artitalk_Style')) {
-    if (cssUrl === '' || typeof (cssUrl) === 'undefined') {
-      atCss = 'div#artitalk_main {    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);  }  #artitalk_main .shuoshuo_row {  width: 100%;  margin-top: 10px;  display: flex;  }  #artitalk_main .artitalk_child {  width: 100%;  }  #artitalk_main #shuoshuo_content {  padding: 10px;  /* min-height: 500px; */  }  #artitalk_main body.theme-dark .cbp_tmtimeline::before {  background: RGBA(255, 255, 255, 0.06);  }  #artitalk_main ul.cbp_tmtimeline {  padding: 0;  }  #artitalk_main .cbp_tmtimeline {  margin: 30px 0 0 0;  padding: 0;  list-style: none;  display: inline;  position: relative;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime {  display: block;  /* width: 29%; */  /* padding-right: 110px; */  max-width: 70px;  position: absolute;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span {  display: block;  text-align: right;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span:first-child {  font-size: 0.9em;  color: #bdd0db;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span:last-child {  font-size: 1.2em;  color: #9bcd9b;  }  #artitalk_main .cbp_tmtimeline>li:nth-child(odd) .cbp_tmtime span:last-child {  color: RGBA(255, 125, 73, 0.75);  }  #artitalk_main div.cbp_tmlabel>p {  margin-bottom: 0;  }  #artitalk_main div class.cdp_tmlabel>li .cbp_tmlabel {  margin-bottom: 0;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmlabel {  margin: 0 0 45px 65px;  z-index: 1;  background: ' + color2 + ';  color: ' + color3 + ' ;  padding: 0.8em 1.2em 0.4em 1.2em;  /* font-size: 1.2em; */  font-weight: 300;  line-height: 1.4;  position: relative;  border-radius: 5px;  transition: all 0.3s ease 0s;  box-shadow: 0 1px 2px rgba(0,0,0,0.15); display: block;  }  #artitalk_main .cbp_tmlabel:hover {  /* transform: scale(1.05); */  transform: translateY(-3px);  z-index: 1;  box-shadow: 0 15px 32px rgba(0,0,0,0.15) ;  }  #artitalk_main .cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel {    background: ' + color1 + ';  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmlabel:after {  right: 100%;  border: solid transparent;  z-index: -1;  content: " ";  height: 0;  width: 0;  position: absolute;  pointer-events: none;  border-right-color: ' + color2 + ';  border-width: 10px;  top: 4px;  }  #artitalk_main .cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel:after {    border-right-color: ' + color1 + ';  }  #artitalk_main p.shuoshuo_time {  margin-top: 10px;  border-top: 1px dashed #fff;  padding-top: 5px;  font-size: 12px;  }  @media screen and (max-width: 65.375em) {  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span:last-child {    font-size: 1.2em;  }  }  #artitalk_main .shuoshuo_author_img img {  border: 1px solid #ddd;  padding: 2px;  float: left;  border-radius: 64px;  transition: all 1s;  }  #artitalk_main .artitalk_avatar {  border-radius: 100% ;  -moz-border-radius: 100% ;  box-shadow: inset 0 -1px 0 3333sf;  -webkit-box-shadow: inset 0 -1px 0 3333sf;  -webkit-transition: 0.4s;  -webkit-transition: -webkit-transform 0.4s ease-out;  transition: transform 0.4s ease-out;  -moz-transition: -moz-transform 0.4s ease-out;  }  #artitalk_main .artitalk_avatar:hover {  -webkit-transform: rotateZ(360deg);  -moz-transform: rotateZ(360deg);  -o-transform: rotateZ(360deg);  -ms-transform: rotateZ(360deg);  transform: rotateZ(360deg);  }  #artitalk_main .shuoshuo_text {  width: 100%;  height: 130px;  padding: 8px 16px;  background-repeat: no-repeat;  background-position: right;  transition: all 0.35s ease-in-out 0s;  outline-style: none;  border: 1px solid #ccc;  border-radius: 6px;  resize: none;  background-color: transparent;  color: #999;  }  #artitalk_main .shuoshuo_inputs {  outline-style: none;  border: 1px solid #ccc;  padding: 8px 16px;  width: 40%;  font-size: 12px;  background-color: transparent;  color: #999;  }  #operare_artitalk .at_button,  #artitalk_main .at_button {    background-color: ' + color1 + ';  /* Green */  border: none;  margin-left: 5px;  color: ' + color3 + ';  padding: 8px 16px;  text-align: center;  text-decoration: none;  height: auto;  line-height: 20px;  display: inline-block;  font-size: 12px;  border-radius: 12px;  /* circle */  outline: none;  cursor: pointer;  }  #operare_artitalk .at_button:hover,  #artitalk_main .at_button:hover {      background-color: ' + color2 + ';  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24), 0 8px 16px 0 rgba(0,0,0,0.19);  }  #artitalk_main #article-container ul p {  margin: 0 0 1rem;  }  #artitalk_main .power {  text-align: right;  color: #999;  margin-top: 10px;  font-size: 0.75em;  padding: 0.5em 0;  }  #artitalk_main .power a {  font-size: 0.75em;  position: relative;  cursor: pointer;  color: #1abc9c;  text-decoration: none;  display: inline-block;  }  #artitalk_main .shuoshuo_row .col.col-80 {  width: 80%;  float: left;  }  #artitalk_main .shuoshuo_row .col.col-20 {  width: 20%;  float: right;  text-align: right;  }  #artitalk_main #preview {  width: 100%;  float: left;  margin: 0.5rem 0 0;  padding: 7px;  box-shadow: 0 0 1px #f0f0f0;  }  #artitalk_main #lazy {  background: #fff;  bottom: 0;  left: 0;  position: fixed;  right: 0;  top: 0;  z-index: 9999;  }  #artitalk_main .preloader {  position: absolute;  margin-left: -55px;  margin-top: -100px;  height: 110px;  width: 110px;  left: 50%;  top: 50%;  }  #artitalk_main .preloader>svg>g>path {  stroke: #9ea1a4;  stroke-width: 0.25;  }  #artitalk_main .preloader>svg>path {  stroke: #9ea1a4;  stroke-width: 0.25;  }  #artitalk_main #cloud {  position: relative;  z-index: 2;  }  #artitalk_main #cloud path {  fill: #efefef;  }  #artitalk_main #sun {  margin-left: -10px;  margin-top: 6px;  opacity: 0;  width: 60px;  height: 60px;  position: absolute;  left: 45px;  top: 15px;  z-index: 1;  animation-name: rotate;  animation-duration: 16000ms;  animation-iteration-count: infinite;  animation-timing-function: linear;  }  #artitalk_main #sun path {  stroke-width: 0.18;  fill: #9ea1a4;  }  #artitalk_main .rain {  position: absolute;  width: 70px;  height: 70px;  margin-top: -32px;  margin-left: 19px;  }  #artitalk_main .drop {  opacity: 1;  background: #9ea1a4;  display: block;  float: left;  width: 3px;  height: 10px;  margin-left: 4px;  border-radius: 0px 0px 6px 6px;  animation-name: drop;  animation-duration: 350ms;  animation-iteration-count: infinite;  }  #artitalk_main .drop:nth-child(1) {  animation-delay: -130ms;  }  #artitalk_main .drop:nth-child(2) {  animation-delay: -240ms;  }  #artitalk_main .drop:nth-child(3) {  animation-delay: -390ms;  }  #artitalk_main .drop:nth-child(4) {  animation-delay: -525ms;  }  #artitalk_main .drop:nth-child(5) {  animation-delay: -640ms;  }  #artitalk_main .drop:nth-child(6) {  animation-delay: -790ms;  }  #artitalk_main .drop:nth-child(7) {  animation-delay: -900ms;  }  #artitalk_main .drop:nth-child(8) {  animation-delay: -1050ms;  }  #artitalk_main .drop:nth-child(9) {  animation-delay: -1130ms;  }  #artitalk_main .drop:nth-child(10) {  animation-delay: -1300ms;  }  #artitalk_main .artitalk_loading_text {  font-family: Helvetica, " Helvetica Neue ", sans-serif;  letter-spacing: 1px;  text-align: center;  margin-left: -43px;  font-weight: bold;  margin-top: 20px;  font-size: 11px;  color: #a0a0a0;  width: 200px;  }  #artitalk_main .shuoshuoimg {  cursor: pointer;  transition: all 1s;  z-index: 2;  }  #artitalk_main .shuoshuoimg:hover {  transform: scale(3.5);  }  #artitalk_main .hide,  #operare_artitalk .hide {  display: none;  }  #operare_artitalk .c1 {  position: fixed;  top: 0;  bottom: 0;  left: 0;right: 0;  background: rgba(0,0,0,0.5);  z-index: 2;  }  #operare_artitalk .c2 {  background-color: #fff;  position: fixed;  width: 400px;  height: auto;  top: 50%;  left: 50%;  z-index: 3; margin-top: -150px;  margin-left: -200px;  box-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);  opacity: 0.85;  border: 0;  border-radius: 10px;  }  #operare_artitalk .shuoshuo_input_log {  outline-style: none;  margin-top: 10px;  border: 1px solid #ccc;  border-radius: 6px;  padding: 8px 16px;  font-size: 12px;  background-color: transparent;  color: #999;  }  #artitalk_main .delete_right {  cursor: pointer;  width: 12px;  height: 12px;  position: absolute;  right: 12px;  }  #artitalk_main svg {  display: inline;  }  #artitalk_main .cbp_tmlabel>p,  #artitalk_main h1,  #artitalk_main h2,  #artitalk_main h3,  #artitalk_main h4,  #artitalk_main h5,  #artitalk_main h6,  #artitalk_main em {  word-wrap: break-word;  word-break: break-all;  }  #artitalk_main .shuoshuo_emoji {  border: 1px solid #ccc;  border-radius: 6px 6px 0 0;  height: 120px;  overflow: auto;  margin-top: 10px;  border-bottom: none;  }  #artitalk_main .atemoji {  max-height: 28px;  width: 28px;  display: inline;  vertical-align: middle;  }  #artitalk_main .shuoshuo_emoji>.atemoji {  cursor: pointer;  margin: 0 0 0 10px;  display: inline;  }  #artitalk_main i>.atemoji {  cursor: pointer;  margin: 0 0 0 10px;  }  #artitalk_main .shuoshuo_emoji>a {  display: inline;  }  #artitalk_main #preview>p>.atemoji {  display: inline;  }  #artitalk_main .shuoshuo_emoji>.atemoji:hover {  transform: scale(1.5);  }  #artitalk_main div#shuoshuo_emojiswitch {  height: 40px;  width: auto;  border-radius: 0 0 6px 6px;  border-collapse: collapse;  border: 1px solid #ccc;  border-top: none;  }  #artitalk_main .shuoshuo_emoji_part {  width: 25%;  cursor: pointer;  align-content: center;  text-align: center;  line-height: 40px;  }  #artitalk_main .shuoshuo_emoji_part:hover {  background-color: #ccc;  color: #fff;  }  #artitalk_main .zuiliangdezai {  background-color: #ccc;  color: #fff;  }  #artitalk_main .pingjun {  display: flex;  }  #artitalk_main #article-container img {  margin: 0 0 0 0;  }  #artitalk_main .preview_now {  display: none;  }  #artitalk_main div#loading_txt {  font-size: 20px;  }  #artitalk_main audio {  display: block;  width: 100%;  outline: none;  opacity: 0.8;  }  #artitalk_main video {  z-index: 0;  }p.shuoshuo_time>span>a:hover {color: red;}p.shuoshuo_time>span>a {color: black;text-decoration: none;}  #artitalk_main textarea#neirong:focus {  background-position-y: 150px;  transition: all 0.35s ease-in-out 0s;  }  #artitalk_main img.atemoji {  max-height: 28px;  width: 28px;  display: inline;  vertical-align: middle;  }  #artitalk_main span.cbp_tmlabel>p {  overflow: unset;  }  #artitalk_main ul#maina>li {  list-style: none;  }  #artitalk_main div#artitalk_main {  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);  }  #artitalk_main .c2>center>p {  margin-top: 10px;  margin-bottom: 10px;  }  @-moz-keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @-webkit-keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @-o-keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @-moz-keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }  @-webkit-keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }  @-o-keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }  @keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }';
-      atCss += '#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel[data-user-background]{background:var(--artitalk-user-background)}#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel[data-user-background]:after{border-right-color:var(--artitalk-user-background)}';
-      const atStyle = document.createElement('style');
-      atStyle.type = 'text/css';
-      atStyle.innerHTML = atCss;
-      atStyle.id = 'add-Artitalk-Style';
-      document.head.appendChild(atStyle);
-
-      if (blackAndWhiteTheme) {
-        const blackAndWhiteStyleElement = document.createElement('style');
-        blackAndWhiteStyleElement.innerHTML = blackAndWhiteStyle;
-        document.head.appendChild(blackAndWhiteStyleElement);
-      }
-    } else {
-      if (blackAndWhiteTheme) {
-        const blackAndWhiteStyleElement = document.createElement('style');
-        blackAndWhiteStyleElement.innerHTML = blackAndWhiteStyle;
-        document.head.appendChild(blackAndWhiteStyleElement);
-      }
-
-      const atStyle = document.createElement('link');
-      atStyle.rel = 'stylesheet';
-      atStyle.href = cssUrl;
-      atStyle.id = 'add-Artitalk-Style';
-      document.head.appendChild(atStyle);
-    }
-  }
-  // Insert html part
-  var atHtml = "<div id='artitalk_part1'><div id=\"shuoshuo_content\"><div id=\"ccontent\"></div><div id='readButton' style=''><center><button id=\"readmore\" class=\"at_button\" style=\"margin-bottom: 15px;display: none\">" + loadMore + '</button></center></div></div><div id="shuoshuo_input" class="shuoshuo_active" style="display: none;"><div id="shuoshuo_edit"><textarea class="shuoshuo_text" oninput="preview()" id="neirong" placeholder="' + shuoPla + '"style="background-image: url(' + bgImg + ");z-index: 0\"></textarea><span id=\"drag_area\" class=\"z-index: -1;\"></span></div><div id=\"shuoshuo_parttwo\" class=\"shuoshuo_parttwo\"><div id=\"shuoshuo_emoji_Tieba\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_BiliBili\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_QQ\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_custom\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emojiswitch\" class=\"shuoshuo_emojiswitch\" style='display: none'><div id=\"switch_1\" class=\"shuoshuo_emoji_part zuiliangdezai\">Tieba</div><div id=\"switch_2\" class=\"shuoshuo_emoji_part\">BiliBili</div><div id=\"switch_3\" class=\"shuoshuo_emoji_part\">QQ</div><div id=\"switch_4\" class=\"shuoshuo_emoji_part\">Custom</div></div><div id=\"preview\" class=\"preview_now\"></div></div><div class=\"shuoshuo_submit\"><div class=\"shuoshuo_row\"><input class=\"artitalk_child shuoshuo_inputs\" style='display: none' id=\"email\" value=\"\"  placeholder=\" " + avatarUrl + '"><input class="artitalk_child shuoshuo_inputs" style="display: none" id="commentNick" value="" placeholder="' + avatarUrl + "\"><div class=\"artitalk_child\"><button class=\"at_button\" id='atSave' style=\"float: right;\">" + publish + "</button><button class=\"at_button\" id='commentSave' style=\"display:none;float: right;\">" + publish + "</button><button class=\"at_button\" id='atPreview' style=\"float: right;\">" + preview + "</button><button class=\"at_button\" id='loadEmoji' style=\"float: right;\">" + emoji + '</button></div></div></div></div></div><div class="power"><div style="font-size: 25px;display: none; cursor: pointer" id="pubComment">' + ArtitalkSvg.render('publish') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="pubShuo"title="' + postTalk + '">' + ArtitalkSvg.render('publish') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="switchUser" title="' + login + '">' + ArtitalkSvg.render('user') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="uploadSource" title="" + add + "">' + ArtitalkSvg.render('upload') + '</div><br>Powered By <a href="https://artitalk-docs.hclonely.com/" target="_blank">Artitalk</a><br>' + atVersion + "</div><input type='file' id='realUpload' onchange='atEvery.prototype.beginUpload(this.files[0])' style=\"width: 0;height: 0;display: none\"></input></div>";
-  var motionHtml = "<div id='lazy'><div class=\"preloader\" style=\"opacity: 1; \">" + ArtitalkSvg.render('loading-sun') + "" + ArtitalkSvg.render('loading-cloud') + "<div class=\"rain\"><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span></div><div class=\"artitalk_loading_text\" id=\"loading_txt\">" + loading + '</div></div></div>';
-  var atOpHtml = "<div id=\"shade\" class=\"c1\" style='display: none'></div><div id=\"shuoshuo-modal\" class=\"c2\" style='display: none' ><center><p>" + username + '：<input type="text" class="shuoshuo_input_log" id="username"/></p><p>' + password + '：<input type="password" class="shuoshuo_input_log"  id="pwd"/></p><p><input type="button" value="' + login + "\" class=\"at_button\" id='login'>&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\"" + cancel + "\"  class=\"at_button\" id = 'celLogin'></p></center><center><div id=\"logw\" style='color: red'></div></center></div><div id=\"userinfo\" class=\"c2\" style='display: none'><center><p><div id=\"status\"></div></p><p><label for=\"userBackgroundColor\">" + backgroundColor + "：</label><input type=\"color\" id=\"userBackgroundColor\" class=\"user-background-color\" aria-label=\"" + backgroundColor + "\"><input type=\"button\" class=\"at_button\" value=\"" + save + "\" id=\"saveUserBackgroundColor\"></p><p id=\"userBackgroundColorStatus\" class=\"user-color-status\" aria-live=\"polite\"></p><p><input type=\"button\" class=\"at_button\" value=\"" + confirm + "\" id=\"hideuser\">&nbsp;&nbsp;&nbsp;&nbsp;<input id=\"tui\" type=\"button\" value=\"" + signOut + "\" class=\"at_button\" style=\"display: none;\" onclick=\"Logout();\"></p></center></div><div id=\"shanchu\" class=\"c2\" style='display: none'><center><p>" + deleteSuccess + '</p><p><input type="button" class="at_button" value="' + confirm + "\" id=\"deleteSus\"></p><center></div><div id=\"shanchur\" class=\"c2\" style='display: none'><center><p>" + confirmDelete + "</p><p><div id=\"delete1\"></div></p><center></div><div id='clickForPreview'></div>";
-  var atOp = document.createElement('div');
-  atOp.id = 'operare_artitalk';
-  document.body.append(atOp);
-  document.getElementById('operare_artitalk').innerHTML = atOpHtml;
-  motionHtml = motion === 0 ? '' : motionHtml;
-  atHtml = motionHtml + atHtml;
-  document.getElementById('artitalk_main').innerHTML = atHtml;
-  // 开始加载说说
-  root.seeContent(0, root.config);
-  const rmButton = document.getElementById('readmore');// readmore
-  const pubButton = document.getElementById('pubShuo');// publish shuo
-  const switchLogin = document.getElementById('switchUser');// login or exit
-  const cancelLogin = document.getElementById('celLogin');// cancel Login
-  const loginButton = document.getElementById('login');// Login
-  const hideUser = document.getElementById('hideuser');
-  const userBackgroundColor = document.getElementById('userBackgroundColor');
-  const saveUserBackgroundColor = document.getElementById('saveUserBackgroundColor');
-  const userBackgroundColorStatus = document.getElementById('userBackgroundColorStatus');
-  const loadEmoji = document.getElementById('loadEmoji');// Loading emoji
-  const switchTb = document.getElementById('switch_1');// Tieba emoji
-  const switchBB = document.getElementById('switch_2');// BiliBili emoji
-  const switchQQ = document.getElementById('switch_3');// QQ emoji
-  const switchCustom = document.getElementById('switch_4');// custom emoji
-  const beginPreview = document.getElementById('atPreview');// preview
-  const clickPre = document.getElementById('clickForPreview');// preview
-  const saveContent = document.getElementById('atSave');// savecontent
-  const deleteSus = document.getElementById('deleteSus');// Delete successful
-  const uploadSource = document.getElementById('uploadSource');// Upload image or video
-  const realUpload = document.getElementById('realUpload');
-  realUpload.onchange = function () {
-    root.beginUpload(this.files[0]);
-  };
-  let pNum = 0;
-  rmButton.onclick = function () {
-    pNum = pNum + 1;
-    root.seeContent(pNum, root.config);
-  };
-  pubButton.onclick = function () {
-    const currentUser = ArtitalkData.currentUser();
-    if (currentUser) {
-      if (document.getElementById('shuoshuo_input').style.display === '') {
-        fadeOut('shuoshuo_input');
-      } else {
-        fadeIn('shuoshuo_input');
-      }
-    } else {
-      document.getElementById('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
-      Show();
-    }
-  };
-  switchLogin.onclick = function () {
-    document.getElementById('logw').innerHTML = '';
-    const currentUser = ArtitalkData.currentUser();
-    fadeIn('shade');
-    if (currentUser) {
-      fadeIn('userinfo');
-      document.getElementById('status').innerHTML = loggedIn + ':\t' + currentUser.attributes.username;
-      userBackgroundColor.value = currentUser.attributes.backgroundColor || getUserBackgroundColor(currentUser.id, color1, color2);
-      userBackgroundColorStatus.innerHTML = '';
-      fadeIn('tui');
-    } else {
-      fadeIn('tui');
-      fadeIn('shuoshuo-modal');
-      Show();
-    }
-  };
-  cancelLogin.onclick = function () {
-    Hide();
-  };
-  loginButton.onclick = function () {
-    const passWord = document.getElementById('pwd').value;
-    document.getElementById('logw').style.color = 'black';
-    document.getElementById('logw').innerHTML = 'loading...';
-    if (passWord === '') {
-      document.getElementById('logw').style.color = 'red';
-      document.getElementById('logw').innerHTML = passwordRequired;
-      return;
-    }
-    const userName = document.getElementById('username').value;
-    if (userName === '') {
-      document.getElementById('logw').style.color = 'red';
-      document.getElementById('logw').innerHTML = usernameRequired;
-      return;
-    }
-    ArtitalkData.login(userName, passWord).then((user) => {
-      document.getElementById('ccontent').innerHTML = '';
-      document.getElementById('neirong').value = '';
-      fadeIn('lazy');
-      root.seeContent(0, root.config);
-      Hide();
-      onLogin(userName);
-    }, (error) => {
-      let errLogin = error.message;
-      document.getElementById('logw').style.color = 'red';
-      // console.log(errLogin);
-      if (errLogin.indexOf('mismatch') != -1) {
-        errLogin = credentialsMismatch;
-      } else if (errLogin.indexOf('terminated') != -1) {
-        errLogin = loginRequestError;
-      } else if (errLogin.indexOf('Could not find user.') != -1) {
-        errLogin = userNotFound;
-      } else if (errLogin.indexOf('Please try later or reset your password.') != -1) {
-        errLogin = tooManyLoginAttempts;
-      }
-      document.getElementById('logw').innerHTML = errLogin;
-    });
-  };
-  hideUser.onclick = function () {
-    fadeOut('shade');
-    fadeOut('userinfo');
-  };
-  saveUserBackgroundColor.onclick = function () {
-    const selectedColor = userBackgroundColor.value;
-    saveUserBackgroundColor.disabled = true;
-    ArtitalkData.updateCurrentUser({ backgroundColor: selectedColor }).then(function () {
-      userBackgroundColorStatus.innerHTML = colorSaved;
-      document.getElementById('ccontent').innerHTML = '';
-      root.seeContent(0, root.config);
-    }).catch(function (error) {
-      userBackgroundColorStatus.innerHTML = error.message;
-    }).then(function () {
-      saveUserBackgroundColor.disabled = false;
-    });
-  };
-  loadEmoji.onclick = function () {
-    document.getElementById('switch_1').classList.add('zuiliangdezai');
-    document.getElementById('switch_2').classList.remove('zuiliangdezai');
-    document.getElementById('switch_3').classList.remove('zuiliangdezai');
-    document.getElementById('switch_4').classList.remove('zuiliangdezai');
-    if (document.getElementById('shuoshuo_emojiswitch').style.display === 'none') {
-      fadeIn('shuoshuo_emoji_Tieba');
-      fadeIn('shuoshuo_emojiswitch');
-      document.getElementById('shuoshuo_emoji_BiliBili').innerHTML = atEmojiB;
-      document.getElementById('shuoshuo_emoji_Tieba').innerHTML = atEmojiT;
-      document.getElementById('shuoshuo_emoji_QQ').innerHTML = atEmojiQ;
-      document.getElementById('shuoshuo_emoji_custom').innerHTML = atEmojiDefault;
-      document.getElementById('shuoshuo_emojiswitch').classList.add('pingjun');
-    } else {
-      fadeOut('shuoshuo_emoji_Tieba');
-      fadeOut('shuoshuo_emoji_BiliBili');
-      fadeOut('shuoshuo_emoji_custom');
-      fadeOut('shuoshuo_emoji_QQ');
-      fadeOut('shuoshuo_emojiswitch');
-      document.getElementById('shuoshuo_emojiswitch').classList.remove('pingjun');
-    }
-  };
-  switchTb.onclick = function () {
-    switchTb.classList.add('zuiliangdezai');
-    switchQQ.classList.remove('zuiliangdezai'); switchBB.classList.remove('zuiliangdezai'); switchCustom.classList.remove('zuiliangdezai');
-    fadeIn('shuoshuo_emoji_Tieba');
-    fadeOut('shuoshuo_emoji_QQ'); fadeOut('shuoshuo_emoji_BiliBili'); fadeOut('shuoshuo_emoji_custom');
-  };
-  switchQQ.onclick = function () {
-    switchQQ.classList.add('zuiliangdezai');
-    switchTb.classList.remove('zuiliangdezai'); switchBB.classList.remove('zuiliangdezai'); switchCustom.classList.remove('zuiliangdezai');
-    fadeIn('shuoshuo_emoji_QQ');
-    fadeOut('shuoshuo_emoji_Tieba'); fadeOut('shuoshuo_emoji_BiliBili'); fadeOut('shuoshuo_emoji_custom');
-  };
-  switchBB.onclick = function () {
-    switchBB.classList.add('zuiliangdezai');
-    switchQQ.classList.remove('zuiliangdezai'); switchTb.classList.remove('zuiliangdezai'); switchCustom.classList.remove('zuiliangdezai');
-    fadeIn('shuoshuo_emoji_BiliBili');
-    fadeOut('shuoshuo_emoji_QQ'); fadeOut('shuoshuo_emoji_Tieba'); fadeOut('shuoshuo_emoji_custom');
-  };
-  switchCustom.onclick = function () {
-    switchCustom.classList.add('zuiliangdezai');
-    switchQQ.classList.remove('zuiliangdezai'); switchBB.classList.remove('zuiliangdezai'); switchTb.classList.remove('zuiliangdezai');
-    fadeIn('shuoshuo_emoji_custom');
-    fadeOut('shuoshuo_emoji_QQ'); fadeOut('shuoshuo_emoji_BiliBili'); fadeOut('shuoshuo_emoji_Tieba');
-  };
-  beginPreview.onclick = function () {
-    clickPre.click();
-    const preCon = document.getElementById('preview');
-    if (preCon.className.indexOf('preview_now') !== -1) {
-      preCon.classList.remove('preview_now');
-    } else {
-      preCon.classList.add('preview_now');
-    }
-  };
-  saveContent.onclick = function save () {
-    const currentUser = ArtitalkData.currentUser();
-    if (!currentUser) {
-      pubButton.click();
-    }
-    let shuoshuoContent = document.getElementById('neirong').value;
-    if (shuoshuoContent === '') throw '说说内容不能为空';
-    const atObject = ArtitalkData.createTalk();
-    const shuoshuoContentMd = shuoshuoContent;
-    atObject.set('atContentMd', shuoshuoContentMd);
-    shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji);
-    const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
-    const atAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
-    // alert(deFaultavatar);
-    const userClient = new Client();
-    // console.log("Engine ：" + client.engine.name + " " + client.engine.version);
-    // console.log("Browser：" + client.browser.name + " " + client.browser.version);
-    // console.log("System ：" + client.system.name + " " + client.system.version);
-    const userOs = userClient.system.name;
-    atObject.set('atContentHtml', shuoshuoContentHtml);
-    atObject.set('userOs', userOs);
-    atObject.set('avatar', atAvatar);
-    atObject.set('authorId', currentUser.id);
-    atObject.set('authorName', currentUser.attributes.username);
-    atObject.set('authorColor', currentUser.attributes.backgroundColor || '');
-    fadeIn('lazy');
-    atObject.save().then(function (res) {
-      document.getElementById('ccontent').innerHTML = '';
-      document.getElementById('neirong').value = '';
-      fadeOut('preview');
-      root.seeContent(0, root.config);
-      fadeOut('shuoshuo_input');
-
-      onShuoPublished(currentUser.attributes.username, shuoshuoContent);
-    });
-  };
-  clickPre.onclick = function () {
-    let unPre = document.getElementById('neirong').value;
-    unPre = ArtitalkI18n.translateEmojis(unPre, atEmoji);
-    const finishPre = ArtitalkSanitizer.markdownToHtml(unPre);
-    document.getElementById('preview').innerHTML = finishPre;
-  };
-  deleteSus.onclick = function () {
-    fadeOut('shanchu'); fadeOut('shade'); fadeIn('lazy');
-    document.getElementById('ccontent').innerHTML = '';
-    root.seeContent(0, root.config);
-  };
-  uploadSource.onclick = function () {
-    function Show () {
-      fadeIn('shade');
-      fadeIn('shuoshuo-modal');
-    }
-    const currentUser = ArtitalkData.currentUser();
-    if (currentUser) {
-      // console.log(currentUser);
-    } else {
-      document.getElementById('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
-      Show();
-      return;
-    }
-    document.getElementById('realUpload').click();
-  };
-  // function beginUpload(file){
-  //     console.log(file.files);
-  // }
-  atEvery.prototype.delete = function (id) {
-    function fadeOut (id) {
-      ArtitalkDom.hide(id);
-    }
-    function fadeIn (id) {
-      ArtitalkDom.show(id);
-    }
-    const currentUser = ArtitalkData.currentUser();
-    if (currentUser) {
-      fadeIn('shade'); fadeIn('shanchur');
-      document.getElementById('delete1').innerHTML = '<input type="button" class="at_button" value="' + confirm + '" id="Delete"><input type="button" class="at_button" value="' + cancel + '" id="cancelDelete">';
-    } else {
-      const pubButton = document.getElementById('pubShuo');
-      pubButton.click();
-      return;
-    }
-    const cancelDelete = document.getElementById('cancelDelete');
-    const rlyDelete = document.getElementById('Delete');
-    cancelDelete.onclick = function () {
-      fadeOut('shade'); fadeOut('shanchur');
-    };
-    rlyDelete.onclick = function () {
-      // console.log(id);
-      cancelDelete.click();
-      fadeIn('lazy');
-      const deletes = ArtitalkData.talkById(id);
-      deletes.destroy().then(function (success) {
-        fadeIn('shade');
-        fadeIn('shanchu');
-      }, function (error) {
-        console.log(error.rawMessage);
-      });
-    };
-  };
-};
-;
-atEvery.prototype.beginUpload = function (file) {
-  const imageUpload = (this.config && this.config.imageUpload) || {};
-  const uploadApi = imageUpload.api || 'https://s.ee/api/v1/file/upload';
-  const tokenHeader = imageUpload.tokenHeader || 'Authorization';
-  function Show () {
-    fadeIn('shade');
-    fadeIn('shuoshuo-modal');
-  }
-  const currentUser = ArtitalkData.currentUser();
-  if (currentUser) {
-    // console.log(currentUser);
-  } else {
-    // document.getElementById('logw').innerHTML= "<center><pre><code>" + text15 + "</code></pre></center>";
-    Show();
-    return;
-  }
-  if (!/\.(jpg|gif|jpeg|ico|png|svg|mp4|mov)$/.test(file.name)) {
-    alert('不支持的文件类型，支持的文件格式有jpg|gif|jpeg|ico|png|svg|mp4|mov');
-    return;
-  }
-  let fileType = '';
-  const sourceSize = (file.size / 1024).toFixed(0);
-  const sourceSizeLimit = 1024 * 50;
-  if (sourceSize > sourceSizeLimit) {
-    alert('资源上传最大限制为50M');
-    return;
-  }
-  if (/\.(jpg|gif|jpeg|ico|png|svg)$/.test(file.name)) {
-    fileType = 'image';
-  } else if (/\.(mp4|mov)$/.test(file.name)) {
-    fileType = 'video';
-  }
-  function fadeIn (id) {
-    ArtitalkDom.show(id);
-  }
-  function fadeOut (id) {
-    ArtitalkDom.hide(id);
-  }
-  fadeIn('lazy');
-  const data = new FormData();
-  data.append('file', file);
-  const xhr = new XMLHttpRequest();
-  xhr.withCredentials = false;
-  xhr.addEventListener('readystatechange', function () {
-    if (this.readyState === 4 && this.status === 200) {
-      const sourceUrl = eval('(' + this.responseText + ')');
-      // let Md = "![]("+imgUrl.data.url+")";
-      let sourceMd = '';
-      // insertEmoji(imgMd);
-      if (fileType === 'video') {
-        sourceMd = '<video controls width="100%" height="auto"><source src="' + sourceUrl.data.url + '"></video>';
-      } else if (fileType === 'image') {
-        sourceMd = '![](' + sourceUrl.data.url + ')';
-      }
-      insertEmoji(sourceMd);
-      document.getElementById('pubShuo').click();
-      fadeOut('lazy');
-    } else if (this.readyState === 4 && this.status === 500) {
-      fadeOut('lazy');
-    }
-  });
-  xhr.open('POST', uploadApi);
-  const imgToken = ArtitalkData.currentUser().attributes.imgToken;
-  if (imgToken !== undefined) {
-    xhr.setRequestHeader(tokenHeader, imgToken);
-  }
-  xhr.send(data);
-};
-;
-function getUserBackgroundColor (userKey, color1, color2) {
-  const colors = [
-    color1,
-    color2,
-    '#5b4b8a',
-    '#266d7f',
-    '#8a4f62',
-    '#47715a',
-    '#7b5a2e',
-    '#3e6388',
-    '#6b5a89',
-    '#7c4f36'
-  ];
-  const key = String(userKey || 'artitalk');
-  let hash = 0;
-
-  for (let index = 0; index < key.length; index++) {
-    hash = ((hash << 5) - hash) + key.charCodeAt(index);
-    hash |= 0;
-  }
-
-  return colors[(hash >>> 0) % colors.length];
-}
-
-function getUserBackgroundAttributes (userKey, color1, color2, userColor) {
-  const backgroundColor = userColor || getUserBackgroundColor(userKey, color1, color2);
-  return ' data-user-background style="--artitalk-user-background:' + backgroundColor + '"';
-}
-
-function isCurrentUserAuthor (currentUser, authorId, avatar) {
-  if (!currentUser) return false;
-  const currentUserId = currentUser.id || currentUser.attributes.objectId;
-  const currentUserAvatar = currentUser.attributes.img || 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png';
-  return authorId === currentUserId || (!authorId && avatar === currentUserAvatar);
-}
-
-atEvery.prototype.seeContent = function (pageNum, option) {
-  const root = this;
-  let mid = '';
-
-  let {
-    lang,
-    pageSize,
-    motion,
-    atEmoji,
-    color1,
-    color2,
-    color3,
-    atComment,
-    onCommentsPublished
-  } = root.config;
-  lang = ArtitalkI18n.normalizeLanguage(lang);
-  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, pin, unpin, pinned } = ArtitalkI18n.getMessages(lang);
-  color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
-  color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
-  color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
-  pageSize = typeof (pageSize) === 'undefined' ? '5' : pageSize;
-
-  onCommentsPublished = typeof (onCommentsPublished) === 'function' ? onCommentsPublished : function () { };
-
-  function fadeIn (id) {
-    ArtitalkDom.show(id);
-  }
-  function fadeOut (id) {
-    ArtitalkDom.hide(id);
-  }
-  // console.log(option);
-  fadeIn('lazy');
-  let shuoNum = 0;
-  const pinnedTalkIds = [];
-  ArtitalkData.queryTalks(pageSize, pageNum).then(function (shuoContent) {
-    mid = '';
-    shuoContent.forEach(function (atContent) {
-      shuoNum = shuoNum + 1;
-      // OS icon judge
-      const atOs = atContent.attributes.userOs;
-      let osSvg = '';
-      switch (atOs) {
-        case 'windows':
-          osSvg = '' + ArtitalkSvg.render('os-windows', { color: color3 }) + '' + ' ';
-        case 'Android':
-          osSvg = '' + ArtitalkSvg.render('os-android', { color: color3 }) + '' + ' ';
-        case 'Linux':
-          osSvg = '' + ArtitalkSvg.render('os-linux', { color: color3 }) + '' + ' ';
-        case 'iOS':
-          osSvg = '' + ArtitalkSvg.render('os-apple', { color: color3 }) + '' + ' ';
-        case 'Max':
-          osSvg = '' + ArtitalkSvg.render('os-apple', { color: color3 }) + '' + ' ';
-        default:
-          osSvg = '' + ArtitalkSvg.render('os-unknown', { color: color3 }) + '' + ' ';
-      }
-      // Avatar init
-      let shuoAvatar = atContent.attributes.avatar;
-      shuoAvatar = typeof (shuoAvatar) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : shuoAvatar;
-      const currentUser = ArtitalkData.currentUser();
-      const hideIcon = currentUser ? '' : 'style="display: none"';
-      // Time process
-      const timeForm = atContent.createdAt;
-      const nowDate = new Date(timeForm);
-      function timeFormat (time) {
-        return time < 10 ? '0' + time : time;
-      }
-      const resDate = nowDate.getFullYear() + '-' + timeFormat(nowDate.getMonth() + 1) + '-' + timeFormat(nowDate.getDate());
-      const resTime = timeFormat(nowDate.getHours()) + ':' + timeFormat(nowDate.getMinutes()) + ':' + timeFormat(nowDate.getSeconds());
-      const atHour = nowDate.getHours();
-      let timeSvg = '';
-      switch (timeSvg) {
-        case atHour >= 0 && atHour < 5:
-          timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
-        case atHour >= 5 && atHour < 6:
-          timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
-        case atHour >= 6 && atHour < 8:
-          timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
-        case atHour >= 8 && atHour < 11:
-          timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
-        case atHour >= 11 && atHour < 13:
-          timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
-        case atHour >= 13 && atHour < 17:
-          timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
-        case atHour >= 17 && atHour < 18:
-          timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
-        case atHour >= 18 && atHour < 21:
-          timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
-      }
-      // Content process
-      let atCommentTrue = '';
-      if (atComment === 0) {
-        atCommentTrue = 'display: none';
-      }
-      const id = atContent.id;
-      if (atContent.attributes.isPinned === true) pinnedTalkIds.push(id);
-      const shuoshuoPerContent = ArtitalkSanitizer.sanitizeHtml(atContent.attributes.atContentHtml);
-      const commentSvg = '' + ArtitalkSvg.render('comment', { color: color3 }) + '';
-      const authorKey = atContent.attributes.authorId || atContent.attributes.authorName || shuoAvatar;
-      const authorColor = atContent.attributes.authorColor || (isCurrentUserAuthor(currentUser, atContent.attributes.authorId, shuoAvatar) ? currentUser.attributes.backgroundColor : '');
-      const userBackgroundAttributes = getUserBackgroundAttributes(authorKey, color1, color2, authorColor);
-      const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "'" + userBackgroundAttributes + "><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
-      mid += contengMid;
-    });
-    let originString = document.getElementById('ccontent').innerHTML;
-    originString = originString === '' ? '<ul class="cbp_tmtimeline" id="maina">' : originString;
-    originString = originString.replace(/(.*)<\/ul>/, '$1 ');
-    originString += mid + '</ul>';
-    // console.log(originString);
-    if (shuoNum === 0 && pageNum === 0) {
-      originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
-    }
-    document.getElementById('ccontent').innerHTML = originString;
-    pinnedTalkIds.forEach(function (id) {
-      const talk = document.getElementById('atId' + id);
-      const controls = document.getElementById('operate' + id);
-      if (talk) talk.insertAdjacentHTML('afterbegin', '<span class="at-pinned-badge">' + pinned + '</span>');
-      if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + unpin + '" onclick="atEvery.prototype.togglePin(\'' + id + '\', true)">' + unpin + '</button>');
-    });
-    if (ArtitalkData.currentUser()) {
-      shuoContent.forEach(function (talk) {
-        if (talk.attributes.isPinned === true) return;
-        const controls = document.getElementById('operate' + talk.id);
-        if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + pin + '" onclick="atEvery.prototype.togglePin(\'' + talk.id + '\', false)">' + pin + '</button>');
-      });
-    }
-    if (atComment !== 0) {
-      shuoContent.forEach(function (count) {
-        const id = count.id;
-        ArtitalkData.queryComments(id).then(res => {
-          const countId = 'coValue' + id;
-          document.getElementById(countId).innerHTML = res.length;
+    shuoPla = typeof (shuoPla) === 'undefined' ? '' : shuoPla;
+    avatarPla = typeof (avatarPla) === 'undefined' ? '' : avatarPla;
+    color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
+    color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
+    color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
+    pageSize = typeof (pageSize) === 'undefined' ? '5' : pageSize;
+    blackAndWhiteTheme = typeof (blackAndWhiteTheme) === 'undefined' ? false : blackAndWhiteTheme;
+    onLogin = typeof (onLogin) === 'function' ? onLogin : function () { };
+    onShuoPublished = typeof (onShuoPublished) === 'function' ? onShuoPublished : function () { };
+    onCommentsPublished = typeof (onCommentsPublished) === 'function' ? onCommentsPublished : function () { };
+    const apiUrl = '';
+    try {
+        ArtitalkData.init({
+            appId: appId,
+            appKey: appKey,
+            serverURL: serverURL
         });
-      });
     }
-    fadeOut('lazy');
-    if (shuoNum !== 0) {
-      fadeIn('readmore');
-    } else if (pageNum !== 0) {
-      document.getElementById('readButton').innerHTML = '<center>已经到底了哦~</center>';
-      document.getElementById('readButton').style.opacity = '0.5';
-    }
-  });
-
-  atEvery.prototype.atEdit = function (id) {
-    function fadeIn (id) {
-      ArtitalkDom.show(id);
-    }
-    function fadeOut (id) {
-      ArtitalkDom.hide(id);
-    }
-    const currentuser = ArtitalkData.currentUser();
-    if (!currentuser) return;
-    fadeIn('lazy');
-    ArtitalkData.queryTalkById(id).then(res => {
-      res.forEach(function (atom) {
-        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + editInstructions + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
-        document.getElementById('ccontent').innerHTML = originString;
-        const changeId = document.getElementById('atSave');
-        changeId.id = 'atEditsaveButton';
-        document.getElementById('atEditsaveButton').innerHTML = save;
-        fadeOut('readmore');
-        changeId.setAttribute('onclick', 'atEvery.prototype.atEditsave("' + id + '")');
-        pubShuo.click();
-        document.getElementById('neirong').value = atom.attributes.atContentMd;
-        fadeOut('lazy');
-      });
-    });
-  };
-
-  atEvery.prototype.togglePin = function (id, isPinned) {
-    if (!ArtitalkData.currentUser()) return;
-    fadeIn('lazy');
-    const talk = ArtitalkData.talkById(id);
-    talk.set('isPinned', !isPinned);
-    talk.save().then(function () {
-      location.reload();
-    }).catch(function () {
-      fadeOut('lazy');
-    });
-  };
-
-  atEvery.prototype.atEditsave = function (id) {
-    fadeIn('lazy');
-    const beginPreview = document.getElementById('preview');
-    beginPreview.onclick = function () {
-      const preCon = document.getElementById('preview');
-      if (preCon.className.indexOf('preview_now') !== -1) {
-        preCon.classList.remove('preview_now');
-      } else {
-        preCon.classList.add('preview_now');
-      }
-    };
-    let shuoshuoContent = document.getElementById('neirong').value;
-    const shuoshuoContentMd = shuoshuoContent;
-    const atEditOver = ArtitalkData.talkById(id);
-    atEditOver.set('atContentMd', shuoshuoContentMd);
-    shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji);
-    if (shuoshuoContent === '') {
-      location.reload();
-      return;
-    }
-    const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
-    atEditOver.set('atContentHtml', shuoshuoContentHtml);
-    atEditOver.save().then(function () {
-      location.reload();
-    });
-  };
-
-  atEvery.prototype.saveComment = function (id, option) {
-    document.getElementById('shuoshuo_input').style.display = 'none';
-    function fadeIn (id) {
-      ArtitalkDom.show(id);
-    }
-    function fadeOut (id) {
-      ArtitalkDom.hide(id);
-    }
-    fadeIn('lazy');
-    let comContent = document.getElementById('neirong').value;
-    const atComment = ArtitalkData.commentById();
-    comContent = ArtitalkI18n.translateEmojis(comContent, atEmoji);
-    const atCommentHtml = ArtitalkSanitizer.markdownToHtml(comContent);
-    const currentUser = ArtitalkData.currentUser();
-    const comEmail = document.getElementById('email').value;
-    let comNick = document.getElementById('commentNick').value;
-    const comEmailMd5 = md5(comEmail);
-    if (!currentUser) {
-      if (comNick === '' || comEmail === '') {
-        document.getElementById('neirong').value = '昵称，邮箱均为必填项\n' + document.getElementById('neirong').value;
-        fadeOut('lazy');
-        return;
-      }
-    }
-    let atGravatar = 'https://cdn.staticdn.net/avatar/' + comEmailMd5 + '?d=mp&s=80';
-    const nowDate = new Date();
-    function timeFormat (time) {
-      return time < 10 ? '0' + time : time;
-    }
-    const resDate = nowDate.getFullYear() + '-' + timeFormat(nowDate.getMonth() + 1) + '-' + timeFormat(nowDate.getDate());
-    const resTime = timeFormat(nowDate.getHours()) + ':' + timeFormat(nowDate.getMinutes()) + ':' + timeFormat(nowDate.getSeconds());
-    const atHour = nowDate.getHours();
-    let timeSvg = '';
-    switch (timeSvg) {
-      case atHour >= 0 && atHour < 5:
-        timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
-      case atHour >= 5 && atHour < 6:
-        timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
-      case atHour >= 6 && atHour < 8:
-        timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
-      case atHour >= 8 && atHour < 11:
-        timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
-      case atHour >= 11 && atHour < 13:
-        timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
-      case atHour >= 13 && atHour < 17:
-        timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
-      case atHour >= 17 && atHour < 18:
-        timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
-      case atHour >= 18 && atHour < 21:
-        timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
-    }
-    if (currentUser) {
-      const adminAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
-      atComment.set('adminAvatar', adminAvatar);
-      atGravatar = adminAvatar;
-      comNick = currentUser.attributes.username;
-    }
-    atComment.set('atId', id);
-    atComment.set('commentContent', atCommentHtml);
-    atComment.set('authorId', currentUser ? currentUser.id : comEmailMd5 || comNick);
-    atComment.set('authorColor', currentUser ? currentUser.attributes.backgroundColor : '');
-    if (!currentUser) {
-      atComment.set('email', comEmailMd5);
-    }
-    atComment.set('nick', comNick);
-    atComment.save().then(function (res) {
-      const replySvg = '<span style="float: right">' + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
-      const originComment = document.getElementById('ccontent').innerHTML;
-      const userBackgroundAttributes = getUserBackgroundAttributes(currentUser ? currentUser.id : comEmailMd5 || comNick, color1, color2, currentUser ? currentUser.attributes.backgroundColor : '');
-      const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
-      const positon = originComment.indexOf('</li>') + 5;
-      const nowComment = originComment.slice(0, positon) + comList + originComment.slice(positon);
-      document.getElementById('ccontent').innerHTML = '';
-      document.getElementById('neirong').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('commentNick').value = '';
-      document.getElementById('ccontent').innerHTML = nowComment;
-      fadeOut('preview');
-      fadeOut('lazy');
-
-      onCommentsPublished(comNick, comContent);
-    });
-  };
-  atEvery.prototype.atReply = function () {
-    document.getElementById('pubComment').click();
-  };
-  atEvery.prototype.commentInit = function (id, option) {
-    function fadeIn (id) {
-      ArtitalkDom.show(id);
-    }
-    function fadeOut (id) {
-      ArtitalkDom.hide(id);
-    }
-    document.getElementById('neirong').placeholder = '';
-    const initButton = 'atCoInit' + id;
-    const countId = 'coValue' + id;
-    fadeOut(countId);
-    document.getElementById(initButton).setAttribute('onclick', 'location.reload()');
-    fadeIn('commentNick'); fadeOut('atSave'); fadeIn('commentSave'); fadeIn('lazy'); fadeIn('pubComment'); fadeOut('readmore'); fadeOut('pubShuo'); fadeOut('switchUser');
-    document.getElementById('pubComment').title = comments;
-    document.getElementById('pubComment').style.display = 'inline';
-    const nowButton = document.getElementById('pubComment');
-    nowButton.onclick = function () {
-      if (document.getElementById('shuoshuo_input').style.display === '') {
-        fadeOut('shuoshuo_input');
-      } else {
-        fadeIn('shuoshuo_input');
-      }
-    };
-    document.getElementById('email').placeholder = email;
-    document.getElementById('commentNick').placeholder = nickname;
-    const originalTalk = document.getElementById('atId' + id);
-    const originShuo = originalTalk.innerHTML;
-    const userBackgroundAttributes = originalTalk.hasAttribute('data-user-background')
-      ? ' data-user-background style="' + originalTalk.style.cssText + '"'
-      : '';
-    const originAvatar = document.getElementById('atAvatar' + id).src;
-    const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="' + originAvatar + '" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>' + originShuo + '</p></span></li></ul>';
-    document.getElementById('ccontent').innerHTML = originString;
-    let mid = '';
-    const currentUser = ArtitalkData.currentUser();
-    ArtitalkData.queryComments(id).then(res => {
-      res.forEach(function (comment) {
-        const timeForm = comment.createdAt;
-        function timeFormat (time) {
-          return time < 10 ? '0' + time : time;
+    catch (error) {
+        const err = String(error);
+        console.error(err);
+        if (err.indexOf('appId is not defined') != -1) {
+            console.log('appId没找到');
         }
-        const nowDate = new Date(timeForm);
+        else if (err.indexOf('appKey is not defined') != -1) {
+            console.log('appKey没找到');
+        }
+    }
+    // In & Out
+    function fadeIn(id) {
+        ArtitalkDom.show(id);
+    }
+    function fadeOut(id) {
+        ArtitalkDom.hide(id);
+    }
+    function Show() {
+        fadeIn('shade');
+        fadeIn('shuoshuo-modal');
+    }
+    function Hide() {
+        fadeOut('shade');
+        fadeOut('shuoshuo-modal');
+    }
+    // Insert css
+    let atCss = '';
+    // If the black and white theme is enabled while the cssUrl is not defined, its style will be loaded after
+    //  the default atStyle, which makes it possible to preserve original settings.
+    // If the black and white theme is enabled yet the cssUrl is set, its style will be loaded before
+    //  the customized style, ensuring the user defined style will be accepted.
+    const blackAndWhiteStyle = '#artitalk_main{margin-top:5vh}#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel{font-size:large;font-weight:400;color:#3d3d3d;background:#fff!important;box-shadow:0 1px 12px rgb(0 0 0 / 30%);border-radius:12px}#artitalk_main p.shuoshuo_time{font-size:small;border-top:1px dashed}p.shuoshuo_time span:first-child{font-size:medium}p.shuoshuo_time span:nth-child(3)>span>span{vertical-align:inherit;color:#3d3d3d!important}#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel:after,#artitalk_main span.cbp_tmlabel>p:nth-child(4){display:none}#artitalk_main span.cbp_tmlabel>p{margin-bottom:5px}#artitalk_main .delete_right{right:2rem}#artitalk_main .shuoshuo_author_img img{border:none;box-shadow:0 0 6px rgb(0 0 0 / 30%)}#artitalk_main svg{width:1.5rem;height:1.5rem}#artitalk_main svg>path{fill:#3d3d3d}#artitalk_main .shuoshuo_text{background-image:url(https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp)!important;background-repeat:no-repeat;background-size:contain;color:#3d3d3d;box-shadow:0 0 12px rgb(0 0 0 / 30%);border:none;font-size:large;border-radius:12px}#artitalk_main .shuoshuo_inputs{color:#3d3d3d;box-shadow:0 0 12px rgb(0 0 0 / 30%);border:none;font-size:medium;border-radius:8px}#artitalk_main .at_button,#operare_artitalk .at_button{background-color:#fff;border:none;color:#3d3d3d;font-size:medium;font-weight:500;border-radius:8px;outline:0;box-shadow:0 0 8px rgb(0 0 0 / 30%)}#artitalk_main .at_button:hover,#operare_artitalk .at_button:hover{background-color:#fff}#artitalk_main .shuoshuo_emoji{border:none;padding:1rem;border-radius:12px 12px 0 0;box-shadow:0 -2px 4px rgb(0 0 0 / 30%);margin-top:2rem}#artitalk_main div#shuoshuo_emojiswitch{border:none;box-shadow:0 0 4px rgb(0 0 0 / 30%);border-radius:0 0 12px 12px}#artitalk_main .shuoshuo_emoji_part{font-size:medium;border-radius:inherit}#artitalk_main .shuoshuo_emoji_part:hover{background-color:#3d3d3daa}#artitalk_main .zuiliangdezai{background-color:#3d3d3d}#artitalk_main .shuoshuo_row{margin-top:2rem}#artitalk_main #preview{font-size:large;margin:2rem 0;padding:1rem 2rem;border-radius:12px;box-shadow:0 0 16px rgb(0 0 0 / 30%)}#artitalk_main .power a{font-size:1.5rem;font-weight:500;color:#3d3d3d;margin-left:.5rem}#artitalk_main .power>div{margin:0 .5rem;width:4rem;height:4rem;padding:8px;background-size:80%;background-repeat:no-repeat;background-position:center}#artitalk_main .power>div>svg{opacity:0}#pubComment,#pubShuo{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik01LjMyNDk3IDQzLjQ5OTZMMTMuODEgNDMuNDk5OEw0NC45MjI3IDEyLjM4NzFMMzYuNDM3NCAzLjkwMTg2TDUuMzI0NzEgMzUuMDE0Nkw1LjMyNDk3IDQzLjQ5OTZaIiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNy45NTIxIDEyLjM4NzJMMzYuNDM3NCAyMC44NzI1IiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+")}#switchUser{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0yNCA0NEMzNS4wNDU3IDQ0IDQ0IDM1LjA0NTcgNDQgMjRDNDQgMTIuOTU0MyAzNS4wNDU3IDQgMjQgNEMxMi45NTQzIDQgNCAxMi45NTQzIDQgMjRDNCAzNS4wNDU3IDEyLjk1NDMgNDQgMjQgNDRaIiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMSAzMUMzMSAzMSAyOSAzNSAyNCAzNUMxOSAzNSAxNyAzMSAxNyAzMSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMSAxOFYyMiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xNyAxOFYyMiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==")}#uploadSource{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMS42Nzc3IDIwLjI3MUM3LjI3NDc2IDIxLjMxODEgNCAyNS4yNzY2IDQgMzBDNCAzNS41MjI4IDguNDc3MTUgNDAgMTQgNDBDMTQuOTQ3NCA0MCAxNS44NjQgMzkuODY4MyAxNi43MzI1IDM5LjYyMjEiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMzYuMDU0NyAyMC4yNzFDNDAuNDU3NyAyMS4zMTgxIDQzLjczMjQgMjUuMjc2NiA0My43MzI0IDMwQzQzLjczMjQgMzUuNTIyOCAzOS4yNTUzIDQwIDMzLjczMjQgNDBDMzIuNzg1IDQwIDMxLjg2ODQgMzkuODY4MyAzMC45OTk5IDM5LjYyMjEiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMzYgMjBDMzYgMTMuMzcyNiAzMC42Mjc0IDggMjQgOEMxNy4zNzI2IDggMTIgMTMuMzcyNiAxMiAyMCIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xNy4wNjU0IDI3Ljg4MTJMMjMuOTk5OSAyMC45MjM4TDMxLjEzMTggMjguMDAwMiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNCAzOC4wMDAxVjI0LjQ2MTkiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=")}#operare_artitalk .c2{opacity:1}';
+    if (!document.getElementById('add-Artitalk_Style')) {
+        if (cssUrl === '' || typeof (cssUrl) === 'undefined') {
+            atCss = 'div#artitalk_main {    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);  }  #artitalk_main .shuoshuo_row {  width: 100%;  margin-top: 10px;  display: flex;  }  #artitalk_main .artitalk_child {  width: 100%;  }  #artitalk_main #shuoshuo_content {  padding: 10px;  /* min-height: 500px; */  }  #artitalk_main body.theme-dark .cbp_tmtimeline::before {  background: RGBA(255, 255, 255, 0.06);  }  #artitalk_main ul.cbp_tmtimeline {  padding: 0;  }  #artitalk_main .cbp_tmtimeline {  margin: 30px 0 0 0;  padding: 0;  list-style: none;  display: inline;  position: relative;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime {  display: block;  /* width: 29%; */  /* padding-right: 110px; */  max-width: 70px;  position: absolute;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span {  display: block;  text-align: right;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span:first-child {  font-size: 0.9em;  color: #bdd0db;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span:last-child {  font-size: 1.2em;  color: #9bcd9b;  }  #artitalk_main .cbp_tmtimeline>li:nth-child(odd) .cbp_tmtime span:last-child {  color: RGBA(255, 125, 73, 0.75);  }  #artitalk_main div.cbp_tmlabel>p {  margin-bottom: 0;  }  #artitalk_main div class.cdp_tmlabel>li .cbp_tmlabel {  margin-bottom: 0;  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmlabel {  margin: 0 0 45px 65px;  z-index: 1;  background: ' + color2 + ';  color: ' + color3 + ' ;  padding: 0.8em 1.2em 0.4em 1.2em;  /* font-size: 1.2em; */  font-weight: 300;  line-height: 1.4;  position: relative;  border-radius: 5px;  transition: all 0.3s ease 0s;  box-shadow: 0 1px 2px rgba(0,0,0,0.15); display: block;  }  #artitalk_main .cbp_tmlabel:hover {  /* transform: scale(1.05); */  transform: translateY(-3px);  z-index: 1;  box-shadow: 0 15px 32px rgba(0,0,0,0.15) ;  }  #artitalk_main .cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel {    background: ' + color1 + ';  }  #artitalk_main .cbp_tmtimeline>li .cbp_tmlabel:after {  right: 100%;  border: solid transparent;  z-index: -1;  content: " ";  height: 0;  width: 0;  position: absolute;  pointer-events: none;  border-right-color: ' + color2 + ';  border-width: 10px;  top: 4px;  }  #artitalk_main .cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel:after {    border-right-color: ' + color1 + ';  }  #artitalk_main p.shuoshuo_time {  margin-top: 10px;  border-top: 1px dashed #fff;  padding-top: 5px;  font-size: 12px;  }  @media screen and (max-width: 65.375em) {  #artitalk_main .cbp_tmtimeline>li .cbp_tmtime span:last-child {    font-size: 1.2em;  }  }  #artitalk_main .shuoshuo_author_img img {  border: 1px solid #ddd;  padding: 2px;  float: left;  border-radius: 64px;  transition: all 1s;  }  #artitalk_main .artitalk_avatar {  border-radius: 100% ;  -moz-border-radius: 100% ;  box-shadow: inset 0 -1px 0 3333sf;  -webkit-box-shadow: inset 0 -1px 0 3333sf;  -webkit-transition: 0.4s;  -webkit-transition: -webkit-transform 0.4s ease-out;  transition: transform 0.4s ease-out;  -moz-transition: -moz-transform 0.4s ease-out;  }  #artitalk_main .artitalk_avatar:hover {  -webkit-transform: rotateZ(360deg);  -moz-transform: rotateZ(360deg);  -o-transform: rotateZ(360deg);  -ms-transform: rotateZ(360deg);  transform: rotateZ(360deg);  }  #artitalk_main .shuoshuo_text {  width: 100%;  height: 130px;  padding: 8px 16px;  background-repeat: no-repeat;  background-position: right;  transition: all 0.35s ease-in-out 0s;  outline-style: none;  border: 1px solid #ccc;  border-radius: 6px;  resize: none;  background-color: transparent;  color: #999;  }  #artitalk_main .shuoshuo_inputs {  outline-style: none;  border: 1px solid #ccc;  padding: 8px 16px;  width: 40%;  font-size: 12px;  background-color: transparent;  color: #999;  }  #operare_artitalk .at_button,  #artitalk_main .at_button {    background-color: ' + color1 + ';  /* Green */  border: none;  margin-left: 5px;  color: ' + color3 + ';  padding: 8px 16px;  text-align: center;  text-decoration: none;  height: auto;  line-height: 20px;  display: inline-block;  font-size: 12px;  border-radius: 12px;  /* circle */  outline: none;  cursor: pointer;  }  #operare_artitalk .at_button:hover,  #artitalk_main .at_button:hover {      background-color: ' + color2 + ';  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24), 0 8px 16px 0 rgba(0,0,0,0.19);  }  #artitalk_main #article-container ul p {  margin: 0 0 1rem;  }  #artitalk_main .power {  text-align: right;  color: #999;  margin-top: 10px;  font-size: 0.75em;  padding: 0.5em 0;  }  #artitalk_main .power a {  font-size: 0.75em;  position: relative;  cursor: pointer;  color: #1abc9c;  text-decoration: none;  display: inline-block;  }  #artitalk_main .shuoshuo_row .col.col-80 {  width: 80%;  float: left;  }  #artitalk_main .shuoshuo_row .col.col-20 {  width: 20%;  float: right;  text-align: right;  }  #artitalk_main #preview {  width: 100%;  float: left;  margin: 0.5rem 0 0;  padding: 7px;  box-shadow: 0 0 1px #f0f0f0;  }  #artitalk_main #lazy {  background: #fff;  bottom: 0;  left: 0;  position: fixed;  right: 0;  top: 0;  z-index: 9999;  }  #artitalk_main .preloader {  position: absolute;  margin-left: -55px;  margin-top: -100px;  height: 110px;  width: 110px;  left: 50%;  top: 50%;  }  #artitalk_main .preloader>svg>g>path {  stroke: #9ea1a4;  stroke-width: 0.25;  }  #artitalk_main .preloader>svg>path {  stroke: #9ea1a4;  stroke-width: 0.25;  }  #artitalk_main #cloud {  position: relative;  z-index: 2;  }  #artitalk_main #cloud path {  fill: #efefef;  }  #artitalk_main #sun {  margin-left: -10px;  margin-top: 6px;  opacity: 0;  width: 60px;  height: 60px;  position: absolute;  left: 45px;  top: 15px;  z-index: 1;  animation-name: rotate;  animation-duration: 16000ms;  animation-iteration-count: infinite;  animation-timing-function: linear;  }  #artitalk_main #sun path {  stroke-width: 0.18;  fill: #9ea1a4;  }  #artitalk_main .rain {  position: absolute;  width: 70px;  height: 70px;  margin-top: -32px;  margin-left: 19px;  }  #artitalk_main .drop {  opacity: 1;  background: #9ea1a4;  display: block;  float: left;  width: 3px;  height: 10px;  margin-left: 4px;  border-radius: 0px 0px 6px 6px;  animation-name: drop;  animation-duration: 350ms;  animation-iteration-count: infinite;  }  #artitalk_main .drop:nth-child(1) {  animation-delay: -130ms;  }  #artitalk_main .drop:nth-child(2) {  animation-delay: -240ms;  }  #artitalk_main .drop:nth-child(3) {  animation-delay: -390ms;  }  #artitalk_main .drop:nth-child(4) {  animation-delay: -525ms;  }  #artitalk_main .drop:nth-child(5) {  animation-delay: -640ms;  }  #artitalk_main .drop:nth-child(6) {  animation-delay: -790ms;  }  #artitalk_main .drop:nth-child(7) {  animation-delay: -900ms;  }  #artitalk_main .drop:nth-child(8) {  animation-delay: -1050ms;  }  #artitalk_main .drop:nth-child(9) {  animation-delay: -1130ms;  }  #artitalk_main .drop:nth-child(10) {  animation-delay: -1300ms;  }  #artitalk_main .artitalk_loading_text {  font-family: Helvetica, " Helvetica Neue ", sans-serif;  letter-spacing: 1px;  text-align: center;  margin-left: -43px;  font-weight: bold;  margin-top: 20px;  font-size: 11px;  color: #a0a0a0;  width: 200px;  }  #artitalk_main .shuoshuoimg {  cursor: pointer;  transition: all 1s;  z-index: 2;  }  #artitalk_main .shuoshuoimg:hover {  transform: scale(3.5);  }  #artitalk_main .hide,  #operare_artitalk .hide {  display: none;  }  #operare_artitalk .c1 {  position: fixed;  top: 0;  bottom: 0;  left: 0;right: 0;  background: rgba(0,0,0,0.5);  z-index: 2;  }  #operare_artitalk .c2 {  background-color: #fff;  position: fixed;  width: 400px;  height: auto;  top: 50%;  left: 50%;  z-index: 3; margin-top: -150px;  margin-left: -200px;  box-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);  opacity: 0.85;  border: 0;  border-radius: 10px;  }  #operare_artitalk .shuoshuo_input_log {  outline-style: none;  margin-top: 10px;  border: 1px solid #ccc;  border-radius: 6px;  padding: 8px 16px;  font-size: 12px;  background-color: transparent;  color: #999;  }  #artitalk_main .delete_right {  cursor: pointer;  width: 12px;  height: 12px;  position: absolute;  right: 12px;  }  #artitalk_main svg {  display: inline;  }  #artitalk_main .cbp_tmlabel>p,  #artitalk_main h1,  #artitalk_main h2,  #artitalk_main h3,  #artitalk_main h4,  #artitalk_main h5,  #artitalk_main h6,  #artitalk_main em {  word-wrap: break-word;  word-break: break-all;  }  #artitalk_main .shuoshuo_emoji {  border: 1px solid #ccc;  border-radius: 6px 6px 0 0;  height: 120px;  overflow: auto;  margin-top: 10px;  border-bottom: none;  }  #artitalk_main .atemoji {  max-height: 28px;  width: 28px;  display: inline;  vertical-align: middle;  }  #artitalk_main .shuoshuo_emoji>.atemoji {  cursor: pointer;  margin: 0 0 0 10px;  display: inline;  }  #artitalk_main i>.atemoji {  cursor: pointer;  margin: 0 0 0 10px;  }  #artitalk_main .shuoshuo_emoji>a {  display: inline;  }  #artitalk_main #preview>p>.atemoji {  display: inline;  }  #artitalk_main .shuoshuo_emoji>.atemoji:hover {  transform: scale(1.5);  }  #artitalk_main div#shuoshuo_emojiswitch {  height: 40px;  width: auto;  border-radius: 0 0 6px 6px;  border-collapse: collapse;  border: 1px solid #ccc;  border-top: none;  }  #artitalk_main .shuoshuo_emoji_part {  width: 25%;  cursor: pointer;  align-content: center;  text-align: center;  line-height: 40px;  }  #artitalk_main .shuoshuo_emoji_part:hover {  background-color: #ccc;  color: #fff;  }  #artitalk_main .zuiliangdezai {  background-color: #ccc;  color: #fff;  }  #artitalk_main .pingjun {  display: flex;  }  #artitalk_main #article-container img {  margin: 0 0 0 0;  }  #artitalk_main .preview_now {  display: none;  }  #artitalk_main div#loading_txt {  font-size: 20px;  }  #artitalk_main audio {  display: block;  width: 100%;  outline: none;  opacity: 0.8;  }  #artitalk_main video {  z-index: 0;  }p.shuoshuo_time>span>a:hover {color: red;}p.shuoshuo_time>span>a {color: black;text-decoration: none;}  #artitalk_main textarea#neirong:focus {  background-position-y: 150px;  transition: all 0.35s ease-in-out 0s;  }  #artitalk_main img.atemoji {  max-height: 28px;  width: 28px;  display: inline;  vertical-align: middle;  }  #artitalk_main span.cbp_tmlabel>p {  overflow: unset;  }  #artitalk_main ul#maina>li {  list-style: none;  }  #artitalk_main div#artitalk_main {  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);  }  #artitalk_main .c2>center>p {  margin-top: 10px;  margin-bottom: 10px;  }  @-moz-keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @-webkit-keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @-o-keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @keyframes rotate {  0% {    transform: rotateZ(0deg);  }  100% {    transform: rotateZ(360deg);  }  }  @-moz-keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }  @-webkit-keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }  @-o-keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }  @keyframes drop {  50% {    height: 45px;    opacity: 0;  }  51% {    opacity: 0;  }  100% {    height: 1px;    opacity: 0;  }  }';
+            atCss += '#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel[data-user-background]{background:var(--artitalk-user-background)}#artitalk_main .cbp_tmtimeline>li .cbp_tmlabel[data-user-background]:after{border-right-color:var(--artitalk-user-background)}';
+            const atStyle = document.createElement('style');
+            atStyle.type = 'text/css';
+            atStyle.innerHTML = atCss;
+            atStyle.id = 'add-Artitalk-Style';
+            document.head.appendChild(atStyle);
+            if (blackAndWhiteTheme) {
+                const blackAndWhiteStyleElement = document.createElement('style');
+                blackAndWhiteStyleElement.innerHTML = blackAndWhiteStyle;
+                document.head.appendChild(blackAndWhiteStyleElement);
+            }
+        }
+        else {
+            if (blackAndWhiteTheme) {
+                const blackAndWhiteStyleElement = document.createElement('style');
+                blackAndWhiteStyleElement.innerHTML = blackAndWhiteStyle;
+                document.head.appendChild(blackAndWhiteStyleElement);
+            }
+            const atStyle = document.createElement('link');
+            atStyle.rel = 'stylesheet';
+            atStyle.href = cssUrl;
+            atStyle.id = 'add-Artitalk-Style';
+            document.head.appendChild(atStyle);
+        }
+    }
+    // Insert html part
+    var atHtml = "<div id='artitalk_part1'><div id=\"shuoshuo_content\"><div id=\"ccontent\"></div><div id='readButton' style=''><center><button id=\"readmore\" class=\"at_button\" style=\"margin-bottom: 15px;display: none\">" + loadMore + '</button></center></div></div><div id="shuoshuo_input" class="shuoshuo_active" style="display: none;"><div id="shuoshuo_edit"><textarea class="shuoshuo_text" oninput="preview()" id="neirong" placeholder="' + shuoPla + '"style="background-image: url(' + bgImg + ");z-index: 0\"></textarea><span id=\"drag_area\" class=\"z-index: -1;\"></span></div><div id=\"shuoshuo_parttwo\" class=\"shuoshuo_parttwo\"><div id=\"shuoshuo_emoji_Tieba\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_BiliBili\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_QQ\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_custom\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emojiswitch\" class=\"shuoshuo_emojiswitch\" style='display: none'><div id=\"switch_1\" class=\"shuoshuo_emoji_part zuiliangdezai\">Tieba</div><div id=\"switch_2\" class=\"shuoshuo_emoji_part\">BiliBili</div><div id=\"switch_3\" class=\"shuoshuo_emoji_part\">QQ</div><div id=\"switch_4\" class=\"shuoshuo_emoji_part\">Custom</div></div><div id=\"preview\" class=\"preview_now\"></div></div><div class=\"shuoshuo_submit\"><div class=\"shuoshuo_row\"><input class=\"artitalk_child shuoshuo_inputs\" style='display: none' id=\"email\" value=\"\"  placeholder=\" " + avatarUrl + '"><input class="artitalk_child shuoshuo_inputs" style="display: none" id="commentNick" value="" placeholder="' + avatarUrl + "\"><div class=\"artitalk_child\"><button class=\"at_button\" id='atSave' style=\"float: right;\">" + publish + "</button><button class=\"at_button\" id='commentSave' style=\"display:none;float: right;\">" + publish + "</button><button class=\"at_button\" id='atPreview' style=\"float: right;\">" + preview + "</button><button class=\"at_button\" id='loadEmoji' style=\"float: right;\">" + emoji + '</button></div></div></div></div></div><div class="power"><div style="font-size: 25px;display: none; cursor: pointer" id="pubComment">' + ArtitalkSvg.render('publish') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="pubShuo"title="' + postTalk + '">' + ArtitalkSvg.render('publish') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="switchUser" title="' + login + '">' + ArtitalkSvg.render('user') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="uploadSource" title="" + add + "">' + ArtitalkSvg.render('upload') + '</div><br>Powered By <a href="https://artitalk-docs.hclonely.com/" target="_blank">Artitalk</a><br>' + atVersion + "</div><input type='file' id='realUpload' onchange='atEvery.prototype.beginUpload(this.files[0])' style=\"width: 0;height: 0;display: none\"></input></div>";
+    var motionHtml = "<div id='lazy'><div class=\"preloader\" style=\"opacity: 1; \">" + ArtitalkSvg.render('loading-sun') + "" + ArtitalkSvg.render('loading-cloud') + "<div class=\"rain\"><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span></div><div class=\"artitalk_loading_text\" id=\"loading_txt\">" + loading + '</div></div></div>';
+    var atOpHtml = "<div id=\"shade\" class=\"c1\" style='display: none'></div><div id=\"shuoshuo-modal\" class=\"c2\" style='display: none' ><center><p>" + username + '：<input type="text" class="shuoshuo_input_log" id="username"/></p><p>' + password + '：<input type="password" class="shuoshuo_input_log"  id="pwd"/></p><p><input type="button" value="' + login + "\" class=\"at_button\" id='login'>&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\"" + cancel + "\"  class=\"at_button\" id = 'celLogin'></p></center><center><div id=\"logw\" style='color: red'></div></center></div><div id=\"userinfo\" class=\"c2\" style='display: none'><center><p><div id=\"status\"></div></p><p><label for=\"userBackgroundColor\">" + backgroundColor + "：</label><input type=\"color\" id=\"userBackgroundColor\" class=\"user-background-color\" aria-label=\"" + backgroundColor + "\"><input type=\"button\" class=\"at_button\" value=\"" + save + "\" id=\"saveUserBackgroundColor\"></p><p id=\"userBackgroundColorStatus\" class=\"user-color-status\" aria-live=\"polite\"></p><p><input type=\"button\" class=\"at_button\" value=\"" + confirm + "\" id=\"hideuser\">&nbsp;&nbsp;&nbsp;&nbsp;<input id=\"tui\" type=\"button\" value=\"" + signOut + "\" class=\"at_button\" style=\"display: none;\" onclick=\"Logout();\"></p></center></div><div id=\"shanchu\" class=\"c2\" style='display: none'><center><p>" + deleteSuccess + '</p><p><input type="button" class="at_button" value="' + confirm + "\" id=\"deleteSus\"></p><center></div><div id=\"shanchur\" class=\"c2\" style='display: none'><center><p>" + confirmDelete + "</p><p><div id=\"delete1\"></div></p><center></div><div id='clickForPreview'></div>";
+    var atOp = document.createElement('div');
+    atOp.id = 'operare_artitalk';
+    document.body.append(atOp);
+    requiredElement('operare_artitalk').innerHTML = atOpHtml;
+    motionHtml = motion === 0 ? '' : motionHtml;
+    atHtml = motionHtml + atHtml;
+    requiredElement('artitalk_main').innerHTML = atHtml;
+    // 开始加载说说
+    root.seeContent(0, root.config);
+    const rmButton = requiredElement('readmore'); // readmore
+    const pubButton = requiredElement('pubShuo'); // publish shuo
+    const switchLogin = requiredElement('switchUser'); // login or exit
+    const cancelLogin = requiredElement('celLogin'); // cancel Login
+    const loginButton = requiredElement('login'); // Login
+    const hideUser = requiredElement('hideuser');
+    const userBackgroundColor = requiredElement('userBackgroundColor');
+    const saveUserBackgroundColor = requiredElement('saveUserBackgroundColor');
+    const userBackgroundColorStatus = requiredElement('userBackgroundColorStatus');
+    const loadEmoji = requiredElement('loadEmoji'); // Loading emoji
+    const switchTb = requiredElement('switch_1'); // Tieba emoji
+    const switchBB = requiredElement('switch_2'); // BiliBili emoji
+    const switchQQ = requiredElement('switch_3'); // QQ emoji
+    const switchCustom = requiredElement('switch_4'); // custom emoji
+    const beginPreview = requiredElement('atPreview'); // preview
+    const clickPre = requiredElement('clickForPreview'); // preview
+    const saveContent = requiredElement('atSave'); // savecontent
+    const deleteSus = requiredElement('deleteSus'); // Delete successful
+    const uploadSource = requiredElement('uploadSource'); // Upload image or video
+    const realUpload = requiredElement('realUpload');
+    realUpload.onchange = function () {
+        const file = realUpload.files && realUpload.files[0];
+        if (file)
+            root.beginUpload(file);
+    };
+    let pNum = 0;
+    rmButton.onclick = function () {
+        pNum = pNum + 1;
+        root.seeContent(pNum, root.config);
+    };
+    pubButton.onclick = function () {
+        const currentUser = ArtitalkData.currentUser();
+        if (currentUser) {
+            if (requiredElement('shuoshuo_input').style.display === '') {
+                fadeOut('shuoshuo_input');
+            }
+            else {
+                fadeIn('shuoshuo_input');
+            }
+        }
+        else {
+            requiredElement('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
+            Show();
+        }
+    };
+    switchLogin.onclick = function () {
+        requiredElement('logw').innerHTML = '';
+        const currentUser = ArtitalkData.currentUser();
+        fadeIn('shade');
+        if (currentUser) {
+            fadeIn('userinfo');
+            requiredElement('status').innerHTML = loggedIn + ':\t' + currentUser.attributes.username;
+            userBackgroundColor.value = currentUser.attributes.backgroundColor || getUserBackgroundColor(currentUser.id, color1, color2);
+            userBackgroundColorStatus.innerHTML = '';
+            fadeIn('tui');
+        }
+        else {
+            fadeIn('tui');
+            fadeIn('shuoshuo-modal');
+            Show();
+        }
+    };
+    cancelLogin.onclick = function () {
+        Hide();
+    };
+    loginButton.onclick = function () {
+        const passWord = requiredElement('pwd').value;
+        requiredElement('logw').style.color = 'black';
+        requiredElement('logw').innerHTML = 'loading...';
+        if (passWord === '') {
+            requiredElement('logw').style.color = 'red';
+            requiredElement('logw').innerHTML = passwordRequired;
+            return;
+        }
+        const userName = requiredElement('username').value;
+        if (userName === '') {
+            requiredElement('logw').style.color = 'red';
+            requiredElement('logw').innerHTML = usernameRequired;
+            return;
+        }
+        ArtitalkData.login(userName, passWord).then((user) => {
+            requiredElement('ccontent').innerHTML = '';
+            requiredElement('neirong').value = '';
+            fadeIn('lazy');
+            root.seeContent(0, root.config);
+            Hide();
+            onLogin(userName);
+        }, (error) => {
+            let errLogin = error.message;
+            requiredElement('logw').style.color = 'red';
+            // console.log(errLogin);
+            if (errLogin.indexOf('mismatch') != -1) {
+                errLogin = credentialsMismatch;
+            }
+            else if (errLogin.indexOf('terminated') != -1) {
+                errLogin = loginRequestError;
+            }
+            else if (errLogin.indexOf('Could not find user.') != -1) {
+                errLogin = userNotFound;
+            }
+            else if (errLogin.indexOf('Please try later or reset your password.') != -1) {
+                errLogin = tooManyLoginAttempts;
+            }
+            requiredElement('logw').innerHTML = errLogin;
+        });
+    };
+    hideUser.onclick = function () {
+        fadeOut('shade');
+        fadeOut('userinfo');
+    };
+    saveUserBackgroundColor.onclick = function () {
+        const selectedColor = userBackgroundColor.value;
+        saveUserBackgroundColor.disabled = true;
+        ArtitalkData.updateCurrentUser({ backgroundColor: selectedColor }).then(function () {
+            userBackgroundColorStatus.innerHTML = colorSaved;
+            requiredElement('ccontent').innerHTML = '';
+            root.seeContent(0, root.config);
+        }).catch(function (error) {
+            userBackgroundColorStatus.innerHTML = error.message;
+        }).then(function () {
+            saveUserBackgroundColor.disabled = false;
+        });
+    };
+    loadEmoji.onclick = function () {
+        requiredElement('switch_1').classList.add('zuiliangdezai');
+        requiredElement('switch_2').classList.remove('zuiliangdezai');
+        requiredElement('switch_3').classList.remove('zuiliangdezai');
+        requiredElement('switch_4').classList.remove('zuiliangdezai');
+        if (requiredElement('shuoshuo_emojiswitch').style.display === 'none') {
+            fadeIn('shuoshuo_emoji_Tieba');
+            fadeIn('shuoshuo_emojiswitch');
+            requiredElement('shuoshuo_emoji_BiliBili').innerHTML = atEmojiB;
+            requiredElement('shuoshuo_emoji_Tieba').innerHTML = atEmojiT;
+            requiredElement('shuoshuo_emoji_QQ').innerHTML = atEmojiQ;
+            requiredElement('shuoshuo_emoji_custom').innerHTML = atEmojiDefault;
+            requiredElement('shuoshuo_emojiswitch').classList.add('pingjun');
+        }
+        else {
+            fadeOut('shuoshuo_emoji_Tieba');
+            fadeOut('shuoshuo_emoji_BiliBili');
+            fadeOut('shuoshuo_emoji_custom');
+            fadeOut('shuoshuo_emoji_QQ');
+            fadeOut('shuoshuo_emojiswitch');
+            requiredElement('shuoshuo_emojiswitch').classList.remove('pingjun');
+        }
+    };
+    switchTb.onclick = function () {
+        switchTb.classList.add('zuiliangdezai');
+        switchQQ.classList.remove('zuiliangdezai');
+        switchBB.classList.remove('zuiliangdezai');
+        switchCustom.classList.remove('zuiliangdezai');
+        fadeIn('shuoshuo_emoji_Tieba');
+        fadeOut('shuoshuo_emoji_QQ');
+        fadeOut('shuoshuo_emoji_BiliBili');
+        fadeOut('shuoshuo_emoji_custom');
+    };
+    switchQQ.onclick = function () {
+        switchQQ.classList.add('zuiliangdezai');
+        switchTb.classList.remove('zuiliangdezai');
+        switchBB.classList.remove('zuiliangdezai');
+        switchCustom.classList.remove('zuiliangdezai');
+        fadeIn('shuoshuo_emoji_QQ');
+        fadeOut('shuoshuo_emoji_Tieba');
+        fadeOut('shuoshuo_emoji_BiliBili');
+        fadeOut('shuoshuo_emoji_custom');
+    };
+    switchBB.onclick = function () {
+        switchBB.classList.add('zuiliangdezai');
+        switchQQ.classList.remove('zuiliangdezai');
+        switchTb.classList.remove('zuiliangdezai');
+        switchCustom.classList.remove('zuiliangdezai');
+        fadeIn('shuoshuo_emoji_BiliBili');
+        fadeOut('shuoshuo_emoji_QQ');
+        fadeOut('shuoshuo_emoji_Tieba');
+        fadeOut('shuoshuo_emoji_custom');
+    };
+    switchCustom.onclick = function () {
+        switchCustom.classList.add('zuiliangdezai');
+        switchQQ.classList.remove('zuiliangdezai');
+        switchBB.classList.remove('zuiliangdezai');
+        switchTb.classList.remove('zuiliangdezai');
+        fadeIn('shuoshuo_emoji_custom');
+        fadeOut('shuoshuo_emoji_QQ');
+        fadeOut('shuoshuo_emoji_BiliBili');
+        fadeOut('shuoshuo_emoji_Tieba');
+    };
+    beginPreview.onclick = function () {
+        clickPre.click();
+        const preCon = requiredElement('preview');
+        if (preCon.className.indexOf('preview_now') !== -1) {
+            preCon.classList.remove('preview_now');
+        }
+        else {
+            preCon.classList.add('preview_now');
+        }
+    };
+    saveContent.onclick = function save() {
+        const currentUser = ArtitalkData.currentUser();
+        if (!currentUser) {
+            pubButton.click();
+            return;
+        }
+        let shuoshuoContent = requiredElement('neirong').value;
+        if (shuoshuoContent === '')
+            throw '说说内容不能为空';
+        const atObject = ArtitalkData.createTalk();
+        const shuoshuoContentMd = shuoshuoContent;
+        atObject.set('atContentMd', shuoshuoContentMd);
+        shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji) || '';
+        const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
+        const atAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
+        // alert(deFaultavatar);
+        const userClient = new Client();
+        // console.log("Engine ：" + client.engine.name + " " + client.engine.version);
+        // console.log("Browser：" + client.browser.name + " " + client.browser.version);
+        // console.log("System ：" + client.system.name + " " + client.system.version);
+        const userOs = userClient.system.name;
+        atObject.set('atContentHtml', shuoshuoContentHtml);
+        atObject.set('userOs', userOs);
+        atObject.set('avatar', atAvatar);
+        atObject.set('authorId', currentUser.id);
+        atObject.set('authorName', currentUser.attributes.username);
+        atObject.set('authorColor', currentUser.attributes.backgroundColor || '');
+        fadeIn('lazy');
+        atObject.save().then(function (res) {
+            requiredElement('ccontent').innerHTML = '';
+            requiredElement('neirong').value = '';
+            fadeOut('preview');
+            root.seeContent(0, root.config);
+            fadeOut('shuoshuo_input');
+            onShuoPublished(currentUser.attributes.username || '', shuoshuoContent);
+        });
+    };
+    clickPre.onclick = function () {
+        let unPre = requiredElement('neirong').value;
+        unPre = ArtitalkI18n.translateEmojis(unPre, atEmoji) || '';
+        const finishPre = ArtitalkSanitizer.markdownToHtml(unPre);
+        requiredElement('preview').innerHTML = finishPre;
+    };
+    deleteSus.onclick = function () {
+        fadeOut('shanchu');
+        fadeOut('shade');
+        fadeIn('lazy');
+        requiredElement('ccontent').innerHTML = '';
+        root.seeContent(0, root.config);
+    };
+    uploadSource.onclick = function () {
+        function Show() {
+            fadeIn('shade');
+            fadeIn('shuoshuo-modal');
+        }
+        const currentUser = ArtitalkData.currentUser();
+        if (currentUser) {
+            // console.log(currentUser);
+        }
+        else {
+            requiredElement('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
+            Show();
+            return;
+        }
+        requiredElement('realUpload').click();
+    };
+    // function beginUpload(file){
+    //     console.log(file.files);
+    // }
+    atEvery.prototype.delete = function (id) {
+        function fadeOut(id) {
+            ArtitalkDom.hide(id);
+        }
+        function fadeIn(id) {
+            ArtitalkDom.show(id);
+        }
+        const currentUser = ArtitalkData.currentUser();
+        if (currentUser) {
+            fadeIn('shade');
+            fadeIn('shanchur');
+            requiredElement('delete1').innerHTML = '<input type="button" class="at_button" value="' + confirm + '" id="Delete"><input type="button" class="at_button" value="' + cancel + '" id="cancelDelete">';
+        }
+        else {
+            const pubButton = requiredElement('pubShuo');
+            pubButton.click();
+            return;
+        }
+        const cancelDelete = requiredElement('cancelDelete');
+        const rlyDelete = requiredElement('Delete');
+        cancelDelete.onclick = function () {
+            fadeOut('shade');
+            fadeOut('shanchur');
+        };
+        rlyDelete.onclick = function () {
+            // console.log(id);
+            cancelDelete.click();
+            fadeIn('lazy');
+            const deletes = ArtitalkData.talkById(id);
+            deletes.destroy().then(function (success) {
+                fadeIn('shade');
+                fadeIn('shanchu');
+            }, function (error) {
+                console.log(error.rawMessage);
+            });
+        };
+    };
+};
+;
+"use strict";
+atEvery.prototype.beginUpload = function (file) {
+    const imageUpload = (this.config && this.config.imageUpload) || {};
+    const uploadApi = imageUpload.api || 'https://s.ee/api/v1/file/upload';
+    const tokenHeader = imageUpload.tokenHeader || 'Authorization';
+    function Show() {
+        fadeIn('shade');
+        fadeIn('shuoshuo-modal');
+    }
+    const currentUser = ArtitalkData.currentUser();
+    if (currentUser) {
+        // console.log(currentUser);
+    }
+    else {
+        // document.getElementById('logw').innerHTML= "<center><pre><code>" + text15 + "</code></pre></center>";
+        Show();
+        return;
+    }
+    if (!/\.(jpg|gif|jpeg|ico|png|svg|mp4|mov)$/.test(file.name)) {
+        alert('不支持的文件类型，支持的文件格式有jpg|gif|jpeg|ico|png|svg|mp4|mov');
+        return;
+    }
+    let fileType = '';
+    const sourceSize = Number((file.size / 1024).toFixed(0));
+    const sourceSizeLimit = 1024 * 50;
+    if (sourceSize > sourceSizeLimit) {
+        alert('资源上传最大限制为50M');
+        return;
+    }
+    if (/\.(jpg|gif|jpeg|ico|png|svg)$/.test(file.name)) {
+        fileType = 'image';
+    }
+    else if (/\.(mp4|mov)$/.test(file.name)) {
+        fileType = 'video';
+    }
+    function fadeIn(id) {
+        ArtitalkDom.show(id);
+    }
+    function fadeOut(id) {
+        ArtitalkDom.hide(id);
+    }
+    fadeIn('lazy');
+    const data = new FormData();
+    data.append('file', file);
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+    xhr.addEventListener('readystatechange', function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const sourceUrl = eval('(' + this.responseText + ')');
+            // let Md = "![]("+imgUrl.data.url+")";
+            let sourceMd = '';
+            // insertEmoji(imgMd);
+            if (fileType === 'video') {
+                sourceMd = '<video controls width="100%" height="auto"><source src="' + sourceUrl.data.url + '"></video>';
+            }
+            else if (fileType === 'image') {
+                sourceMd = '![](' + sourceUrl.data.url + ')';
+            }
+            insertEmoji(sourceMd);
+            requiredElement('pubShuo').click();
+            fadeOut('lazy');
+        }
+        else if (this.readyState === 4 && this.status === 500) {
+            fadeOut('lazy');
+        }
+    });
+    xhr.open('POST', uploadApi);
+    const imgToken = currentUser.attributes.imgToken;
+    if (imgToken !== undefined) {
+        xhr.setRequestHeader(tokenHeader, imgToken);
+    }
+    xhr.send(data);
+};
+;
+"use strict";
+function getUserBackgroundColor(userKey, color1, color2) {
+    const colors = [
+        color1,
+        color2,
+        '#5b4b8a',
+        '#266d7f',
+        '#8a4f62',
+        '#47715a',
+        '#7b5a2e',
+        '#3e6388',
+        '#6b5a89',
+        '#7c4f36'
+    ];
+    const key = String(userKey || 'artitalk');
+    let hash = 0;
+    for (let index = 0; index < key.length; index++) {
+        hash = ((hash << 5) - hash) + key.charCodeAt(index);
+        hash |= 0;
+    }
+    return colors[(hash >>> 0) % colors.length];
+}
+function getUserBackgroundAttributes(userKey, color1, color2, userColor) {
+    const backgroundColor = userColor || getUserBackgroundColor(userKey, color1, color2);
+    return ' data-user-background style="--artitalk-user-background:' + backgroundColor + '"';
+}
+function isCurrentUserAuthor(currentUser, authorId, avatar) {
+    if (!currentUser)
+        return false;
+    const currentUserId = currentUser.id || currentUser.attributes.objectId;
+    const currentUserAvatar = currentUser.attributes.img || 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png';
+    return authorId === currentUserId || (!authorId && avatar === currentUserAvatar);
+}
+atEvery.prototype.seeContent = function (pageNum, option) {
+    const root = this;
+    let mid = '';
+    let { lang, pageSize, motion, atEmoji, color1, color2, color3, atComment, onCommentsPublished } = root.config;
+    lang = ArtitalkI18n.normalizeLanguage(lang);
+    const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, pin, unpin, pinned } = ArtitalkI18n.getMessages(lang);
+    color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
+    color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
+    color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
+    pageSize = typeof (pageSize) === 'undefined' ? '5' : pageSize;
+    onCommentsPublished = typeof (onCommentsPublished) === 'function' ? onCommentsPublished : function () { };
+    function fadeIn(id) {
+        ArtitalkDom.show(id);
+    }
+    function fadeOut(id) {
+        ArtitalkDom.hide(id);
+    }
+    // console.log(option);
+    fadeIn('lazy');
+    let shuoNum = 0;
+    const pinnedTalkIds = [];
+    ArtitalkData.queryTalks(Number(pageSize), pageNum).then(function (shuoContent) {
+        mid = '';
+        shuoContent.forEach(function (atContent) {
+            shuoNum = shuoNum + 1;
+            // OS icon judge
+            const atOs = atContent.attributes.userOs;
+            let osSvg = '';
+            switch (atOs) {
+                case 'windows':
+                    osSvg = '' + ArtitalkSvg.render('os-windows', { color: color3 }) + '' + ' ';
+                case 'Android':
+                    osSvg = '' + ArtitalkSvg.render('os-android', { color: color3 }) + '' + ' ';
+                case 'Linux':
+                    osSvg = '' + ArtitalkSvg.render('os-linux', { color: color3 }) + '' + ' ';
+                case 'iOS':
+                    osSvg = '' + ArtitalkSvg.render('os-apple', { color: color3 }) + '' + ' ';
+                case 'Max':
+                    osSvg = '' + ArtitalkSvg.render('os-apple', { color: color3 }) + '' + ' ';
+                default:
+                    osSvg = '' + ArtitalkSvg.render('os-unknown', { color: color3 }) + '' + ' ';
+            }
+            // Avatar init
+            let shuoAvatar = atContent.attributes.avatar;
+            shuoAvatar = typeof (shuoAvatar) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : shuoAvatar;
+            const currentUser = ArtitalkData.currentUser();
+            const hideIcon = currentUser ? '' : 'style="display: none"';
+            // Time process
+            const timeForm = atContent.createdAt;
+            const nowDate = new Date(timeForm);
+            function timeFormat(time) {
+                return time < 10 ? '0' + time : time;
+            }
+            const resDate = nowDate.getFullYear() + '-' + timeFormat(nowDate.getMonth() + 1) + '-' + timeFormat(nowDate.getDate());
+            const resTime = timeFormat(nowDate.getHours()) + ':' + timeFormat(nowDate.getMinutes()) + ':' + timeFormat(nowDate.getSeconds());
+            const atHour = nowDate.getHours();
+            let timeSvg = '';
+            switch (timeSvg) {
+                case atHour >= 0 && atHour < 5:
+                    timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
+                case atHour >= 5 && atHour < 6:
+                    timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
+                case atHour >= 6 && atHour < 8:
+                    timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
+                case atHour >= 8 && atHour < 11:
+                    timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
+                case atHour >= 11 && atHour < 13:
+                    timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
+                case atHour >= 13 && atHour < 17:
+                    timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
+                case atHour >= 17 && atHour < 18:
+                    timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
+                case atHour >= 18 && atHour < 21:
+                    timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
+            }
+            // Content process
+            let atCommentTrue = '';
+            if (atComment === 0) {
+                atCommentTrue = 'display: none';
+            }
+            const id = atContent.id;
+            if (atContent.attributes.isPinned === true)
+                pinnedTalkIds.push(id);
+            const shuoshuoPerContent = ArtitalkSanitizer.sanitizeHtml(atContent.attributes.atContentHtml);
+            const commentSvg = '' + ArtitalkSvg.render('comment', { color: color3 }) + '';
+            const authorKey = atContent.attributes.authorId || atContent.attributes.authorName || shuoAvatar;
+            const authorColor = atContent.attributes.authorColor || (currentUser && isCurrentUserAuthor(currentUser, atContent.attributes.authorId, shuoAvatar) ? currentUser.attributes.backgroundColor : '');
+            const userBackgroundAttributes = getUserBackgroundAttributes(authorKey, color1, color2, authorColor);
+            const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "'" + userBackgroundAttributes + "><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
+            mid += contengMid;
+        });
+        let originString = requiredElement('ccontent').innerHTML;
+        originString = originString === '' ? '<ul class="cbp_tmtimeline" id="maina">' : originString;
+        originString = originString.replace(/(.*)<\/ul>/, '$1 ');
+        originString += mid + '</ul>';
+        // console.log(originString);
+        if (shuoNum === 0 && pageNum === 0) {
+            originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
+        }
+        requiredElement('ccontent').innerHTML = originString;
+        pinnedTalkIds.forEach(function (id) {
+            const talk = document.getElementById('atId' + id);
+            const controls = document.getElementById('operate' + id);
+            if (talk)
+                talk.insertAdjacentHTML('afterbegin', '<span class="at-pinned-badge">' + pinned + '</span>');
+            if (controls)
+                controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + unpin + '" onclick="atEvery.prototype.togglePin(\'' + id + '\', true)">' + unpin + '</button>');
+        });
+        if (ArtitalkData.currentUser()) {
+            shuoContent.forEach(function (talk) {
+                if (talk.attributes.isPinned === true)
+                    return;
+                const controls = document.getElementById('operate' + talk.id);
+                if (controls)
+                    controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + pin + '" onclick="atEvery.prototype.togglePin(\'' + talk.id + '\', false)">' + pin + '</button>');
+            });
+        }
+        if (atComment !== 0) {
+            shuoContent.forEach(function (count) {
+                const id = count.id;
+                ArtitalkData.queryComments(id).then(res => {
+                    const countId = 'coValue' + id;
+                    requiredElement(countId).innerHTML = String(res.length);
+                });
+            });
+        }
+        fadeOut('lazy');
+        if (shuoNum !== 0) {
+            fadeIn('readmore');
+        }
+        else if (pageNum !== 0) {
+            requiredElement('readButton').innerHTML = '<center>已经到底了哦~</center>';
+            requiredElement('readButton').style.opacity = '0.5';
+        }
+    });
+    atEvery.prototype.atEdit = function (id) {
+        function fadeIn(id) {
+            ArtitalkDom.show(id);
+        }
+        function fadeOut(id) {
+            ArtitalkDom.hide(id);
+        }
+        const currentuser = ArtitalkData.currentUser();
+        if (!currentuser)
+            return;
+        fadeIn('lazy');
+        ArtitalkData.queryTalkById(id).then(res => {
+            res.forEach(function (atom) {
+                const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + editInstructions + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
+                requiredElement('ccontent').innerHTML = originString;
+                const changeId = requiredElement('atSave');
+                changeId.id = 'atEditsaveButton';
+                requiredElement('atEditsaveButton').innerHTML = save;
+                fadeOut('readmore');
+                changeId.setAttribute('onclick', 'atEvery.prototype.atEditsave("' + id + '")');
+                requiredElement('pubShuo').click();
+                requiredElement('neirong').value = atom.attributes.atContentMd || '';
+                fadeOut('lazy');
+            });
+        });
+    };
+    atEvery.prototype.togglePin = function (id, isPinned) {
+        if (!ArtitalkData.currentUser())
+            return;
+        fadeIn('lazy');
+        const talk = ArtitalkData.talkById(id);
+        talk.set('isPinned', !isPinned);
+        talk.save().then(function () {
+            location.reload();
+        }).catch(function () {
+            fadeOut('lazy');
+        });
+    };
+    atEvery.prototype.atEditsave = function (id) {
+        fadeIn('lazy');
+        const beginPreview = requiredElement('preview');
+        beginPreview.onclick = function () {
+            const preCon = requiredElement('preview');
+            if (preCon.className.indexOf('preview_now') !== -1) {
+                preCon.classList.remove('preview_now');
+            }
+            else {
+                preCon.classList.add('preview_now');
+            }
+        };
+        let shuoshuoContent = requiredElement('neirong').value;
+        const shuoshuoContentMd = shuoshuoContent;
+        const atEditOver = ArtitalkData.talkById(id);
+        atEditOver.set('atContentMd', shuoshuoContentMd);
+        shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji) || '';
+        if (shuoshuoContent === '') {
+            location.reload();
+            return;
+        }
+        const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
+        atEditOver.set('atContentHtml', shuoshuoContentHtml);
+        atEditOver.save().then(function () {
+            location.reload();
+        });
+    };
+    atEvery.prototype.saveComment = function (id, option) {
+        requiredElement('shuoshuo_input').style.display = 'none';
+        function fadeIn(id) {
+            ArtitalkDom.show(id);
+        }
+        function fadeOut(id) {
+            ArtitalkDom.hide(id);
+        }
+        fadeIn('lazy');
+        let comContent = requiredElement('neirong').value;
+        const atComment = ArtitalkData.commentById();
+        comContent = ArtitalkI18n.translateEmojis(comContent, atEmoji) || '';
+        const atCommentHtml = ArtitalkSanitizer.markdownToHtml(comContent);
+        const currentUser = ArtitalkData.currentUser();
+        const comEmail = requiredElement('email').value;
+        let comNick = requiredElement('commentNick').value;
+        const comEmailMd5 = md5(comEmail);
+        if (!currentUser) {
+            if (comNick === '' || comEmail === '') {
+                const contentInput = requiredElement('neirong');
+                contentInput.value = '昵称，邮箱均为必填项\n' + contentInput.value;
+                fadeOut('lazy');
+                return;
+            }
+        }
+        let atGravatar = 'https://cdn.staticdn.net/avatar/' + comEmailMd5 + '?d=mp&s=80';
+        const nowDate = new Date();
+        function timeFormat(time) {
+            return time < 10 ? '0' + time : time;
+        }
         const resDate = nowDate.getFullYear() + '-' + timeFormat(nowDate.getMonth() + 1) + '-' + timeFormat(nowDate.getDate());
         const resTime = timeFormat(nowDate.getHours()) + ':' + timeFormat(nowDate.getMinutes()) + ':' + timeFormat(nowDate.getSeconds());
         const atHour = nowDate.getHours();
         let timeSvg = '';
         switch (timeSvg) {
-          case atHour >= 0 && atHour < 5:
-            timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
-          case atHour >= 5 && atHour < 6:
-            timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
-          case atHour >= 6 && atHour < 8:
-            timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
-          case atHour >= 8 && atHour < 11:
-            timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
-          case atHour >= 11 && atHour < 13:
-            timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
-          case atHour >= 13 && atHour < 17:
-            timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
-          case atHour >= 17 && atHour < 18:
-            timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
-          case atHour >= 18 && atHour < 21:
-            timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
+            case atHour >= 0 && atHour < 5:
+                timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
+            case atHour >= 5 && atHour < 6:
+                timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
+            case atHour >= 6 && atHour < 8:
+                timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
+            case atHour >= 8 && atHour < 11:
+                timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
+            case atHour >= 11 && atHour < 13:
+                timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
+            case atHour >= 13 && atHour < 17:
+                timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
+            case atHour >= 17 && atHour < 18:
+                timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
+            case atHour >= 18 && atHour < 21:
+                timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
         }
-        const comContent = ArtitalkSanitizer.sanitizeHtml(comment.attributes.commentContent);
-        const commentNick = comment.attributes.nick;
-        const comEmail = comment.attributes.email;
-        const adminAvatar = comment.attributes.adminAvatar;
-        let atGravatar = 'https://cdn.staticdn.net/avatar/' + comEmail + '?d=mp&s=80';
-        if (typeof (adminAvatar) !== 'undefined') {
-          atGravatar = adminAvatar;
+        if (currentUser) {
+            const adminAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
+            atComment.set('adminAvatar', adminAvatar);
+            atGravatar = adminAvatar;
+            comNick = currentUser.attributes.username || '';
         }
-        const comAvatar = atGravatar;
-        const commenterKey = comment.attributes.authorId || comEmail || commentNick || comAvatar;
-        const commenterColor = comment.attributes.authorColor || (isCurrentUserAuthor(currentUser, comment.attributes.authorId, comAvatar) ? currentUser.attributes.backgroundColor : '');
-        const userBackgroundAttributes = getUserBackgroundAttributes(commenterKey, color1, color2, commenterColor);
-
-        const replySvg = "<span style=\"float: right\" onclick=\"atEvery.prototype.atReply()\">" + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
-
-        const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + comAvatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + comContent + '</div><p class="shuoshuo_time">' + '<span>' + commentNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
-        mid += comList;
-      });
-      let originString = document.getElementById('ccontent').innerHTML;
-      originString = originString.replace(/(.*)<\/ul>/, '$1 ');
-      originString += mid + '</ul>';
-      document.getElementById('ccontent').innerHTML = originString;
-    }).then(function () {
-      fadeIn('email');
-      if (currentUser) {
-        fadeOut('commentNick');
-        fadeOut('email');
-      }
-      fadeIn('email');
-      fadeOut('lazy');
-    });
-    const saveComment = document.getElementById('commentSave');
-    saveComment.onclick = function () {
-      atEvery.prototype.saveComment(id, option);
+        atComment.set('atId', id);
+        atComment.set('commentContent', atCommentHtml);
+        atComment.set('authorId', currentUser ? currentUser.id : comEmailMd5 || comNick);
+        atComment.set('authorColor', currentUser ? currentUser.attributes.backgroundColor : '');
+        if (!currentUser) {
+            atComment.set('email', comEmailMd5);
+        }
+        atComment.set('nick', comNick);
+        atComment.save().then(function (res) {
+            const replySvg = '<span style="float: right">' + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
+            const originComment = requiredElement('ccontent').innerHTML;
+            const userBackgroundAttributes = getUserBackgroundAttributes(currentUser ? currentUser.id : comEmailMd5 || comNick, color1, color2, currentUser ? currentUser.attributes.backgroundColor : '');
+            const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
+            const positon = originComment.indexOf('</li>') + 5;
+            const nowComment = originComment.slice(0, positon) + comList + originComment.slice(positon);
+            requiredElement('ccontent').innerHTML = '';
+            requiredElement('neirong').value = '';
+            requiredElement('email').value = '';
+            requiredElement('commentNick').value = '';
+            requiredElement('ccontent').innerHTML = nowComment;
+            fadeOut('preview');
+            fadeOut('lazy');
+            onCommentsPublished(comNick, comContent);
+        });
     };
-  };
+    atEvery.prototype.atReply = function () {
+        requiredElement('pubComment').click();
+    };
+    atEvery.prototype.commentInit = function (id, option) {
+        function fadeIn(id) {
+            ArtitalkDom.show(id);
+        }
+        function fadeOut(id) {
+            ArtitalkDom.hide(id);
+        }
+        requiredElement('neirong').placeholder = '';
+        const initButton = 'atCoInit' + id;
+        const countId = 'coValue' + id;
+        fadeOut(countId);
+        requiredElement(initButton).setAttribute('onclick', 'location.reload()');
+        fadeIn('commentNick');
+        fadeOut('atSave');
+        fadeIn('commentSave');
+        fadeIn('lazy');
+        fadeIn('pubComment');
+        fadeOut('readmore');
+        fadeOut('pubShuo');
+        fadeOut('switchUser');
+        requiredElement('pubComment').title = comments;
+        requiredElement('pubComment').style.display = 'inline';
+        const nowButton = requiredElement('pubComment');
+        nowButton.onclick = function () {
+            if (requiredElement('shuoshuo_input').style.display === '') {
+                fadeOut('shuoshuo_input');
+            }
+            else {
+                fadeIn('shuoshuo_input');
+            }
+        };
+        requiredElement('email').placeholder = email;
+        requiredElement('commentNick').placeholder = nickname;
+        const originalTalk = requiredElement('atId' + id);
+        const originShuo = originalTalk.innerHTML;
+        const userBackgroundAttributes = originalTalk.hasAttribute('data-user-background')
+            ? ' data-user-background style="' + originalTalk.style.cssText + '"'
+            : '';
+        const originAvatar = requiredElement('atAvatar' + id).src;
+        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="' + originAvatar + '" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>' + originShuo + '</p></span></li></ul>';
+        requiredElement('ccontent').innerHTML = originString;
+        let mid = '';
+        const currentUser = ArtitalkData.currentUser();
+        ArtitalkData.queryComments(id).then(res => {
+            res.forEach(function (comment) {
+                const timeForm = comment.createdAt;
+                function timeFormat(time) {
+                    return time < 10 ? '0' + time : time;
+                }
+                const nowDate = new Date(timeForm);
+                const resDate = nowDate.getFullYear() + '-' + timeFormat(nowDate.getMonth() + 1) + '-' + timeFormat(nowDate.getDate());
+                const resTime = timeFormat(nowDate.getHours()) + ':' + timeFormat(nowDate.getMinutes()) + ':' + timeFormat(nowDate.getSeconds());
+                const atHour = nowDate.getHours();
+                let timeSvg = '';
+                switch (timeSvg) {
+                    case atHour >= 0 && atHour < 5:
+                        timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
+                    case atHour >= 5 && atHour < 6:
+                        timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
+                    case atHour >= 6 && atHour < 8:
+                        timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
+                    case atHour >= 8 && atHour < 11:
+                        timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
+                    case atHour >= 11 && atHour < 13:
+                        timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
+                    case atHour >= 13 && atHour < 17:
+                        timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
+                    case atHour >= 17 && atHour < 18:
+                        timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
+                    case atHour >= 18 && atHour < 21:
+                        timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
+                }
+                const comContent = ArtitalkSanitizer.sanitizeHtml(comment.attributes.commentContent);
+                const commentNick = comment.attributes.nick;
+                const comEmail = comment.attributes.email;
+                const adminAvatar = comment.attributes.adminAvatar;
+                let atGravatar = 'https://cdn.staticdn.net/avatar/' + comEmail + '?d=mp&s=80';
+                if (typeof (adminAvatar) !== 'undefined') {
+                    atGravatar = adminAvatar;
+                }
+                const comAvatar = atGravatar;
+                const commenterKey = comment.attributes.authorId || comEmail || commentNick || comAvatar;
+                const commenterColor = comment.attributes.authorColor || (currentUser && isCurrentUserAuthor(currentUser, comment.attributes.authorId, comAvatar) ? currentUser.attributes.backgroundColor : '');
+                const userBackgroundAttributes = getUserBackgroundAttributes(commenterKey, color1, color2, commenterColor);
+                const replySvg = "<span style=\"float: right\" onclick=\"atEvery.prototype.atReply()\">" + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
+                const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + comAvatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + comContent + '</div><p class="shuoshuo_time">' + '<span>' + commentNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
+                mid += comList;
+            });
+            let originString = requiredElement('ccontent').innerHTML;
+            originString = originString.replace(/(.*)<\/ul>/, '$1 ');
+            originString += mid + '</ul>';
+            requiredElement('ccontent').innerHTML = originString;
+        }).then(function () {
+            fadeIn('email');
+            if (currentUser) {
+                fadeOut('commentNick');
+                fadeOut('email');
+            }
+            fadeIn('email');
+            fadeOut('lazy');
+        });
+        const saveComment = requiredElement('commentSave');
+        saveComment.onclick = function () {
+            atEvery.prototype.saveComment(id, option);
+        };
+    };
 };

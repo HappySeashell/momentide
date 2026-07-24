@@ -25,15 +25,25 @@ interface AVNamespace {
   Query: new (className: string) => AVQuery;
 }
 
-interface ClientPart {
+interface BrowserInfo {
+  name: string | null;
+  version: string | number | null;
+}
+
+interface EngineInfo {
+  name: string | null;
+  version: string | number | null;
+}
+
+interface SystemInfo {
   name: string | null;
   version: string | number | null;
 }
 
 interface ClientResult {
-  browser: ClientPart;
-  engine: ClientPart;
-  system: ClientPart;
+  browser: BrowserInfo;
+  engine: EngineInfo;
+  system: SystemInfo;
 }
 
 interface ClientConstructor {
@@ -55,6 +65,7 @@ interface ArtitalkSvgModule {
 
 interface Window {
   AV?: AVNamespace;
+  Client: ClientConstructor;
 }
 
 declare const AV: AVNamespace;

@@ -150,152 +150,171 @@
     global.AV = AV;
 })((typeof window !== 'undefined' ? window : globalThis));
 ;
-/**
- * 浏览器识别
- * @author houchuanjie
- */
-;(function (window, document) {
-  var Engine = function () {
-    var name = null;
-    var version = null;
-  };
-
-  var System = function () {
-    var name = null;
-    var version = null;
-  };
-
-  var Browser = function () {
-    var name = null; // 浏览器名称
-    var version = null; // 浏览器版本号
-  };
-  var Client = function () {
-    this.browser = new Browser(),
-    this.engine = new Engine(),
-    this.system = new System(),
-    this.init();
-    console.log('Engine ：' + this.engine.name + ' ' + this.engine.version);
-    console.log('Browser：' + this.browser.name + ' ' + this.browser.version);
-    console.log('System ：' + this.system.name + ' ' + this.system.version);
-    return { browser: this.browser, engine: this.engine, system: this.system };
-  };
-  Client.prototype = {
-    init: function () {
-      this.judgeBrowser();
-      this.judgeSystem();
-    },
-    judgeBrowser: function () {
-      var ua = navigator.userAgent.toString();
-      if (/AppleWebKit\/(\S+)/.test(ua)) { // 匹配Webkit内核浏览器(Chrome、Safari、新Opera、新Konqueror)
-        this.engine.name = 'WebKit';
-        this.engine.version = RegExp.$1;
-        if (/OPR\/(\S+)/.test(ua)) { // 确定是不是引用了Webkit内核的Opera
-          this.browser.name = 'Opera';
-          this.browser.version = RegExp.$1;
-        } else if (/Edge\/(\S+)/.test(ua)) {
-          this.browser.name = 'Edge';
-          this.browser.version = RegExp.$1;
-        } else if (/Chrome\/(\S+)/.test(ua)) { // 确定是不是Chrome
-          this.browser.name = 'Chrome';
-          this.browser.version = RegExp.$1;
-        } else if (/konqueror\/(\S+)/.test(ua)) { //
-          this.browser.name = 'Konqueror';
-          this.browser.version = RegExp.$1;
-        } else if (/Safari\/(\S+)/.test(ua)) { // 确定是不是高版本（3+）的Safari
-          this.browser.name = 'Safari';
-          if (/Version\/(\S+)/.test(ua)) {
-            this.browser.version = RegExp.$1;
-          } else { // 近似地确定低版本Safafi版本号
-            var SafariVersion = 1;
-            var wk = parseFloat(engine.version);
-            if (wk < 100) {
-              SafariVersion = 1;
-            } else if (wk < 312) {
-              SafariVersion = 1.2;
-            } else if (wk < 412) {
-              SafariVersion = 1.3;
-            } else {
-              SafariVersion = 2;
-            }
-            this.browser.version = SafariVersion;
-          }
+"use strict";
+;
+(function (window, document) {
+    class Engine {
+        constructor() {
+            this.name = null;
+            this.version = null;
         }
-      } else if (window.opera) { // 只匹配拥有Presto内核的老版本Opera 5+(12.15-)
-        this.engine.name = 'Presto';
-        this.browser.name = 'Opera';
-        this.engine.version = this.browser.version = window.opera.version();
-      } else if (/Opera[\/\s](\S+)/.test(ua)) { // 匹配不支持window.opera的Opera 5-或伪装的Opera
-        this.engine.name = 'Presto';
-        this.browser.name = 'Opera';
-        this.engine.version = browser.version = RegExp.$1;
-      } else if (/KHTML\/(\S+)/.test(ua)) { // KHTML内核
-        this.browser.name = 'Konqueror';
-        this.engine.name = 'KHTML';
-        this.engine.version = browser.version = RegExp.$1;
-      } else if (/Konqueror\/([^;]+)/.test(ua)) { // Konqueror内核
-        this.browser.name = 'Konqueror';
-        this.engine.name = 'Konqueror';
-        this.engine.version = browser.version = RegExp.$1;
-      } else if (/rv:([^\)]+)\) Gecko\/\d{8}/.test(ua)) { // 判断是不是基于Gecko内核
-        this.engine.name = 'Gecko';
-        this.engine.version = RegExp.$1;
-        if (/Firefox\/(\S+)/.test(ua)) { // 确定是不是Firefox
-          this.browser.name = 'Firefox';
-          this.browser.version = RegExp.$1;
-        }
-      } else if (/Trident\/([\d\.]+)/.test(ua)) { // 确定是否是Trident内核的浏览器（IE8+）
-        this.engine.name = 'Trident';
-        this.engine.version = RegExp.$1;
-        if (/rv\:([\d\.]+)/.test(ua) || /MSIE ([^;]+)/.test(ua)) { // 匹配IE8-11+
-          this.browser.name = 'IE';
-          this.browser.version = RegExp.$1;
-        }
-      } else if (/MSIE ([^;]+)/.test(ua)) { // 匹配IE6、IE7
-        this.engine.name = 'Trident';
-        this.engine.version = this.browser.version - 4.0; // 模拟IE6、IE7中的Trident值
-        this.browser.name = 'IE';
-        this.browser.version = RegExp.$1;
-      }
-    },
-    judgeSystem: function () {
-      var ua = String(navigator.userAgent || '');
-      // navigator.appVersion is a legacy property and can be absent in Safari/iOS.
-      // The user agent contains the same operating-system tokens, so use it as a fallback.
-      var p = String(navigator.appVersion || ua); // 判断操作系统
-      this.system.name = p.indexOf('Win') != -1 ? 'Windows' : this.system.name;
-      this.system.name = p.indexOf('Mac') != -1 ? 'Mac' : this.system.name;
-      this.system.name = p.indexOf('like Mac') != -1 ? 'like Mac' : this.system.name;
-      // Android系统的判断需要在linux后面，因为Android的navigator.appVersion属性里包含Linux
-      this.system.name = p.indexOf('Linux') != -1 ? (p.indexOf('Android') != -1 ? 'Android' : 'Linux')
-			                : p.indexOf('SunOS') != -1 ? 'Solaris'
-          : p.indexOf('FreeBSD') != -1 ? 'FreeBSD'
-            : p.indexOf('X11') != -1 ? 'X11'
-              : this.system.name;
-      // 华为手机里面有linux和Android，所以放在后面，但不是所有华为手机都是HarmonyOS。。。。。所以这个要不要呢？
-      // this.system.name = p.indexOf("HUAWEI") != -1 ? "HarmonyOS" : this.system.name;
-
-      if (this.system.name == 'Windows') {
-        if (/Win(?:dows )?([^do]{2})\s?(\d+\.\d+)?/.test(ua)) {
-          if (RegExp.$1 == 'NT') {
-            this.system.version = ({
-              '5.0': '2000',
-              5.1: 'XP',
-              '6.0': 'Vista',
-              6.1: '7',
-              6.2: '8',
-              6.3: '8.1',
-              '10.0': '10'
-            })[RegExp.$2] || 'NT ' + RegExp.$2;
-          } else if (RegExp.$1 == '9x') {
-            this.system.version = 'ME';
-          } else {
-            this.system.version = RegExp.$1;
-          }
-        }
-      }
     }
-  };
-  window.Client = Client;
+    class System {
+        constructor() {
+            this.name = null;
+            this.version = null;
+        }
+    }
+    class Browser {
+        constructor() {
+            this.name = null; // 浏览器名称
+            this.version = null; // 浏览器版本号
+        }
+    }
+    const Client = function () {
+        this.browser = new Browser();
+        this.engine = new Engine();
+        this.system = new System();
+        this.init();
+        console.log('Engine ：' + this.engine.name + ' ' + this.engine.version);
+        console.log('Browser：' + this.browser.name + ' ' + this.browser.version);
+        console.log('System ：' + this.system.name + ' ' + this.system.version);
+        return { browser: this.browser, engine: this.engine, system: this.system };
+    };
+    Client.prototype = {
+        init: function () {
+            this.judgeBrowser();
+            this.judgeSystem();
+        },
+        judgeBrowser: function () {
+            const ua = navigator.userAgent.toString();
+            if (/AppleWebKit\/(\S+)/.test(ua)) { // 匹配Webkit内核浏览器(Chrome、Safari、新Opera、新Konqueror)
+                this.engine.name = 'WebKit';
+                this.engine.version = RegExp.$1;
+                if (/OPR\/(\S+)/.test(ua)) { // 确定是不是引用了Webkit内核的Opera
+                    this.browser.name = 'Opera';
+                    this.browser.version = RegExp.$1;
+                }
+                else if (/Edge\/(\S+)/.test(ua)) {
+                    this.browser.name = 'Edge';
+                    this.browser.version = RegExp.$1;
+                }
+                else if (/Chrome\/(\S+)/.test(ua)) { // 确定是不是Chrome
+                    this.browser.name = 'Chrome';
+                    this.browser.version = RegExp.$1;
+                }
+                else if (/konqueror\/(\S+)/.test(ua)) {
+                    this.browser.name = 'Konqueror';
+                    this.browser.version = RegExp.$1;
+                }
+                else if (/Safari\/(\S+)/.test(ua)) { // 确定是不是高版本（3+）的Safari
+                    this.browser.name = 'Safari';
+                    if (/Version\/(\S+)/.test(ua)) {
+                        this.browser.version = RegExp.$1;
+                    }
+                    else { // 近似地确定低版本Safafi版本号
+                        let SafariVersion = 1;
+                        const wk = parseFloat(String(this.engine.version));
+                        if (wk < 100) {
+                            SafariVersion = 1;
+                        }
+                        else if (wk < 312) {
+                            SafariVersion = 1.2;
+                        }
+                        else if (wk < 412) {
+                            SafariVersion = 1.3;
+                        }
+                        else {
+                            SafariVersion = 2;
+                        }
+                        this.browser.version = SafariVersion;
+                    }
+                }
+            }
+            else if (window.opera) { // 只匹配拥有Presto内核的老版本Opera 5+(12.15-)
+                this.engine.name = 'Presto';
+                this.browser.name = 'Opera';
+                this.engine.version = this.browser.version = window.opera.version();
+            }
+            else if (/Opera[\/\s](\S+)/.test(ua)) { // 匹配不支持window.opera的Opera 5-或伪装的Opera
+                this.engine.name = 'Presto';
+                this.browser.name = 'Opera';
+                this.engine.version = this.browser.version = RegExp.$1;
+            }
+            else if (/KHTML\/(\S+)/.test(ua)) { // KHTML内核
+                this.browser.name = 'Konqueror';
+                this.engine.name = 'KHTML';
+                this.engine.version = this.browser.version = RegExp.$1;
+            }
+            else if (/Konqueror\/([^;]+)/.test(ua)) { // Konqueror内核
+                this.browser.name = 'Konqueror';
+                this.engine.name = 'Konqueror';
+                this.engine.version = this.browser.version = RegExp.$1;
+            }
+            else if (/rv:([^\)]+)\) Gecko\/\d{8}/.test(ua)) { // 判断是不是基于Gecko内核
+                this.engine.name = 'Gecko';
+                this.engine.version = RegExp.$1;
+                if (/Firefox\/(\S+)/.test(ua)) { // 确定是不是Firefox
+                    this.browser.name = 'Firefox';
+                    this.browser.version = RegExp.$1;
+                }
+            }
+            else if (/Trident\/([\d\.]+)/.test(ua)) { // 确定是否是Trident内核的浏览器（IE8+）
+                this.engine.name = 'Trident';
+                this.engine.version = RegExp.$1;
+                if (/rv\:([\d\.]+)/.test(ua) || /MSIE ([^;]+)/.test(ua)) { // 匹配IE8-11+
+                    this.browser.name = 'IE';
+                    this.browser.version = RegExp.$1;
+                }
+            }
+            else if (/MSIE ([^;]+)/.test(ua)) { // 匹配IE6、IE7
+                this.engine.name = 'Trident';
+                this.engine.version = Number(this.browser.version) - 4.0; // 模拟IE6、IE7中的Trident值
+                this.browser.name = 'IE';
+                this.browser.version = RegExp.$1;
+            }
+        },
+        judgeSystem: function () {
+            const ua = String(navigator.userAgent || '');
+            // navigator.appVersion is a legacy property and can be absent in Safari/iOS.
+            // The user agent contains the same operating-system tokens, so use it as a fallback.
+            const p = String(navigator.appVersion || ua); // 判断操作系统
+            this.system.name = p.indexOf('Win') !== -1 ? 'Windows' : this.system.name;
+            this.system.name = p.indexOf('Mac') !== -1 ? 'Mac' : this.system.name;
+            this.system.name = p.indexOf('like Mac') !== -1 ? 'like Mac' : this.system.name;
+            // Android系统的判断需要在linux后面，因为Android的navigator.appVersion属性里包含Linux
+            this.system.name = p.indexOf('Linux') !== -1 ? (p.indexOf('Android') !== -1 ? 'Android' : 'Linux')
+                : p.indexOf('SunOS') !== -1 ? 'Solaris'
+                    : p.indexOf('FreeBSD') !== -1 ? 'FreeBSD'
+                        : p.indexOf('X11') !== -1 ? 'X11'
+                            : this.system.name;
+            // 华为手机里面有linux和Android，所以放在后面，但不是所有华为手机都是HarmonyOS。。。。。所以这个要不要呢？
+            // this.system.name = p.indexOf("HUAWEI") != -1 ? "HarmonyOS" : this.system.name;
+            if (this.system.name === 'Windows') {
+                if (/Win(?:dows )?([^do]{2})\s?(\d+\.\d+)?/.test(ua)) {
+                    if (RegExp.$1 === 'NT') {
+                        const windowsVersions = {
+                            '5.0': '2000',
+                            5.1: 'XP',
+                            '6.0': 'Vista',
+                            6.1: '7',
+                            6.2: '8',
+                            6.3: '8.1',
+                            '10.0': '10'
+                        };
+                        this.system.version = windowsVersions[RegExp.$2] || 'NT ' + RegExp.$2;
+                    }
+                    else if (RegExp.$1 === '9x') {
+                        this.system.version = 'ME';
+                    }
+                    else {
+                        this.system.version = RegExp.$1;
+                    }
+                }
+            }
+        }
+    };
+    window.Client = Client;
 }(window, document));
 ;
 !(function (n) { 'use strict'; function d (n, t) { var r = (65535 & n) + (65535 & t); return (n >> 16) + (t >> 16) + (r >> 16) << 16 | 65535 & r; } function f (n, t, r, e, o, u) { return d((c = d(d(t, n), d(e, u))) << (f = o) | c >>> 32 - f, r); var c, f; } function l (n, t, r, e, o, u, c) { return f(t & r | ~t & e, n, t, o, u, c); } function v (n, t, r, e, o, u, c) { return f(t & e | r & ~e, n, t, o, u, c); } function g (n, t, r, e, o, u, c) { return f(t ^ r ^ e, n, t, o, u, c); } function m (n, t, r, e, o, u, c) { return f(r ^ (t | ~e), n, t, o, u, c); } function i (n, t) { var r, e, o, u; n[t >> 5] |= 128 << t % 32, n[14 + (t + 64 >>> 9 << 4)] = t; for (var c = 1732584193, f = -271733879, i = -1732584194, a = 271733878, h = 0; h < n.length; h += 16)c = l(r = c, e = f, o = i, u = a, n[h], 7, -680876936), a = l(a, c, f, i, n[h + 1], 12, -389564586), i = l(i, a, c, f, n[h + 2], 17, 606105819), f = l(f, i, a, c, n[h + 3], 22, -1044525330), c = l(c, f, i, a, n[h + 4], 7, -176418897), a = l(a, c, f, i, n[h + 5], 12, 1200080426), i = l(i, a, c, f, n[h + 6], 17, -1473231341), f = l(f, i, a, c, n[h + 7], 22, -45705983), c = l(c, f, i, a, n[h + 8], 7, 1770035416), a = l(a, c, f, i, n[h + 9], 12, -1958414417), i = l(i, a, c, f, n[h + 10], 17, -42063), f = l(f, i, a, c, n[h + 11], 22, -1990404162), c = l(c, f, i, a, n[h + 12], 7, 1804603682), a = l(a, c, f, i, n[h + 13], 12, -40341101), i = l(i, a, c, f, n[h + 14], 17, -1502002290), c = v(c, f = l(f, i, a, c, n[h + 15], 22, 1236535329), i, a, n[h + 1], 5, -165796510), a = v(a, c, f, i, n[h + 6], 9, -1069501632), i = v(i, a, c, f, n[h + 11], 14, 643717713), f = v(f, i, a, c, n[h], 20, -373897302), c = v(c, f, i, a, n[h + 5], 5, -701558691), a = v(a, c, f, i, n[h + 10], 9, 38016083), i = v(i, a, c, f, n[h + 15], 14, -660478335), f = v(f, i, a, c, n[h + 4], 20, -405537848), c = v(c, f, i, a, n[h + 9], 5, 568446438), a = v(a, c, f, i, n[h + 14], 9, -1019803690), i = v(i, a, c, f, n[h + 3], 14, -187363961), f = v(f, i, a, c, n[h + 8], 20, 1163531501), c = v(c, f, i, a, n[h + 13], 5, -1444681467), a = v(a, c, f, i, n[h + 2], 9, -51403784), i = v(i, a, c, f, n[h + 7], 14, 1735328473), c = g(c, f = v(f, i, a, c, n[h + 12], 20, -1926607734), i, a, n[h + 5], 4, -378558), a = g(a, c, f, i, n[h + 8], 11, -2022574463), i = g(i, a, c, f, n[h + 11], 16, 1839030562), f = g(f, i, a, c, n[h + 14], 23, -35309556), c = g(c, f, i, a, n[h + 1], 4, -1530992060), a = g(a, c, f, i, n[h + 4], 11, 1272893353), i = g(i, a, c, f, n[h + 7], 16, -155497632), f = g(f, i, a, c, n[h + 10], 23, -1094730640), c = g(c, f, i, a, n[h + 13], 4, 681279174), a = g(a, c, f, i, n[h], 11, -358537222), i = g(i, a, c, f, n[h + 3], 16, -722521979), f = g(f, i, a, c, n[h + 6], 23, 76029189), c = g(c, f, i, a, n[h + 9], 4, -640364487), a = g(a, c, f, i, n[h + 12], 11, -421815835), i = g(i, a, c, f, n[h + 15], 16, 530742520), c = m(c, f = g(f, i, a, c, n[h + 2], 23, -995338651), i, a, n[h], 6, -198630844), a = m(a, c, f, i, n[h + 7], 10, 1126891415), i = m(i, a, c, f, n[h + 14], 15, -1416354905), f = m(f, i, a, c, n[h + 5], 21, -57434055), c = m(c, f, i, a, n[h + 12], 6, 1700485571), a = m(a, c, f, i, n[h + 3], 10, -1894986606), i = m(i, a, c, f, n[h + 10], 15, -1051523), f = m(f, i, a, c, n[h + 1], 21, -2054922799), c = m(c, f, i, a, n[h + 8], 6, 1873313359), a = m(a, c, f, i, n[h + 15], 10, -30611744), i = m(i, a, c, f, n[h + 6], 15, -1560198380), f = m(f, i, a, c, n[h + 13], 21, 1309151649), c = m(c, f, i, a, n[h + 4], 6, -145523070), a = m(a, c, f, i, n[h + 11], 10, -1120210379), i = m(i, a, c, f, n[h + 2], 15, 718787259), f = m(f, i, a, c, n[h + 9], 21, -343485551), c = d(c, r), f = d(f, e), i = d(i, o), a = d(a, u); return [c, f, i, a]; } function a (n) { for (var t = '', r = 32 * n.length, e = 0; e < r; e += 8)t += String.fromCharCode(n[e >> 5] >>> e % 32 & 255); return t; } function h (n) { var t = []; for (t[(n.length >> 2) - 1] = void 0, e = 0; e < t.length; e += 1)t[e] = 0; for (var r = 8 * n.length, e = 0; e < r; e += 8)t[e >> 5] |= (255 & n.charCodeAt(e / 8)) << e % 32; return t; } function e (n) { for (var t, r = '0123456789abcdef', e = '', o = 0; o < n.length; o += 1)t = n.charCodeAt(o), e += r.charAt(t >>> 4 & 15) + r.charAt(15 & t); return e; } function r (n) { return unescape(encodeURIComponent(n)); } function o (n) { return a(i(h(t = r(n)), 8 * t.length)); var t; } function u (n, t) { return (function (n, t) { var r; var e; var o = h(n); var u = []; var c = []; for (u[15] = c[15] = void 0, o.length > 16 && (o = i(o, 8 * n.length)), r = 0; r < 16; r += 1)u[r] = 909522486 ^ o[r], c[r] = 1549556828 ^ o[r]; return e = i(u.concat(h(t)), 512 + 8 * t.length), a(i(c.concat(e), 640)); }(r(n), r(t))); } function t (n, t, r) { return t ? r ? u(t, n) : e(u(t, n)) : r ? o(n) : e(o(n)); } typeof define === 'function' && define.amd ? define(function () { return t; }) : typeof module === 'object' && module.exports ? module.exports = t : n.md5 = t; }(this));

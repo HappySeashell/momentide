@@ -4,7 +4,7 @@
   "entry": "dist/js/artitalk.min.js",
   "main": "dist/js/artitalk.min.js",
   "scripts": {
-    "build": "gulp --config gulpfile.js",
+    "build": "rollup --config rollup.config.js",
     "typecheck": "tsc --noEmit",
     "test": "npm run typecheck && eslint src --ext .ts",
     "lint:fix": "eslint src --fix"
@@ -14,14 +14,13 @@
     "url": "git+https://github.com/HCLonely/artitalk.git"
   },
   "dependencies": {
-    "gulp": "^5.0.1",
-    "gulp-clean": "^0.4.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-rename": "^2.1.0",
-    "gulp-sass": "^6.0.1",
-    "gulp-uglify-es": "^2.0.0",
-    "sass": "^1.93.2"
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "cssnano": "^8.0.2",
+    "rollup": "^4.62.2",
+    "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.93.2",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "eslint": "^10.5.0",

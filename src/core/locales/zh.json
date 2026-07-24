@@ -47,5 +47,8 @@
   "credentialsMismatch": "用户名与密码不匹配",
   "loginRequestError": "登陆失败，常见错误有<br><li>网络错误</li><li>域名不在leancloud的域名白名单中被限制登录</li><li>当前页面使用了其他leancloud应用导致登录到了其他应用所以失败</li>",
   "userNotFound": "未找到此用户",
-  "tooManyLoginAttempts": "尝试错误密码次数过多，请稍后再试"
+  "tooManyLoginAttempts": "尝试错误密码次数过多，请稍后再试",
+  "pin": "置顶",
+  "unpin": "取消置顶",
+  "pinned": "置顶"
 }

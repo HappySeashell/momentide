@@ -14,7 +14,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     onCommentsPublished
   } = root.config;
   lang = ArtitalkI18n.normalizeLanguage(lang);
-  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts } = ArtitalkI18n.getMessages(lang);
+  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, pin, unpin, pinned } = ArtitalkI18n.getMessages(lang);
   color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
   color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
   color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
@@ -31,6 +31,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
   // console.log(option);
   fadeIn('lazy');
   let shuoNum = 0;
+  const pinnedTalkIds = [];
   ArtitalkData.queryTalks(pageSize, pageNum).then(function (shuoContent) {
     mid = '';
     shuoContent.forEach(function (atContent) {
@@ -91,6 +92,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         atCommentTrue = 'display: none';
       }
       const id = atContent.id;
+      if (atContent.attributes.isPinned === true) pinnedTalkIds.push(id);
       const shuoshuoPerContent = atContent.attributes.atContentHtml;
       const commentSvg = '<svg t="1599605913184" class="icon" viewBox="0 0 1024 1024" cursor="pointer" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3173" width="16" height="16" fill="' + color3 + '"><path d="M512 0C226.742857 0 0 197.485714 0 446.171429c0 138.971429 73.142857 270.628571 190.171429 351.085714L190.171429 1024l226.742857-138.971429c29.257143 7.314286 65.828571 7.314286 95.085714 7.314286 285.257143 0 512-197.485714 512-446.171429C1024 197.485714 797.257143 0 512 0zM256 512C219.428571 512 190.171429 482.742857 190.171429 446.171429S219.428571 380.342857 256 380.342857c36.571429 0 65.828571 29.257143 65.828571 65.828571S292.571429 512 256 512zM512 512C475.428571 512 446.171429 482.742857 446.171429 446.171429S475.428571 380.342857 512 380.342857c36.571429 0 65.828571 29.257143 65.828571 65.828571S548.571429 512 512 512zM768 512C731.428571 512 702.171429 482.742857 702.171429 446.171429s29.257143-65.828571 65.828571-65.828571c36.571429 0 65.828571 29.257143 65.828571 65.828571S804.571429 512 768 512z" p-id="3174" fill="' + color3 + '"></path></svg>';
       const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "' ><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\"><svg t=\"1591347978744\"  viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"14459\" width=\"20\" height=\"20\" style=\"display: inline\"  onclick=\"atEvery.prototype.delete('" + id + "')\"  ><path d=\"M512 883.2A371.2 371.2 0 1 0 140.8 512 371.2 371.2 0 0 0 512 883.2z m0 64a435.2 435.2 0 1 1 435.2-435.2 435.2 435.2 0 0 1-435.2 435.2z\" p-id=\"14460\" fill=\"" + color3 + '"></path><path d="M557.056 512l122.368 122.368a31.744 31.744 0 1 1-45.056 45.056L512 557.056l-122.368 122.368a31.744 31.744 0 1 1-45.056-45.056L466.944 512 344.576 389.632a31.744 31.744 0 1 1 45.056-45.056L512 466.944l122.368-122.368a31.744 31.744 0 1 1 45.056 45.056z" p-id="14461" fill="' + color3 + "\"></path></svg></div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
@@ -105,6 +107,19 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;"><svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10" style="display: inline"></svg> 2020-04-10 20:35:25</span></p></span></li></ul>';
     }
     document.getElementById('ccontent').innerHTML = originString;
+    pinnedTalkIds.forEach(function (id) {
+      const talk = document.getElementById('atId' + id);
+      const controls = document.getElementById('operate' + id);
+      if (talk) talk.insertAdjacentHTML('afterbegin', '<span class="at-pinned-badge">' + pinned + '</span>');
+      if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + unpin + '" onclick="atEvery.prototype.togglePin(\'' + id + '\', true)">' + unpin + '</button>');
+    });
+    if (ArtitalkData.currentUser()) {
+      shuoContent.forEach(function (talk) {
+        if (talk.attributes.isPinned === true) return;
+        const controls = document.getElementById('operate' + talk.id);
+        if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + pin + '" onclick="atEvery.prototype.togglePin(\'' + talk.id + '\', false)">' + pin + '</button>');
+      });
+    }
     if (atComment !== 0) {
       shuoContent.forEach(function (count) {
         const id = count.id;
@@ -146,6 +161,18 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         document.getElementById('neirong').value = atom.attributes.atContentMd;
         fadeOut('lazy');
       });
+    });
+  };
+
+  atEvery.prototype.togglePin = function (id, isPinned) {
+    if (!ArtitalkData.currentUser()) return;
+    fadeIn('lazy');
+    const talk = ArtitalkData.talkById(id);
+    talk.set('isPinned', !isPinned);
+    talk.save().then(function () {
+      location.reload();
+    }).catch(function () {
+      fadeOut('lazy');
     });
   };
 

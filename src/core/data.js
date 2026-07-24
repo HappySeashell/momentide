@@ -43,7 +43,8 @@ const ArtitalkData = {
   },
   queryTalks: function (pageSize, pageNum) {
     const query = new AV.Query('shuoshuo');
-    query.descending('createdAt');
+    query.descending('isPinned');
+    query.addDescending('createdAt');
     query.limit(pageSize);
     query.skip(pageSize * pageNum);
     return query.find();

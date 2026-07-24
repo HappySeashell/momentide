@@ -134,29 +134,47 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       const authorKey = atContent.attributes.authorId || atContent.attributes.authorName || shuoAvatar;
       const authorColor = atContent.attributes.authorColor || (currentUser && isCurrentUserAuthor(currentUser, atContent.attributes.authorId, shuoAvatar) ? currentUser.attributes.backgroundColor : '');
       const userBackgroundAttributes = getUserBackgroundAttributes(authorKey, color1, color2, authorColor);
-      const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "'" + userBackgroundAttributes + "><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
+      const contengMid = ArtitalkTemplates.render('talk', {
+        id,
+        avatar: shuoAvatar,
+        userBackgroundAttributes,
+        hideIcon,
+        deleteSvg: ArtitalkSvg.render('delete', { color: color3, id }),
+        content: shuoshuoPerContent,
+        osSvg,
+        os: atOs,
+        timeSvg,
+        date: resDate,
+        time: resTime,
+        commentDisplay: atCommentTrue,
+        commentSvg,
+        color3
+      });
       mid += contengMid;
     });
     let originString = requiredElement('ccontent').innerHTML;
-    originString = originString === '' ? '<ul class="cbp_tmtimeline" id="maina">' : originString;
+    originString = originString === '' ? ArtitalkTemplates.render('timeline', {}) : originString;
     originString = originString.replace(/(.*)<\/ul>/, '$1 ');
     originString += mid + '</ul>';
     // console.log(originString);
     if (shuoNum === 0 && pageNum === 0) {
-      originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
+      originString = ArtitalkTemplates.render('emptyTalk', {
+        emptyTalk,
+        timePlaceholderSvg: ArtitalkSvg.render('time-placeholder')
+      });
     }
     requiredElement('ccontent').innerHTML = originString;
     pinnedTalkIds.forEach(function (id) {
       const talk = document.getElementById('atId' + id);
       const controls = document.getElementById('operate' + id);
-      if (talk) talk.insertAdjacentHTML('afterbegin', '<span class="at-pinned-badge">' + pinned + '</span>');
-      if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + unpin + '" onclick="atEvery.prototype.togglePin(\'' + id + '\', true)">' + unpin + '</button>');
+      if (talk) talk.insertAdjacentHTML('afterbegin', ArtitalkTemplates.render('pinnedBadge', { label: pinned }));
+      if (controls) controls.insertAdjacentHTML('afterbegin', ArtitalkTemplates.render('pinButton', { id, isPinned: true, label: unpin }));
     });
     if (ArtitalkData.currentUser()) {
       shuoContent.forEach(function (talk) {
         if (talk.attributes.isPinned === true) return;
         const controls = document.getElementById('operate' + talk.id);
-        if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + pin + '" onclick="atEvery.prototype.togglePin(\'' + talk.id + '\', false)">' + pin + '</button>');
+        if (controls) controls.insertAdjacentHTML('afterbegin', ArtitalkTemplates.render('pinButton', { id: talk.id, isPinned: false, label: pin }));
       });
     }
     if (atComment !== 0) {
@@ -172,7 +190,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     if (shuoNum !== 0) {
       fadeIn('readmore');
     } else if (pageNum !== 0) {
-      requiredElement('readButton').innerHTML = '<center>已经到底了哦~</center>';
+      requiredElement('readButton').innerHTML = ArtitalkTemplates.render('endOfList', {});
       requiredElement('readButton').style.opacity = '0.5';
     }
   });
@@ -189,7 +207,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     fadeIn('lazy');
     ArtitalkData.queryTalkById(id).then(res => {
       res.forEach(function (atom) {
-        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + editInstructions + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
+        const originString = ArtitalkTemplates.render('editTalk', { editInstructions, timePlaceholderSvg: ArtitalkSvg.render('time-placeholder') });
         requiredElement('ccontent').innerHTML = originString;
         const changeId = requiredElement('atSave');
         changeId.id = 'atEditsaveButton';
@@ -309,10 +327,22 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     }
     atComment.set('nick', comNick);
     atComment.save().then(function (res) {
-      const replySvg = '<span style="float: right">' + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
+      const replySvg = ArtitalkTemplates.render('reply', {
+        clickHandler: '',
+        replySvg: ArtitalkSvg.render('reply', { color: color3 })
+      });
       const originComment = requiredElement('ccontent').innerHTML;
       const userBackgroundAttributes = getUserBackgroundAttributes(currentUser ? currentUser.id : comEmailMd5 || comNick, color1, color2, currentUser ? currentUser.attributes.backgroundColor : '');
-      const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
+      const comList = ArtitalkTemplates.render('comment', {
+        avatar: atGravatar,
+        userBackgroundAttributes,
+        content: atCommentHtml,
+        nickname: comNick,
+        timeSvg,
+        date: resDate,
+        time: resTime,
+        replySvg
+      });
       const positon = originComment.indexOf('</li>') + 5;
       const nowComment = originComment.slice(0, positon) + comList + originComment.slice(positon);
       requiredElement('ccontent').innerHTML = '';
@@ -360,7 +390,11 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       ? ' data-user-background style="' + originalTalk.style.cssText + '"'
       : '';
     const originAvatar = requiredElement<HTMLImageElement>('atAvatar' + id).src;
-    const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="' + originAvatar + '" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>' + originShuo + '</p></span></li></ul>';
+    const originString = ArtitalkTemplates.render('focusedTalk', {
+      avatar: originAvatar,
+      userBackgroundAttributes,
+      content: originShuo
+    });
     requiredElement('ccontent').innerHTML = originString;
     let mid = '';
     const currentUser = ArtitalkData.currentUser();
@@ -406,9 +440,21 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         const commenterColor = comment.attributes.authorColor || (currentUser && isCurrentUserAuthor(currentUser, comment.attributes.authorId, comAvatar) ? currentUser.attributes.backgroundColor : '');
         const userBackgroundAttributes = getUserBackgroundAttributes(commenterKey, color1, color2, commenterColor);
 
-        const replySvg = "<span style=\"float: right\" onclick=\"atEvery.prototype.atReply()\">" + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
+        const replySvg = ArtitalkTemplates.render('reply', {
+          clickHandler: ' onclick="atEvery.prototype.atReply()"',
+          replySvg: ArtitalkSvg.render('reply', { color: color3 })
+        });
 
-        const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + comAvatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + comContent + '</div><p class="shuoshuo_time">' + '<span>' + commentNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
+        const comList = ArtitalkTemplates.render('comment', {
+          avatar: comAvatar,
+          userBackgroundAttributes,
+          content: comContent,
+          nickname: commentNick,
+          timeSvg,
+          date: resDate,
+          time: resTime,
+          replySvg
+        });
         mid += comList;
       });
       let originString = requiredElement('ccontent').innerHTML;

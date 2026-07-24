@@ -7,11 +7,13 @@ const cssnano = require('cssnano');
 const sass = require('sass');
 const { syncVersion } = require('./scripts/sync-version');
 const { createSvgModule } = require('./scripts/create-svg-module');
+const { createTemplateModule } = require('./scripts/create-template-module');
 
 const root = __dirname;
 const generatedDirectory = path.join(root, 'src/generated');
 const localeModulePath = path.join(generatedDirectory, 'artitalk-locales.js');
 const svgModulePath = path.join(generatedDirectory, 'artitalk-svg.js');
+const templateModulePath = path.join(generatedDirectory, 'artitalk-templates.js');
 const entryId = '\0artitalk-entry.ts';
 const exposeGlobals = 'globalThis.Artitalk = Artitalk; globalThis.atEvery = atEvery; globalThis.Logout = Logout; globalThis.insertEmoji = insertEmoji; globalThis.preview = preview;';
 const typescriptCompilerOptions = typescript.convertCompilerOptionsFromJson(
@@ -28,6 +30,7 @@ const sourceFiles = [
   firstPartySource('src/core/emoji'),
   localeModulePath,
   svgModulePath,
+  templateModulePath,
   firstPartySource('src/core/i18n'),
   firstPartySource('src/core/dom'),
   firstPartySource('src/core/sanitize'),
@@ -54,6 +57,26 @@ function prepareGlobalSources () {
     svgDirectory: path.join(root, 'src/svg'),
     outputPath: svgModulePath
   });
+  createTemplateModule({
+    templates: {
+      main: path.join(root, 'src/html/main.html'),
+      lazy: path.join(root, 'src/html/lazy.html'),
+      operator: path.join(root, 'src/html/operator.html'),
+      talk: path.join(root, 'src/html/talk.html'),
+      emptyTalk: path.join(root, 'src/html/empty-talk.html'),
+      comment: path.join(root, 'src/html/comment.html'),
+      pinnedBadge: path.join(root, 'src/html/pinned-badge.html'),
+      pinButton: path.join(root, 'src/html/pin-button.html'),
+      reply: path.join(root, 'src/html/reply.html'),
+      focusedTalk: path.join(root, 'src/html/focused-talk.html'),
+      endOfList: path.join(root, 'src/html/end-of-list.html'),
+      timeline: path.join(root, 'src/html/timeline.html'),
+      editTalk: path.join(root, 'src/html/edit-talk.html'),
+      loginRequired: path.join(root, 'src/html/login-required.html'),
+      deleteActions: path.join(root, 'src/html/delete-actions.html')
+    },
+    outputPath: templateModulePath
+  });
 }
 
 function orderedGlobalSources () {
@@ -75,6 +98,7 @@ function orderedGlobalSources () {
     closeBundle () {
       fs.rmSync(localeModulePath, { force: true });
       fs.rmSync(svgModulePath, { force: true });
+      fs.rmSync(templateModulePath, { force: true });
     }
   };
 }

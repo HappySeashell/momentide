@@ -513,6 +513,48 @@ $transition: 0.35s ease-in-out;
 
 }
 
+#artitalk_main.artitalk-black-and-white {
+  margin-top: 5vh;
+
+  .cbp_tmtimeline > li .cbp_tmlabel {
+    border-radius: 12px;
+    background: #fff !important;
+    box-shadow: 0 1px 12px rgb(0 0 0 / 30%);
+    color: #3d3d3d;
+    font-size: large;
+    font-weight: 400;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  p.shuoshuo_time {
+    border-top: 1px dashed;
+    font-size: small;
+  }
+
+  .shuoshuo_author_img img {
+    border: 0;
+    box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+  }
+
+  .shuoshuo_text,
+  .shuoshuo_inputs {
+    border: 0;
+    box-shadow: 0 0 12px rgb(0 0 0 / 30%);
+    color: #3d3d3d;
+  }
+
+  .at_button {
+    border: 0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+    color: #3d3d3d;
+  }
+}
+
 body.theme-dark {
   #artitalk_main {
     .cbp_tmtimeline::before {

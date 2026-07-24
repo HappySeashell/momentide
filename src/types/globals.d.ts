@@ -63,6 +63,11 @@ interface ArtitalkSvgModule {
   render(name: string, values?: Record<string, string | number>): string;
 }
 
+interface ArtitalkTemplateModule {
+  [name: string]: string | ((name: string, values: Record<string, unknown>) => string);
+  render(name: string, values: Record<string, unknown>): string;
+}
+
 interface Window {
   AV?: AVNamespace;
   Client: ClientConstructor;
@@ -73,5 +78,6 @@ declare const Client: ClientConstructor;
 declare const showdown: ShowdownStatic;
 declare const ArtitalkLocales: Record<string, ArtitalkMessages>;
 declare const ArtitalkSvg: ArtitalkSvgModule;
+declare const ArtitalkTemplates: ArtitalkTemplateModule;
 declare function md5(value: string): string;
 declare function insertEmoji(value: string): void;

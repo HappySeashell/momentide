@@ -56,7 +56,7 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 │  ├─ types/                     # 浏览器全局变量和第三方库声明
 │  └─ main.ts                    # TypeScript Artitalk 入口
 ├─ test/test_page.html           # 前端集成测试页面
-├─ gulpfile.js                   # 构建配置
+├─ rollup.config.js              # 构建配置
 └─ package.json
 ```
 

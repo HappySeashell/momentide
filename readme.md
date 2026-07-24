@@ -47,7 +47,7 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 ├─ server/                       # Vercel + Neon Postgres 服务端
 ├─ src/
 │  ├─ core/                      # 数据、DOM、版本、表情等核心逻辑
-│  ├─ css/main.css               # 组件样式
+│  ├─ css/main.scss              # 组件样式
 │  ├─ html/                      # HTML 片段
 │  ├─ modules/                   # 初始化、内容渲染、上传等模块
 │  ├─ plugins/                   # Markdown、MD5、浏览器识别和 AV 兼容层

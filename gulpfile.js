@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const uglify = require('gulp-uglify-es').default;
 const cleanCSS = require('gulp-clean-css');
+const sass = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
 const path = require('node:path');
@@ -12,7 +13,8 @@ const syncVersionTask = () => syncVersion({
 });
 
 const minifyCSS = () => (
-  gulp.src('src/css/*.css')
+  gulp.src('src/css/*.scss')
+    .pipe(sass().on('error', sass.logError))
     .pipe(cleanCSS({ compatibility: 'ie8' }))
     .pipe(rename('artitalk.min.css'))
     .pipe(gulp.dest('dist/css'))

@@ -47,5 +47,8 @@
   "credentialsMismatch": "El nombre de usuario y la contraseña no coinciden.",
   "loginRequestError": "La solicitud ha sido cancelada Posibles causas: la red está fuera de línea, Access-Control-Allow-Origin no permite Origin, la página se está descargando, etc.c",
   "userNotFound": "No se pudo encontrar el usuario.",
-  "tooManyLoginAttempts": "Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña."
+  "tooManyLoginAttempts": "Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña.",
+  "pin": "Fijar",
+  "unpin": "Desfijar",
+  "pinned": "Fijado"
 }

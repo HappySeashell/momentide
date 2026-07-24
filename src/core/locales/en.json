@@ -47,5 +47,8 @@
   "credentialsMismatch": "The username and password mismatch.",
   "loginRequestError": "Request has been terminated Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.c",
   "userNotFound": "Could not find user.",
-  "tooManyLoginAttempts": "You have entered incorrect passwords for too many times. Please try later or reset your password."
+  "tooManyLoginAttempts": "You have entered incorrect passwords for too many times. Please try later or reset your password.",
+  "pin": "Pin",
+  "unpin": "Unpin",
+  "pinned": "Pinned"
 }

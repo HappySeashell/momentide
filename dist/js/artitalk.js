@@ -71,7 +71,7 @@
   function Query(className) {
     this.className = className;
     this._where = {};
-    this._order = '';
+    this._order = [];
     this._limit = undefined;
     this._skip = undefined;
   }
@@ -82,7 +82,12 @@
   };
 
   Query.prototype.descending = function (key) {
-    this._order = '-' + key;
+    this._order = ['-' + key];
+    return this;
+  };
+
+  Query.prototype.addDescending = function (key) {
+    this._order.push('-' + key);
     return this;
   };
 
@@ -99,7 +104,7 @@
   Query.prototype.find = function () {
     var params = {};
     if (Object.keys(this._where).length) params.where = JSON.stringify(this._where);
-    if (this._order) params.order = this._order;
+    if (this._order.length) params.order = this._order.join(',');
     if (this._limit !== undefined) params.limit = String(this._limit);
     if (this._skip !== undefined) params.skip = String(this._skip);
     var className = this.className;
@@ -543,7 +548,7 @@ for (const key in atEmojiBB) {
   atEmojiB = atEmojiB + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiBB[key] + "'/>";
 }
 ;
-const ArtitalkLocales = {"zh":{"authorPrefix":"由","authorSuffix":"发表","loadMore":"加载更多...","preview":"预览","publish":"发布","loggedIn":"已登录","confirm":"确定","signOut":"退出登录","username":"用户","password":"密码","login":"登录","cancel":"取消","postTalk":"发布说说","addMedia":"添加图片，视频，音乐","uploadFailed":"(上传失败，若非网络原因，请联系Artitalk开发人员)","loginRequired":"请先登录","contentRequired":"内容不能为空","loginFailed":"登陆失败，请检查用户名及密码是否正确","avatarUrl":"头像url","confirmDelete":"确定删除本条说说吗？","deleteSuccess":"删除成功","dragMediaHere":"请拖拽图片到此处","emoji":"表情","remove":"删除","emptyTalk":"如果你看到这条说说，恭喜你已经配置成功并且可以正常使用了。当你发布一个说说之后，我将会自动消失。快去探索Artitalk吧<br>欢迎加入Artitalk的QQ交流群：1104585229<br>觉得本项目不错的话可以推荐给你的好友或者去GitHub点一个star，感谢支持","uploading":"上传中","image":"图片","music":"音乐","video":"视频","add":"添加","imageSizeError":"上传的图片最大支持5M，请压缩后或换一个继续上传","musicSizeError":"上传的音乐最大支持10M，请压缩后或换一个继续上传","videoSizeError":"上传的视频最大支持30M，请压缩后或换一个继续上传","imageFormatError":"图片格式错误，请不要上传其他类型的文件","audioFormatError":"音频格式错误，请不要上传其他类型的文件","videoFormatError":"视频格式错误，请不要上传其他类型的文件","uploadInProgress":"上传ing","loading":"加载中","usernameRequired":"用户名不能为空","passwordRequired":"密码不能为空","editInstructions":"请在下方输入框进行修改然后点击保存即可","save":"保存","comments":"评论","email":"邮箱","nickname":"昵称","credentialsMismatch":"用户名与密码不匹配","loginRequestError":"登陆失败，常见错误有<br><li>网络错误</li><li>域名不在leancloud的域名白名单中被限制登录</li><li>当前页面使用了其他leancloud应用导致登录到了其他应用所以失败</li>","userNotFound":"未找到此用户","tooManyLoginAttempts":"尝试错误密码次数过多，请稍后再试"},"en":{"authorPrefix":"Published by","authorSuffix":"","loadMore":"load more...","preview":"Preview","publish":"Publish","loggedIn":"logged","confirm":"Ok","signOut":"Sign out","username":"Username","password":"Password","login":"Log in","cancel":"Cancel","postTalk":"Post talk","addMedia":"Add pictures, videos, music","uploadFailed":"(Upload failed, if not for network reasons, please contact Artitalk developers)","loginRequired":"Please log in first","contentRequired":"Content can not be blank","loginFailed":"Login failed, please check if the username and password are correct","avatarUrl":"Avatar url","confirmDelete":"Are you sure you want to devare this article?","deleteSuccess":"Successfully devared","dragMediaHere":"Please drag and drop pictures here","emoji":"emoji","remove":"Devare","emptyTalk":"If you see this, congratulations, you have successfully configured and can be used normally. When you post one shuoshuo, I will disappear automatically. Quickly explore Artitalk.<br>Welcome to Artitalk’s QQ group: 1104585229<br>If you think this project is good, you can recommend it to your friends or go to GitHub to order a star.","uploading":"uploading","image":"image","music":"music","video":"video","add":"Add","imageSizeError":"The uploaded image supports a maximum of 5M, please compress or change another one to continue uploading","musicSizeError":"The uploaded music supports a maximum of 10M, please compress or change another one to continue uploading","videoSizeError":"The uploaded video supports a maximum of 30M, please compress or change another one to continue uploading","imageFormatError":"Picture format error, please do not upload other types of files","audioFormatError":"The audio format is wrong, please do not upload other types of files","videoFormatError":"Video format error, please do not upload other types of files","uploadInProgress":"Uploading","loading":"Loading","usernameRequired":"Username can not be empty","passwordRequired":"Password can not be empty","editInstructions":"Please modify it in the input box below and click save","save":"save","comments":"comments","email":"Mailbox","nickname":"Nickname","credentialsMismatch":"The username and password mismatch.","loginRequestError":"Request has been terminated Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.c","userNotFound":"Could not find user.","tooManyLoginAttempts":"You have entered incorrect passwords for too many times. Please try later or reset your password."},"es":{"authorPrefix":"Publicado por","authorSuffix":"","loadMore":"Carga más...","preview":"Avance","publish":"Lanzamiento","loggedIn":"Registrado","confirm":"Determinar","signOut":"Desconectar","username":"Usuario","password":"Contraseña","login":"Iniciar sesión","cancel":"Cancelar","postTalk":"Publicar charla","addMedia":"Agrega fotos, videos, música","uploadFailed":"(Carga fallida, si no es por razones de red, comuníquese con los desarrolladores de Artitalk)","loginRequired":"Por favor ingresa primero","contentRequired":"El contenido no puede estar en blanco","loginFailed":"Error de inicio de sesión, compruebe si el nombre de usuario y la contraseña son correctos","avatarUrl":"URL del avatar","confirmDelete":"¿Estás seguro de que deseas eliminar este artículo?","deleteSuccess":"Eliminado con éxito","dragMediaHere":"Arrastra y suelta fotos aquí","emoji":"expresión","remove":"Eliminar","emptyTalk":"Si ve este artículo, felicidades, se ha configurado correctamente y se puede usar normalmente. Cuando publiques un comentario, desapareceré automáticamente. Explore rápidamente Artitalk. <br> Bienvenido al grupo QQ de Artitalk: 1104585229 <br> Si cree que este proyecto es bueno, puede recomendarlo a sus amigos o ir a GitHub para pedir una estrella, gracias por su apoyo.","uploading":"cargando","image":"imagen","music":"música","video":"vídeo","add":"Añadir","imageSizeError":"La imagen cargada admite un máximo de 5 M, comprima o cambie otra para continuar cargando","musicSizeError":"La música cargada admite un máximo de 10 M, comprime o cambia otra para continuar cargando","videoSizeError":"El video subido admite un máximo de 30 M, comprima o cambie otro para continuar subiendo","imageFormatError":"Error de formato de imagen, no suba otros tipos de archivos","audioFormatError":"El formato de audio es incorrecto, no suba otros tipos de archivos","videoFormatError":"Error de formato de video, no suba otros tipos de archivos","uploadInProgress":"Cargando","loading":"Cargando","usernameRequired":"El nombre de usuario no puede estar vacío","passwordRequired":"la contraseña no puede estar en blanco","editInstructions":"Por favor, introduzca las modificaciones en el cuadro de abajo y haga clic en guardar","save":"guardar","comments":"comentarios","email":"Buzón","nickname":"Apodo","credentialsMismatch":"El nombre de usuario y la contraseña no coinciden.","loginRequestError":"La solicitud ha sido cancelada Posibles causas: la red está fuera de línea, Access-Control-Allow-Origin no permite Origin, la página se está descargando, etc.c","userNotFound":"No se pudo encontrar el usuario.","tooManyLoginAttempts":"Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña."}};
+const ArtitalkLocales = {"zh":{"authorPrefix":"由","authorSuffix":"发表","loadMore":"加载更多...","preview":"预览","publish":"发布","loggedIn":"已登录","confirm":"确定","signOut":"退出登录","username":"用户","password":"密码","login":"登录","cancel":"取消","postTalk":"发布说说","addMedia":"添加图片，视频，音乐","uploadFailed":"(上传失败，若非网络原因，请联系Artitalk开发人员)","loginRequired":"请先登录","contentRequired":"内容不能为空","loginFailed":"登陆失败，请检查用户名及密码是否正确","avatarUrl":"头像url","confirmDelete":"确定删除本条说说吗？","deleteSuccess":"删除成功","dragMediaHere":"请拖拽图片到此处","emoji":"表情","remove":"删除","emptyTalk":"如果你看到这条说说，恭喜你已经配置成功并且可以正常使用了。当你发布一个说说之后，我将会自动消失。快去探索Artitalk吧<br>欢迎加入Artitalk的QQ交流群：1104585229<br>觉得本项目不错的话可以推荐给你的好友或者去GitHub点一个star，感谢支持","uploading":"上传中","image":"图片","music":"音乐","video":"视频","add":"添加","imageSizeError":"上传的图片最大支持5M，请压缩后或换一个继续上传","musicSizeError":"上传的音乐最大支持10M，请压缩后或换一个继续上传","videoSizeError":"上传的视频最大支持30M，请压缩后或换一个继续上传","imageFormatError":"图片格式错误，请不要上传其他类型的文件","audioFormatError":"音频格式错误，请不要上传其他类型的文件","videoFormatError":"视频格式错误，请不要上传其他类型的文件","uploadInProgress":"上传ing","loading":"加载中","usernameRequired":"用户名不能为空","passwordRequired":"密码不能为空","editInstructions":"请在下方输入框进行修改然后点击保存即可","save":"保存","comments":"评论","email":"邮箱","nickname":"昵称","credentialsMismatch":"用户名与密码不匹配","loginRequestError":"登陆失败，常见错误有<br><li>网络错误</li><li>域名不在leancloud的域名白名单中被限制登录</li><li>当前页面使用了其他leancloud应用导致登录到了其他应用所以失败</li>","userNotFound":"未找到此用户","tooManyLoginAttempts":"尝试错误密码次数过多，请稍后再试","pin":"置顶","unpin":"取消置顶","pinned":"置顶"},"en":{"authorPrefix":"Published by","authorSuffix":"","loadMore":"load more...","preview":"Preview","publish":"Publish","loggedIn":"logged","confirm":"Ok","signOut":"Sign out","username":"Username","password":"Password","login":"Log in","cancel":"Cancel","postTalk":"Post talk","addMedia":"Add pictures, videos, music","uploadFailed":"(Upload failed, if not for network reasons, please contact Artitalk developers)","loginRequired":"Please log in first","contentRequired":"Content can not be blank","loginFailed":"Login failed, please check if the username and password are correct","avatarUrl":"Avatar url","confirmDelete":"Are you sure you want to devare this article?","deleteSuccess":"Successfully devared","dragMediaHere":"Please drag and drop pictures here","emoji":"emoji","remove":"Devare","emptyTalk":"If you see this, congratulations, you have successfully configured and can be used normally. When you post one shuoshuo, I will disappear automatically. Quickly explore Artitalk.<br>Welcome to Artitalk’s QQ group: 1104585229<br>If you think this project is good, you can recommend it to your friends or go to GitHub to order a star.","uploading":"uploading","image":"image","music":"music","video":"video","add":"Add","imageSizeError":"The uploaded image supports a maximum of 5M, please compress or change another one to continue uploading","musicSizeError":"The uploaded music supports a maximum of 10M, please compress or change another one to continue uploading","videoSizeError":"The uploaded video supports a maximum of 30M, please compress or change another one to continue uploading","imageFormatError":"Picture format error, please do not upload other types of files","audioFormatError":"The audio format is wrong, please do not upload other types of files","videoFormatError":"Video format error, please do not upload other types of files","uploadInProgress":"Uploading","loading":"Loading","usernameRequired":"Username can not be empty","passwordRequired":"Password can not be empty","editInstructions":"Please modify it in the input box below and click save","save":"save","comments":"comments","email":"Mailbox","nickname":"Nickname","credentialsMismatch":"The username and password mismatch.","loginRequestError":"Request has been terminated Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.c","userNotFound":"Could not find user.","tooManyLoginAttempts":"You have entered incorrect passwords for too many times. Please try later or reset your password.","pin":"Pin","unpin":"Unpin","pinned":"Pinned"},"es":{"authorPrefix":"Publicado por","authorSuffix":"","loadMore":"Carga más...","preview":"Avance","publish":"Lanzamiento","loggedIn":"Registrado","confirm":"Determinar","signOut":"Desconectar","username":"Usuario","password":"Contraseña","login":"Iniciar sesión","cancel":"Cancelar","postTalk":"Publicar charla","addMedia":"Agrega fotos, videos, música","uploadFailed":"(Carga fallida, si no es por razones de red, comuníquese con los desarrolladores de Artitalk)","loginRequired":"Por favor ingresa primero","contentRequired":"El contenido no puede estar en blanco","loginFailed":"Error de inicio de sesión, compruebe si el nombre de usuario y la contraseña son correctos","avatarUrl":"URL del avatar","confirmDelete":"¿Estás seguro de que deseas eliminar este artículo?","deleteSuccess":"Eliminado con éxito","dragMediaHere":"Arrastra y suelta fotos aquí","emoji":"expresión","remove":"Eliminar","emptyTalk":"Si ve este artículo, felicidades, se ha configurado correctamente y se puede usar normalmente. Cuando publiques un comentario, desapareceré automáticamente. Explore rápidamente Artitalk. <br> Bienvenido al grupo QQ de Artitalk: 1104585229 <br> Si cree que este proyecto es bueno, puede recomendarlo a sus amigos o ir a GitHub para pedir una estrella, gracias por su apoyo.","uploading":"cargando","image":"imagen","music":"música","video":"vídeo","add":"Añadir","imageSizeError":"La imagen cargada admite un máximo de 5 M, comprima o cambie otra para continuar cargando","musicSizeError":"La música cargada admite un máximo de 10 M, comprime o cambia otra para continuar cargando","videoSizeError":"El video subido admite un máximo de 30 M, comprima o cambie otro para continuar subiendo","imageFormatError":"Error de formato de imagen, no suba otros tipos de archivos","audioFormatError":"El formato de audio es incorrecto, no suba otros tipos de archivos","videoFormatError":"Error de formato de video, no suba otros tipos de archivos","uploadInProgress":"Cargando","loading":"Cargando","usernameRequired":"El nombre de usuario no puede estar vacío","passwordRequired":"la contraseña no puede estar en blanco","editInstructions":"Por favor, introduzca las modificaciones en el cuadro de abajo y haga clic en guardar","save":"guardar","comments":"comentarios","email":"Buzón","nickname":"Apodo","credentialsMismatch":"El nombre de usuario y la contraseña no coinciden.","loginRequestError":"La solicitud ha sido cancelada Posibles causas: la red está fuera de línea, Access-Control-Allow-Origin no permite Origin, la página se está descargando, etc.c","userNotFound":"No se pudo encontrar el usuario.","tooManyLoginAttempts":"Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña.","pin":"Fijar","unpin":"Desfijar","pinned":"Fijado"}};
 ;
 const ArtitalkI18n = (function () {
   function normalizeLanguage (language) { return typeof language === 'string' && ArtitalkLocales[language] ? language : 'zh'; }
@@ -681,7 +686,8 @@ const ArtitalkData = {
   },
   queryTalks: function (pageSize, pageNum) {
     const query = new AV.Query('shuoshuo');
-    query.descending('createdAt');
+    query.descending('isPinned');
+    query.addDescending('createdAt');
     query.limit(pageSize);
     query.skip(pageSize * pageNum);
     return query.find();
@@ -1176,7 +1182,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     onCommentsPublished
   } = root.config;
   lang = ArtitalkI18n.normalizeLanguage(lang);
-  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts } = ArtitalkI18n.getMessages(lang);
+  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, pin, unpin, pinned } = ArtitalkI18n.getMessages(lang);
   color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
   color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
   color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
@@ -1193,6 +1199,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
   // console.log(option);
   fadeIn('lazy');
   let shuoNum = 0;
+  const pinnedTalkIds = [];
   ArtitalkData.queryTalks(pageSize, pageNum).then(function (shuoContent) {
     mid = '';
     shuoContent.forEach(function (atContent) {
@@ -1253,6 +1260,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         atCommentTrue = 'display: none';
       }
       const id = atContent.id;
+      if (atContent.attributes.isPinned === true) pinnedTalkIds.push(id);
       const shuoshuoPerContent = atContent.attributes.atContentHtml;
       const commentSvg = '<svg t="1599605913184" class="icon" viewBox="0 0 1024 1024" cursor="pointer" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3173" width="16" height="16" fill="' + color3 + '"><path d="M512 0C226.742857 0 0 197.485714 0 446.171429c0 138.971429 73.142857 270.628571 190.171429 351.085714L190.171429 1024l226.742857-138.971429c29.257143 7.314286 65.828571 7.314286 95.085714 7.314286 285.257143 0 512-197.485714 512-446.171429C1024 197.485714 797.257143 0 512 0zM256 512C219.428571 512 190.171429 482.742857 190.171429 446.171429S219.428571 380.342857 256 380.342857c36.571429 0 65.828571 29.257143 65.828571 65.828571S292.571429 512 256 512zM512 512C475.428571 512 446.171429 482.742857 446.171429 446.171429S475.428571 380.342857 512 380.342857c36.571429 0 65.828571 29.257143 65.828571 65.828571S548.571429 512 512 512zM768 512C731.428571 512 702.171429 482.742857 702.171429 446.171429s29.257143-65.828571 65.828571-65.828571c36.571429 0 65.828571 29.257143 65.828571 65.828571S804.571429 512 768 512z" p-id="3174" fill="' + color3 + '"></path></svg>';
       const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "' ><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\"><svg t=\"1591347978744\"  viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"14459\" width=\"20\" height=\"20\" style=\"display: inline\"  onclick=\"atEvery.prototype.delete('" + id + "')\"  ><path d=\"M512 883.2A371.2 371.2 0 1 0 140.8 512 371.2 371.2 0 0 0 512 883.2z m0 64a435.2 435.2 0 1 1 435.2-435.2 435.2 435.2 0 0 1-435.2 435.2z\" p-id=\"14460\" fill=\"" + color3 + '"></path><path d="M557.056 512l122.368 122.368a31.744 31.744 0 1 1-45.056 45.056L512 557.056l-122.368 122.368a31.744 31.744 0 1 1-45.056-45.056L466.944 512 344.576 389.632a31.744 31.744 0 1 1 45.056-45.056L512 466.944l122.368-122.368a31.744 31.744 0 1 1 45.056 45.056z" p-id="14461" fill="' + color3 + "\"></path></svg></div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
@@ -1267,6 +1275,19 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;"><svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10" style="display: inline"></svg> 2020-04-10 20:35:25</span></p></span></li></ul>';
     }
     document.getElementById('ccontent').innerHTML = originString;
+    pinnedTalkIds.forEach(function (id) {
+      const talk = document.getElementById('atId' + id);
+      const controls = document.getElementById('operate' + id);
+      if (talk) talk.insertAdjacentHTML('afterbegin', '<span class="at-pinned-badge">' + pinned + '</span>');
+      if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + unpin + '" onclick="atEvery.prototype.togglePin(\'' + id + '\', true)">' + unpin + '</button>');
+    });
+    if (ArtitalkData.currentUser()) {
+      shuoContent.forEach(function (talk) {
+        if (talk.attributes.isPinned === true) return;
+        const controls = document.getElementById('operate' + talk.id);
+        if (controls) controls.insertAdjacentHTML('afterbegin', '<button type="button" class="at-pin-button" title="' + pin + '" onclick="atEvery.prototype.togglePin(\'' + talk.id + '\', false)">' + pin + '</button>');
+      });
+    }
     if (atComment !== 0) {
       shuoContent.forEach(function (count) {
         const id = count.id;
@@ -1308,6 +1329,18 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         document.getElementById('neirong').value = atom.attributes.atContentMd;
         fadeOut('lazy');
       });
+    });
+  };
+
+  atEvery.prototype.togglePin = function (id, isPinned) {
+    if (!ArtitalkData.currentUser()) return;
+    fadeIn('lazy');
+    const talk = ArtitalkData.talkById(id);
+    talk.set('isPinned', !isPinned);
+    talk.save().then(function () {
+      location.reload();
+    }).catch(function () {
+      fadeOut('lazy');
     });
   };
 

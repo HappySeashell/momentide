@@ -71,7 +71,7 @@
   function Query(className) {
     this.className = className;
     this._where = {};
-    this._order = '';
+    this._order = [];
     this._limit = undefined;
     this._skip = undefined;
   }
@@ -82,7 +82,12 @@
   };
 
   Query.prototype.descending = function (key) {
-    this._order = '-' + key;
+    this._order = ['-' + key];
+    return this;
+  };
+
+  Query.prototype.addDescending = function (key) {
+    this._order.push('-' + key);
     return this;
   };
 
@@ -99,7 +104,7 @@
   Query.prototype.find = function () {
     var params = {};
     if (Object.keys(this._where).length) params.where = JSON.stringify(this._where);
-    if (this._order) params.order = this._order;
+    if (this._order.length) params.order = this._order.join(',');
     if (this._limit !== undefined) params.limit = String(this._limit);
     if (this._skip !== undefined) params.skip = String(this._skip);
     var className = this.className;

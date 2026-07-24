@@ -1,3 +1,31 @@
+function getUserBackgroundColor (userKey, color1, color2) {
+  const colors = [
+    color1,
+    color2,
+    '#5b4b8a',
+    '#266d7f',
+    '#8a4f62',
+    '#47715a',
+    '#7b5a2e',
+    '#3e6388',
+    '#6b5a89',
+    '#7c4f36'
+  ];
+  const key = String(userKey || 'artitalk');
+  let hash = 0;
+
+  for (let index = 0; index < key.length; index++) {
+    hash = ((hash << 5) - hash) + key.charCodeAt(index);
+    hash |= 0;
+  }
+
+  return colors[(hash >>> 0) % colors.length];
+}
+
+function getUserBackgroundAttributes (userKey, color1, color2) {
+  return ' data-user-background style="--artitalk-user-background:' + getUserBackgroundColor(userKey, color1, color2) + '"';
+}
+
 atEvery.prototype.seeContent = function (pageNum, option) {
   const root = this;
   let mid = '';
@@ -95,7 +123,9 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       if (atContent.attributes.isPinned === true) pinnedTalkIds.push(id);
       const shuoshuoPerContent = ArtitalkSanitizer.sanitizeHtml(atContent.attributes.atContentHtml);
       const commentSvg = '' + ArtitalkSvg.render('comment', { color: color3 }) + '';
-      const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "' ><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
+      const authorKey = atContent.attributes.authorId || atContent.attributes.authorName || shuoAvatar;
+      const userBackgroundAttributes = getUserBackgroundAttributes(authorKey, color1, color2);
+      const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "'" + userBackgroundAttributes + "><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
       mid += contengMid;
     });
     let originString = document.getElementById('ccontent').innerHTML;
@@ -262,6 +292,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     }
     atComment.set('atId', id);
     atComment.set('commentContent', atCommentHtml);
+    atComment.set('authorId', currentUser ? currentUser.id : comEmailMd5 || comNick);
     if (!currentUser) {
       atComment.set('email', comEmailMd5);
     }
@@ -269,7 +300,8 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     atComment.save().then(function (res) {
       const replySvg = '<span style="float: right">' + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
       const originComment = document.getElementById('ccontent').innerHTML;
-      const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"  >  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
+      const userBackgroundAttributes = getUserBackgroundAttributes(currentUser ? currentUser.id : comEmailMd5 || comNick, color1, color2);
+      const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
       const positon = originComment.indexOf('</li>') + 5;
       const nowComment = originComment.slice(0, positon) + comList + originComment.slice(positon);
       document.getElementById('ccontent').innerHTML = '';
@@ -311,9 +343,13 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     };
     document.getElementById('email').placeholder = email;
     document.getElementById('commentNick').placeholder = nickname;
-    const originShuo = document.getElementById('atId' + id).innerHTML;
+    const originalTalk = document.getElementById('atId' + id);
+    const originShuo = originalTalk.innerHTML;
+    const userBackgroundAttributes = originalTalk.hasAttribute('data-user-background')
+      ? ' data-user-background style="' + originalTalk.style.cssText + '"'
+      : '';
     const originAvatar = document.getElementById('atAvatar' + id).src;
-    const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="' + originAvatar + '" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel">' + originShuo + '</p></span></li></ul>';
+    const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="' + originAvatar + '" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>' + originShuo + '</p></span></li></ul>';
     document.getElementById('ccontent').innerHTML = originString;
     let mid = '';
     const currentUser = ArtitalkData.currentUser();
@@ -355,10 +391,12 @@ atEvery.prototype.seeContent = function (pageNum, option) {
           atGravatar = adminAvatar;
         }
         const comAvatar = atGravatar;
+        const commenterKey = comment.attributes.authorId || comEmail || commentNick || comAvatar;
+        const userBackgroundAttributes = getUserBackgroundAttributes(commenterKey, color1, color2);
 
         const replySvg = "<span style=\"float: right\" onclick=\"atEvery.prototype.atReply()\">" + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
 
-        const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + comAvatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"  >  <div>' + comContent + '</div><p class="shuoshuo_time">' + '<span>' + commentNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
+        const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + comAvatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + comContent + '</div><p class="shuoshuo_time">' + '<span>' + commentNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
         mid += comList;
       });
       let originString = document.getElementById('ccontent').innerHTML;

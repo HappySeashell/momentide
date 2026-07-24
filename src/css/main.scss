@@ -115,7 +115,7 @@ $transition: 0.35s ease-in-out;
         margin: 0 0 45px 65px;
         padding: 0.8em 1.2em 0.4em;
         border-radius: 5px;
-        background: $color-secondary;
+        background: var(--artitalk-user-background, $color-secondary);
         color: $color-on-primary;
         font-weight: 300;
         line-height: 1.4;
@@ -135,25 +135,12 @@ $transition: 0.35s ease-in-out;
           width: 0;
           height: 0;
           border: 10px solid transparent;
-          border-right-color: $color-secondary;
+          border-right-color: var(--artitalk-user-background, $color-secondary);
           content: "";
           pointer-events: none;
         }
       }
 
-      &:nth-child(odd) {
-        .cbp_tmtime span:last-child {
-          color: $color-primary;
-        }
-
-        .cbp_tmlabel {
-          background: $color-primary;
-
-          &::after {
-            border-right-color: $color-primary;
-          }
-        }
-      }
     }
   }
 

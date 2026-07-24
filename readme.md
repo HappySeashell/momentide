@@ -5,7 +5,7 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 ![](https://img.shields.io/github/stars/HCLonely/Artitalk)
 ![](https://img.shields.io/npm/dm/@hclonely/artitalk.svg)
 ![](https://img.shields.io/npm/v/@hclonely/artitalk.svg)
-![](https://img.shields.io/badge/language-JavaScript-red)
+![](https://img.shields.io/badge/language-TypeScript-blue)
 
 由于[原项目](https://github.com/ArtitalkJS/Artitalk)不再更新，LeanCloud即将关闭服务，所以本项目诞生了。
 
@@ -43,15 +43,18 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 .
 ├─ dist/                         # 构建产物
 │  ├─ css/artitalk.min.css
-│  └─ js/artitalk.js
+│  └─ js/
+│     ├─ artitalk.js
+│     └─ artitalk.min.js
 ├─ server/                       # Vercel + Neon Postgres 服务端
 ├─ src/
-│  ├─ core/                      # 数据、DOM、版本、表情等核心逻辑
+│  ├─ core/                      # TypeScript：数据、DOM、版本、表情等核心逻辑
 │  ├─ css/main.scss              # 组件样式
 │  ├─ html/                      # HTML 片段
-│  ├─ modules/                   # 初始化、内容渲染、上传等模块
-│  ├─ plugins/                   # Markdown、MD5、浏览器识别和 AV 兼容层
-│  └─ main.js                    # Artitalk 入口
+│  ├─ modules/                   # TypeScript：初始化、内容渲染、上传等 UI 模块
+│  ├─ plugins/                   # JavaScript：Markdown、MD5、浏览器识别和 AV 兼容层
+│  ├─ types/                     # 浏览器全局变量和第三方库声明
+│  └─ main.ts                    # TypeScript Artitalk 入口
 ├─ test/test_page.html           # 前端集成测试页面
 ├─ gulpfile.js                   # 构建配置
 └─ package.json
@@ -70,3 +73,15 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 2. 基于目标分支创建新分支并提交修改
 3. 执行必要的构建、Lint 和测试
 4. 发起 Pull Request，并说明变更内容和验证结果
+
+## 开发与验证
+
+`src/` 中的核心逻辑和 UI 模块以 TypeScript 维护；`src/plugins/` 保留第三方 JavaScript 文件。安装依赖后，提交前请运行：
+
+```bash
+npm run typecheck
+npm test
+npm run build
+```
+
+`npm run typecheck` 检查 TypeScript 类型，`npm test` 运行类型检查和 ESLint，`npm run build` 生成发布用的 `dist/js/artitalk.js` 与 `dist/js/artitalk.min.js`。

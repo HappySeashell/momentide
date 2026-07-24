@@ -763,12 +763,29 @@ const ArtitalkData = {
     return new Comment();
   },
   queryTalks: function (pageSize, pageNum) {
+    function sortTalks (talks) {
+      return talks.sort(function (first, second) {
+        const firstPinned = first.attributes.isPinned === true ? 1 : 0;
+        const secondPinned = second.attributes.isPinned === true ? 1 : 0;
+        if (firstPinned !== secondPinned) return secondPinned - firstPinned;
+        return new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime();
+      });
+    }
+
     const query = new AV.Query('shuoshuo');
     query.descending('isPinned');
     query.addDescending('createdAt');
     query.limit(pageSize);
     query.skip(pageSize * pageNum);
-    return query.find();
+    return query.find().catch(function (error) {
+      if (!/Unsupported order field/.test(error.message || '')) throw error;
+      const legacyQuery = new AV.Query('shuoshuo');
+      legacyQuery.descending('createdAt');
+      legacyQuery.limit(1000);
+      return legacyQuery.find().then(function (talks) {
+        return sortTalks(talks).slice(pageSize * pageNum, pageSize * (pageNum + 1));
+      });
+    });
   },
   queryTalkById: function (id) {
     const query = new AV.Query('shuoshuo');

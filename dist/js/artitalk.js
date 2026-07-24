@@ -1083,6 +1083,7 @@ atEvery.prototype._init = function () {
     fadeOut('shuoshuo_emoji_QQ'); fadeOut('shuoshuo_emoji_BiliBili'); fadeOut('shuoshuo_emoji_Tieba');
   };
   beginPreview.onclick = function () {
+    clickPre.click();
     const preCon = document.getElementById('preview');
     if (preCon.className.indexOf('preview_now') !== -1) {
       preCon.classList.remove('preview_now');

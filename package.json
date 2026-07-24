@@ -5,7 +5,8 @@
   "main": "dist/js/artitalk.min.js",
   "scripts": {
     "build": "gulp --config gulpfile.js",
-    "test": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && eslint src --ext .ts",
     "lint:fix": "eslint src --fix"
   },
   "repository": {
@@ -19,12 +20,14 @@
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^2.1.0",
     "gulp-sass": "^6.0.1",
-    "sass": "^1.93.2",
-    "gulp-uglify-es": "^2.0.0"
+    "gulp-uglify-es": "^2.0.0",
+    "sass": "^1.93.2"
   },
   "devDependencies": {
     "eslint": "^10.5.0",
-    "globals": "^17.6.0"
+    "globals": "^17.6.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0"
   },
   "publishConfig": {
     "access": "public"

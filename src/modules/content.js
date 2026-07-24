@@ -93,7 +93,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       }
       const id = atContent.id;
       if (atContent.attributes.isPinned === true) pinnedTalkIds.push(id);
-      const shuoshuoPerContent = atContent.attributes.atContentHtml;
+      const shuoshuoPerContent = ArtitalkSanitizer.sanitizeHtml(atContent.attributes.atContentHtml);
       const commentSvg = '<svg t="1599605913184" class="icon" viewBox="0 0 1024 1024" cursor="pointer" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3173" width="16" height="16" fill="' + color3 + '"><path d="M512 0C226.742857 0 0 197.485714 0 446.171429c0 138.971429 73.142857 270.628571 190.171429 351.085714L190.171429 1024l226.742857-138.971429c29.257143 7.314286 65.828571 7.314286 95.085714 7.314286 285.257143 0 512-197.485714 512-446.171429C1024 197.485714 797.257143 0 512 0zM256 512C219.428571 512 190.171429 482.742857 190.171429 446.171429S219.428571 380.342857 256 380.342857c36.571429 0 65.828571 29.257143 65.828571 65.828571S292.571429 512 256 512zM512 512C475.428571 512 446.171429 482.742857 446.171429 446.171429S475.428571 380.342857 512 380.342857c36.571429 0 65.828571 29.257143 65.828571 65.828571S548.571429 512 512 512zM768 512C731.428571 512 702.171429 482.742857 702.171429 446.171429s29.257143-65.828571 65.828571-65.828571c36.571429 0 65.828571 29.257143 65.828571 65.828571S804.571429 512 768 512z" p-id="3174" fill="' + color3 + '"></path></svg>';
       const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "' ><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\"><svg t=\"1591347978744\"  viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"14459\" width=\"20\" height=\"20\" style=\"display: inline\"  onclick=\"atEvery.prototype.delete('" + id + "')\"  ><path d=\"M512 883.2A371.2 371.2 0 1 0 140.8 512 371.2 371.2 0 0 0 512 883.2z m0 64a435.2 435.2 0 1 1 435.2-435.2 435.2 435.2 0 0 1-435.2 435.2z\" p-id=\"14460\" fill=\"" + color3 + '"></path><path d="M557.056 512l122.368 122.368a31.744 31.744 0 1 1-45.056 45.056L512 557.056l-122.368 122.368a31.744 31.744 0 1 1-45.056-45.056L466.944 512 344.576 389.632a31.744 31.744 0 1 1 45.056-45.056L512 466.944l122.368-122.368a31.744 31.744 0 1 1 45.056 45.056z" p-id="14461" fill="' + color3 + "\"></path></svg></div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
       mid += contengMid;
@@ -196,9 +196,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       location.reload();
       return;
     }
-    const converte = new showdown.Converter();
-    converte.setOption('strikethrough', 1);
-    const shuoshuoContentHtml = converte.makeHtml(shuoshuoContent);
+    const shuoshuoContentHtml = ArtitalkSanitizer.markdownToHtml(shuoshuoContent);
     atEditOver.set('atContentHtml', shuoshuoContentHtml);
     atEditOver.save().then(function () {
       location.reload();
@@ -217,9 +215,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     let comContent = document.getElementById('neirong').value;
     const atComment = ArtitalkData.commentById();
     comContent = ArtitalkI18n.translateEmojis(comContent, atEmoji);
-    const converte = new showdown.Converter();
-    converte.setOption('strikethrough', 1);
-    const atCommentHtml = converte.makeHtml(comContent);
+    const atCommentHtml = ArtitalkSanitizer.markdownToHtml(comContent);
     const currentUser = ArtitalkData.currentUser();
     const comEmail = document.getElementById('email').value;
     let comNick = document.getElementById('commentNick').value;
@@ -350,7 +346,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
           case atHour >= 18 && atHour < 21:
             timeSvg = '<svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10"  style="display: inline"><path d="M784.896 767.488c-291.84 0-528.384-236.544-528.384-528.384 0-81.92 19.456-159.744 52.736-228.864C132.608 95.744 10.24 275.968 10.24 485.376 10.24 777.216 246.784 1013.76 538.624 1013.76c209.408 0 390.144-122.368 475.136-299.008-69.12 33.28-146.944 52.736-228.864 52.736z m-246.272 176.128c-252.416 0-457.728-205.312-457.728-457.728 0-111.104 38.912-214.528 107.52-294.912-1.536 16.384-2.048 32.256-2.048 48.64 0 330.24 268.288 598.528 598.528 598.528 16.384 0 32.256-0.512 48.64-2.048-80.896 68.096-184.32 107.52-294.912 107.52z m127.488-633.344l65.536-32.256 65.536 32.256-9.216-75.264 49.152-55.296-70.656-14.336-34.816-66.56-34.816 66.56-70.656 14.336 49.152 55.296-9.216 75.264zM441.344 432.64l43.52-21.504 43.52 21.504-6.144-50.176 32.768-36.864-47.616-9.728-22.528-44.032-23.04 44.032-47.104 9.728 32.768 36.864-6.144 50.176z m313.344 79.872l-23.04-44.032-23.04 44.032-47.104 9.728 32.768 36.864-6.144 50.176 43.52-21.504 43.52 21.504-6.144-50.176 32.768-36.864-47.104-9.728z" p-id="28654" fill="' + color3 + '"></path></svg>' + ' ';
         }
-        const comContent = comment.attributes.commentContent;
+        const comContent = ArtitalkSanitizer.sanitizeHtml(comment.attributes.commentContent);
         const commentNick = comment.attributes.nick;
         const comEmail = comment.attributes.email;
         const adminAvatar = comment.attributes.adminAvatar;

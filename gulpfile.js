@@ -64,7 +64,10 @@ const transpileTypeScript = () => new Transform({
 });
 const concatJS = () => (
     gulp.src([
-        'src/plugins/*.js',
+        firstPartySource('src/plugins/artitalk-av'),
+        firstPartySource('src/plugins/browser'),
+        'src/plugins/md5.js',
+        'src/plugins/showdown.min.js',
         firstPartySource('src/core/version'),
         firstPartySource('src/core/emoji'),
         localeModulePath,

@@ -3,11 +3,11 @@ interface AVRecord extends ArtitalkRecord {}
 interface AVUser extends AVRecord {}
 
 interface AVQuery {
-  descending(field: string): void;
-  addDescending(field: string): void;
-  limit(count: number): void;
-  skip(count: number): void;
-  equalTo(field: string, value: unknown): void;
+  descending(field: string): this;
+  addDescending(field: string): this;
+  limit(count: number): this;
+  skip(count: number): this;
+  equalTo(field: string, value: unknown): this;
   find(): Promise<AVRecord[]>;
 }
 

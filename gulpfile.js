@@ -4,6 +4,7 @@ const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
+const fs = require('node:fs');
 const path = require('node:path');
 const { syncVersion } = require('./scripts/sync-version');
 
@@ -20,11 +21,14 @@ const minifyCSS = () => (
     .pipe(gulp.dest('dist/css'))
 );
 
+const localeModulePath = path.join(__dirname, 'dist/js/.artitalk-locales.js');
+const createLocaleModule = done => { const locales = ['zh', 'en', 'es'].reduce((m, l) => { m[l] = JSON.parse(fs.readFileSync(path.join(__dirname, 'src/core/locales', l + '.json'), 'utf8')); return m; }, {}); fs.writeFileSync(localeModulePath, 'const ArtitalkLocales = ' + JSON.stringify(locales) + ';\n'); done(); };
 const concatJS = () => (
     gulp.src([
         'src/plugins/*.js',
         'src/core/version.js',
         'src/core/emoji.js',
+        localeModulePath,
         'src/core/i18n.js',
         'src/core/dom.js',
         'src/core/data.js',
@@ -35,6 +39,7 @@ const concatJS = () => (
     ])
     .pipe(concat('artitalk.js', { newLine: ';\n' }))
     .pipe(gulp.dest('dist/js'))
+    .on('end', () => fs.unlinkSync(localeModulePath))
 );
 
 const minifyJS = () => (
@@ -54,6 +59,7 @@ module.exports = {
 gulp.task('dist', gulp.parallel(
   minifyCSS,
   gulp.series(
+    createLocaleModule,
     concatJS,
     minifyJS
   )

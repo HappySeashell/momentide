@@ -21,164 +21,8 @@ atEvery.prototype._init = function () {
     onCommentsPublished
   } = root.config;
   lang = ArtitalkI18n.normalizeLanguage(lang);
-  var messages = ArtitalkI18n.getMessages(lang, 'init');
-  var { text0, text00, text1, text2, text3, text4, text5, text6, text7, text8, text9, text10, text11, text12, text14, text15, text16, text17, text18, text19, text20, text21, text22, text23, text24, text25, text26, text27, text28, text29, text30, text31, text32, text33, text34, text35, textup, loadingTxT, text36, text37, text38, text39, text40, text41, text42, text43, text44, text45, text46 } = messages;
+  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoSizeError, imageFormatError, audioFormatError, videoFormatError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts } = ArtitalkI18n.getMessages(lang);
   bgImg = typeof (bgImg) === 'undefined' || bgImg === '' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp' : bgImg;
-  if (false) switch (lang) {
-    case 'zh':
-      var text0 = '由';
-      var text00 = '发表';
-      var text1 = '加载更多...';
-      var text2 = '预览';
-      var text3 = '发布';
-      var text4 = '已登录';
-      var text5 = '确定';
-      var text6 = '退出登录';
-      var text7 = '用户';
-      var text8 = '密码';
-      var text9 = '登录';
-      var text10 = '取消';
-      var text11 = '发布说说';
-      var text12 = '添加图片，视频，音乐';
-      var text14 = '(上传失败，若非网络原因，请联系Artitalk开发人员)';
-      var text15 = '请先登录';
-      var text16 = '内容不能为空';
-      var text17 = '登陆失败，请检查用户名及密码是否正确';
-      var text18 = '头像url';
-      var text19 = '确定删除本条说说吗？';
-      var text20 = '删除成功';
-      var text21 = '请拖拽图片到此处';
-      var text22 = '表情';
-      var text23 = '删除';
-      var text24 = '如果你看到这条说说，恭喜你已经配置成功并且可以正常使用了。当你发布一个说说之后，我将会自动消失。快去探索Artitalk吧<br>觉得本项目不错的话可以推荐给你的好友或者去GitHub点一个star，感谢支持';
-      var text25 = '上传中';
-      var text26 = '图片';
-      var text27 = '音乐';
-      var text28 = '视频';
-      var text29 = '添加';
-      var text30 = '上传的图片最大支持5M，请压缩后或换一个继续上传';
-      var text31 = '上传的音乐最大支持10M，请压缩后或换一个继续上传';
-      var text32 = '上传的视频最大支持30M，请压缩后或换一个继续上传';
-      var text33 = '图片格式错误，请不要上传其他类型的文件';
-      var text34 = '音频格式错误，请不要上传其他类型的文件';
-      var text35 = '视频格式错误，请不要上传其他类型的文件';
-      var textup = '上传ing';
-      var loadingTxT = '加载中';
-      var text36 = '用户名不能为空';
-      var text37 = '密码不能为空';
-      var text38 = '请在下方输入框进行修改然后点击保存即可';
-      var text39 = '保存';
-      var text40 = '评论';
-      var text41 = '邮箱';
-      var text42 = '昵称';
-      var text43 = '用户名与密码不匹配';
-      var text44 = '登陆失败，常见错误有<br><li>网络错误</li><li>域名不在leancloud的域名白名单中被限制登录</li><li>当前页面使用了其他leancloud应用导致登录到了其他应用所以失败</li>';
-      var text45 = '未找到此用户';
-      var text46 = '尝试错误密码次数过多，请稍后再试';
-      break;
-    case 'en':
-      var text0 = 'Published by';
-      var text00 = '';
-      var text1 = 'load more...';
-      var text2 = 'Preview';
-      var text3 = 'Publish';
-      var text4 = 'logged';
-      var text5 = 'Ok';
-      var text6 = 'Sign out';
-      var text7 = 'Username';
-      var text8 = 'Password';
-      var text9 = 'Log in';
-      var text10 = 'Cancel';
-      var text11 = 'Post talk';
-      var text12 = 'Add pictures, videos, music';
-      var text14 = '(Upload failed, if not for network reasons, please contact Artitalk developers)';
-      var text15 = 'Please log in first';
-      var text16 = 'Content can not be blank';
-      var text17 = 'Login failed, please check if the username and password are correct';
-      var text18 = 'Avatar url';
-      var text19 = 'Are you sure you want to devare this article?';
-      var text20 = 'Successfully devared';
-      var text21 = 'Please drag and drop pictures here';
-      var text22 = 'emoji';
-      var text23 = 'Devare';
-      var text24 = 'If you see this, congratulations, you have successfully configured and can be used normally. When you post one shuoshuo, I will disappear automatically. Quickly explore Artitalk.<br>If you think this project is good, you can recommend it to your friends or go to GitHub to order a star.';
-      var text25 = 'uploading';
-      var text26 = 'image';
-      var text27 = 'music';
-      var text28 = 'video';
-      var text29 = 'Add';
-      var text30 = 'The uploaded image supports a maximum of 5M, please compress or change another one to continue uploading';
-      var text31 = 'The uploaded music supports a maximum of 10M, please compress or change another one to continue uploading';
-      var text32 = 'The uploaded video supports a maximum of 30M, please compress or change another one to continue uploading';
-      var text33 = 'Picture format error, please do not upload other types of files';
-      var text34 = 'The audio format is wrong, please do not upload other types of files';
-      var text35 = 'Video format error, please do not upload other types of files';
-      var textup = 'Uploading';
-      var loadingTxT = 'Loading';
-      var text36 = 'Username can not be empty';
-      var text37 = 'Password can not be empty';
-      var text38 = 'Please modify it in the input box below and click save';
-      var text39 = 'save';
-      var text40 = 'comments';
-      var text41 = 'Mailbox';
-      var text42 = 'Nickname';
-      var text43 = 'The username and password mismatch.';
-      var text44 = 'Request has been terminated Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.c';
-      var text45 = 'Could not find user.';
-      var text46 = 'You have entered incorrect passwords for too many times. Please try later or reset your password.';
-      break;
-    case 'es':
-      var text0 = 'Publicado por';
-      var text00 = '';
-      var text1 = 'Carga más...';
-      var text2 = 'Avance';
-      var text3 = 'Lanzamiento';
-      var text4 = 'Registrado';
-      var text5 = 'Determinar';
-      var text6 = 'Desconectar';
-      var text7 = 'Usuario';
-      var text8 = 'Contraseña';
-      var text9 = 'Iniciar sesión';
-      var text10 = 'Cancelar';
-      var text11 = 'Publicar charla';
-      var text12 = 'Agrega fotos, videos, música';
-      var text14 = '(Carga fallida, si no es por razones de red, comuníquese con los desarrolladores de Artitalk)';
-      var text15 = 'Por favor ingresa primero';
-      var text16 = 'El contenido no puede estar en blanco';
-      var text17 = 'Error de inicio de sesión, compruebe si el nombre de usuario y la contraseña son correctos';
-      var text18 = 'URL del avatar';
-      var text19 = '¿Estás seguro de que deseas eliminar este artículo?';
-      var text20 = 'Eliminado con éxito';
-      var text21 = 'Arrastra y suelta fotos aquí';
-      var text22 = 'expresión';
-      var text23 = 'Eliminar';
-      var text24 = 'Si ve este artículo, felicidades, se ha configurado correctamente y se puede usar normalmente. Cuando publiques un comentario, desapareceré automáticamente. Explore rápidamente Artitalk. <br> Bienvenido al grupo QQ de Artitalk: 1104585229 <br> Si cree que este proyecto es bueno, puede recomendarlo a sus amigos o ir a GitHub para pedir una estrella, gracias por su apoyo.';
-      var text25 = 'cargando';
-      var text26 = 'imagen';
-      var text27 = 'música';
-      var text28 = 'vídeo';
-      var text29 = 'Añadir';
-      var text30 = 'La imagen cargada admite un máximo de 5 M, comprima o cambie otra para continuar cargando';
-      var text31 = 'La música cargada admite un máximo de 10 M, comprime o cambia otra para continuar cargando';
-      var text32 = 'El video subido admite un máximo de 30 M, comprima o cambie otro para continuar subiendo';
-      var text33 = 'Error de formato de imagen, no suba otros tipos de archivos';
-      var text34 = 'El formato de audio es incorrecto, no suba otros tipos de archivos';
-      var text35 = 'Error de formato de video, no suba otros tipos de archivos';
-      var textup = 'Cargando';
-      var loadingTxT = 'Cargando';
-      var text36 = 'El nombre de usuario no puede estar vacío';
-      var text37 = 'la contraseña no puede estar en blanco';
-      var text38 = 'Por favor, introduzca las modificaciones en el cuadro de abajo y haga clic en guardar';
-      var text39 = 'guardar';
-      var text40 = 'comentarios';
-      var text41 = 'Buzón';
-      var text42 = 'Apodo';
-      var text43 = 'El nombre de usuario y la contraseña no coinciden.';
-      var text44 = 'La solicitud ha sido cancelada Posibles causas: la red está fuera de línea, Access-Control-Allow-Origin no permite Origin, la página se está descargando, etc.c';
-      var text45 = 'No se pudo encontrar el usuario.';
-      var text46 = 'Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña.';
-      break;
-  }
   let atEmojiDefault = '';
   for (const key in atEmoji) {
     atEmojiDefault = atEmojiDefault + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmoji[key] + "'/>";
@@ -210,40 +54,6 @@ atEvery.prototype._init = function () {
     } else if (err.indexOf('appKey is not defined') != -1) {
       console.log('appKey没找到');
     }
-  }
-  // emoji translate
-  function translate (beforTran) {
-    if (typeof beforTran === 'undefined') return;
-    for (const key in atEmojiQQ) {
-      const keyAt = '[' + key + ']';
-      const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiQQ[key] + "'/>";
-      while (beforTran.indexOf(keyAt) != -1) {
-        beforTran = beforTran.replace(keyAt, emojiAt);
-      }
-    }
-    for (const key in atEmojiTB) {
-      const keyAt = '[' + key + ']';
-      const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiTB[key] + "'/>";
-      while (beforTran.indexOf(keyAt) != -1) {
-        beforTran = beforTran.replace(keyAt, emojiAt);
-      }
-    }
-    for (const key in atEmojiBB) {
-      const keyAt = '[' + key + ']';
-      const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiBB[key] + "'/>";
-      while (beforTran.indexOf(keyAt) != -1) {
-        beforTran = beforTran.replace(keyAt, emojiAt);
-      }
-    }
-    // console.log(atEmoji);
-    for (const key in atEmoji) {
-      const keyAt = '[' + key + ']';
-      const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmoji[key] + "'/>";
-      while (beforTran.indexOf(keyAt) != -1) {
-        beforTran = beforTran.replace(keyAt, emojiAt);
-      }
-    }
-    return beforTran;
   }
   // In & Out
   function fadeIn (id) {
@@ -298,9 +108,9 @@ atEvery.prototype._init = function () {
     }
   }
   // Insert html part
-  var atHtml = "<div id='artitalk_part1'><div id=\"shuoshuo_content\"><div id=\"ccontent\"></div><div id='readButton' style=''><center><button id=\"readmore\" class=\"at_button\" style=\"margin-bottom: 15px;display: none\">" + text1 + '</button></center></div></div><div id="shuoshuo_input" class="shuoshuo_active" style="display: none;"><div id="shuoshuo_edit"><textarea class="shuoshuo_text" oninput="preview()" id="neirong" placeholder="' + shuoPla + '"style="background-image: url(' + bgImg + ");z-index: 0\"></textarea><span id=\"drag_area\" class=\"z-index: -1;\"></span></div><div id=\"shuoshuo_parttwo\" class=\"shuoshuo_parttwo\"><div id=\"shuoshuo_emoji_Tieba\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_BiliBili\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_QQ\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_custom\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emojiswitch\" class=\"shuoshuo_emojiswitch\" style='display: none'><div id=\"switch_1\" class=\"shuoshuo_emoji_part zuiliangdezai\">Tieba</div><div id=\"switch_2\" class=\"shuoshuo_emoji_part\">BiliBili</div><div id=\"switch_3\" class=\"shuoshuo_emoji_part\">QQ</div><div id=\"switch_4\" class=\"shuoshuo_emoji_part\">Custom</div></div><div id=\"preview\" class=\"preview_now\"></div></div><div class=\"shuoshuo_submit\"><div class=\"shuoshuo_row\"><input class=\"artitalk_child shuoshuo_inputs\" style='display: none' id=\"email\" value=\"\"  placeholder=\" " + text18 + '"><input class="artitalk_child shuoshuo_inputs" style="display: none" id="commentNick" value="" placeholder="' + text18 + "\"><div class=\"artitalk_child\"><button class=\"at_button\" id='atSave' style=\"float: right;\">" + text3 + "</button><button class=\"at_button\" id='commentSave' style=\"display:none;float: right;\">" + text3 + "</button><button class=\"at_button\" id='atPreview' style=\"float: right;\">" + text2 + "</button><button class=\"at_button\" id='loadEmoji' style=\"float: right;\">" + text22 + '</button></div></div></div></div></div><div class="power"><div style="font-size: 25px;display: none; cursor: pointer" id="pubComment"><svg t="1591347684072" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9731" width="30" height="30" style=""><path d="M512 0C229.23 0 0 229.23 0 512s229.23 512 512 512 512-229.23 512-512S794.77 0 512 0z m0 953.62C268.49 953.62 70.38 755.51 70.38 512S268.49 70.38 512 70.38 953.62 268.49 953.62 512 755.51 953.62 512 953.62z" p-id="9732" fill="#707070"></path><path d="M771.1 726.4H514.8c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23h256.3c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM771.1 654.55H587.92c-15.56 0-28.23 12.66-28.23 28.23S572.35 711 587.92 711H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.22-28.23-28.22zM771.1 582.69H654.22c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM809.25 361.96c0-14.79-5.74-28.68-16.17-39.1L657.66 187.45c-10.43-10.43-24.32-16.17-39.1-16.17s-28.67 5.74-39.1 16.17L207.23 559.67c-5.06 5.06-7.88 12.06-7.72 19.21l3.61 172.49a26.32 26.32 0 0 0 25.8 25.83l172.6 3.81c0.22 0.01 0.44 0.01 0.67 0.01 6.95 0 13.76-2.82 18.66-7.73l372.22-372.22c10.43-10.43 16.18-24.32 16.18-39.11z m-53.5 1.79L391.5 727.99l-136.14-3-2.85-135.96 364.25-364.26c0.99-0.98 2.59-0.98 3.58-0.01l135.4 135.41c0.99 0.99 0.99 2.59 0.01 3.58z" p-id="9733" fill="#707070"></path></svg></div><div style="font-size: 25px;display: inline; cursor: pointer" id="pubShuo"title="' + text11 + '"><svg t="1591347684072"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9731" width="30" height="30"  style="display: inline"><path d="M512 0C229.23 0 0 229.23 0 512s229.23 512 512 512 512-229.23 512-512S794.77 0 512 0z m0 953.62C268.49 953.62 70.38 755.51 70.38 512S268.49 70.38 512 70.38 953.62 268.49 953.62 512 755.51 953.62 512 953.62z" p-id="9732" fill="#707070"></path><path d="M771.1 726.4H514.8c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23h256.3c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM771.1 654.55H587.92c-15.56 0-28.23 12.66-28.23 28.23S572.35 711 587.92 711H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.22-28.23-28.22zM771.1 582.69H654.22c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM809.25 361.96c0-14.79-5.74-28.68-16.17-39.1L657.66 187.45c-10.43-10.43-24.32-16.17-39.1-16.17s-28.67 5.74-39.1 16.17L207.23 559.67c-5.06 5.06-7.88 12.06-7.72 19.21l3.61 172.49a26.32 26.32 0 0 0 25.8 25.83l172.6 3.81c0.22 0.01 0.44 0.01 0.67 0.01 6.95 0 13.76-2.82 18.66-7.73l372.22-372.22c10.43-10.43 16.18-24.32 16.18-39.11z m-53.5 1.79L391.5 727.99l-136.14-3-2.85-135.96 364.25-364.26c0.99-0.98 2.59-0.98 3.58-0.01l135.4 135.41c0.99 0.99 0.99 2.59 0.01 3.58z" p-id="9733" fill="#707070"></path></svg></div><div style="font-size: 25px;display: inline; cursor: pointer" id="switchUser" title="' + text9 + '"><svg t="1591347848063"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12288" width="30" height="30"  style="display: inline"><path d="M515.541449 7.082899c-280.359429 0-508.458551 228.120391-508.458551 508.458551s228.120391 508.458551 508.458551 508.458551 508.458551-228.120391 508.458551-508.458551S795.900879 7.082899 515.541449 7.082899zM515.541449 981.864196c-257.132626 0-466.301477-209.190121-466.301477-466.322747 0-257.132626 209.168851-466.322747 466.301477-466.322747s466.301477 209.190121 466.301477 466.322747S772.674075 981.864196 515.541449 981.864196zM614.574414 524.177056 614.574414 524.177056c47.751075-31.96876 79.230625-86.398604 79.230625-148.187857 0-98.437405-79.804915-178.24232-178.24232-178.24232-98.437405 0-178.24232 79.804915-178.24232 178.24232 0 61.810523 31.479551 116.219097 79.251895 148.187857-100.266622 39.519598-171.244501 137.170014-171.244501 251.453545 0 0.23397 0 0.446669 0.02127 0.659369 0 0.04254-0.02127 0.10635-0.02127 0.14889 0 15.612155 12.65563 28.246516 28.267786 28.246516 15.590885 0 21.886796-12.63436 21.886796-28.246516 0-0.340319-0.08508-0.659369-0.10635-1.020958 0.10635-118.005774 102.159649-219.995264 220.207964-219.995264 118.112124 0 220.207964 102.095839 220.207964 220.207964 0 0.14889-1.467628 29.054774 21.971875 29.054774 15.505806 0 28.076356-12.57055 28.076356-28.055086 0-0.06381-0.02127-0.12762-0.02127-0.2127 0-0.25524 0.02127-0.510479 0.02127-0.786989C785.797645 661.34707 714.798496 563.696654 614.574414 524.177056zM515.541449 510.734437c-74.402343 0-134.723968-60.321625-134.723968-134.723968 0-74.423613 60.321625-134.723968 134.723968-134.723968 74.423613 0 134.723968 60.321625 134.723968 134.723968S589.943792 510.734437 515.541449 510.734437z" p-id="12289" fill="#707070"></path></svg></div><div style="font-size: 25px;display: inline; cursor: pointer" id="uploadSource" title="" + text29 + ""><svg t="1606385459524" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2943" width="30" height="30" style="display: inline"><path d="M275.815618 476.43815a20.004001 20.004001 0 0 1-14.139971-34.143972l251.284545-251.295976 249.387023 249.387023a20.004001 20.004001 0 0 1-28.291373 28.291373L512.960192 247.580948 289.955589 470.585551a19.946847 19.946847 0 0 1-14.139971 5.852599z" p-id="2944" fill="#707070"></path><path d="M512.011431 854.730956a20.004001 20.004001 0 0 1-20.004001-20.004001V225.279344a20.004001 20.004001 0 1 1 40.008002 0v609.390456a20.004001 20.004001 0 0 1-20.004001 20.061156z" p-id="2945" fill="#707070"></path><path d="M512.011431 1023.999097a510.467814 510.467814 0 1 1 199.297004-40.24805 508.810339 508.810339 0 0 1-199.297004 40.24805z m0-983.991095a470.459811 470.459811 0 1 0 183.659591 37.081703A469.030954 469.030954 0 0 0 512.011431 40.008002z" p-id="2946" fill="#707070"></path></svg></div><br>Powered By <a href="https://artitalk-docs.hclonely.com/" target="_blank">Artitalk</a><br>' + atVersion + "</div><input type='file' id='realUpload' onchange='atEvery.prototype.beginUpload(this.files[0])' style=\"width: 0;height: 0;display: none\"></input></div>";
-  var motionHtml = "<div id='lazy'><div class=\"preloader\" style=\"opacity: 1; \"><svg version=\"1.1\" id=\"sun\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\"y=\"0px\" width=\"10px\" height=\"10px\" viewBox=\"0 0 10 10\" enable-background=\"new 0 0 10 10\" xml:space=\"preserve\"style=\"opacity: 1; margin-left: 0px; margin-top: 0px;\"><g><path fill=\"none\"d=\"M6.942,3.876c-0.4-0.692-1.146-1.123-1.946-1.123c-0.392,0-0.779,0.104-1.121,0.301c-1.072,0.619-1.44,1.994-0.821,3.067C3.454,6.815,4.2,7.245,5,7.245c0.392,0,0.779-0.104,1.121-0.301C6.64,6.644,7.013,6.159,7.167,5.581C7.321,5,7.243,4.396,6.942,3.876z M6.88,5.505C6.745,6.007,6.423,6.427,5.973,6.688C5.676,6.858,5.34,6.948,5,6.948c-0.695,0-1.343-0.373-1.69-0.975C2.774,5.043,3.093,3.849,4.024,3.312C4.32,3.14,4.656,3.05,4.996,3.05c0.695,0,1.342,0.374,1.69,0.975C6.946,4.476,7.015,5,6.88,5.505z\"></path><path fill=\"none\"d=\"M8.759,2.828C8.718,2.757,8.626,2.732,8.556,2.774L7.345,3.473c-0.07,0.041-0.094,0.132-0.053,0.202C7.319,3.723,7.368,3.75,7.419,3.75c0.025,0,0.053-0.007,0.074-0.02l1.211-0.699C8.774,2.989,8.8,2.899,8.759,2.828z\"></path><path fill=\"none\"d=\"M1.238,7.171c0.027,0.047,0.077,0.074,0.128,0.074c0.025,0,0.051-0.008,0.074-0.02l1.211-0.699c0.071-0.041,0.095-0.133,0.054-0.203S2.574,6.228,2.503,6.269l-1.21,0.699C1.221,7.009,1.197,7.101,1.238,7.171z\"></path><path fill=\"none\"d=\"M6.396,2.726c0.052,0,0.102-0.026,0.13-0.075l0.349-0.605C6.915,1.976,6.89,1.885,6.819,1.844c-0.07-0.042-0.162-0.017-0.202,0.054L6.269,2.503C6.228,2.574,6.251,2.666,6.322,2.706C6.346,2.719,6.371,2.726,6.396,2.726z\"></path><path fill=\"none\"d=\"M3.472,7.347L3.123,7.952c-0.041,0.07-0.017,0.162,0.054,0.203C3.2,8.169,3.226,8.175,3.25,8.175c0.052,0,0.102-0.027,0.129-0.074l0.349-0.605c0.041-0.07,0.017-0.16-0.054-0.203C3.603,7.251,3.513,7.276,3.472,7.347z\"></path><path fill=\"none\"d=\"M3.601,2.726c0.025,0,0.051-0.007,0.074-0.02C3.746,2.666,3.77,2.574,3.729,2.503l-0.35-0.604C3.338,1.828,3.248,1.804,3.177,1.844C3.106,1.886,3.082,1.976,3.123,2.047l0.35,0.604C3.5,2.7,3.549,2.726,3.601,2.726z\"></path><path fill=\"none\"d=\"M6.321,7.292c-0.07,0.043-0.094,0.133-0.054,0.203l0.351,0.605c0.026,0.047,0.076,0.074,0.127,0.074c0.025,0,0.051-0.006,0.074-0.02c0.072-0.041,0.096-0.133,0.055-0.203l-0.35-0.605C6.483,7.276,6.393,7.253,6.321,7.292z\"></path><path fill=\"none\"d=\"M2.202,5.146c0.082,0,0.149-0.065,0.149-0.147S2.284,4.851,2.202,4.851H1.503c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147H2.202z\"></path><path fill=\"none\"d=\"M8.493,4.851H7.794c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147l0,0h0.699c0.082,0,0.148-0.065,0.148-0.147S8.575,4.851,8.493,4.851L8.493,4.851z\"></path><path fill=\"none\"d=\"M5.146,2.203V0.805c0-0.082-0.066-0.148-0.148-0.148c-0.082,0-0.148,0.066-0.148,0.148v1.398c0,0.082,0.066,0.149,0.148,0.149C5.08,2.352,5.146,2.285,5.146,2.203z\"></path><path fill=\"none\"d=\"M4.85,7.796v1.396c0,0.082,0.066,0.15,0.148,0.15c0.082,0,0.148-0.068,0.148-0.15V7.796c0-0.082-0.066-0.148-0.148-0.148C4.917,7.647,4.85,7.714,4.85,7.796z\"></path><path fill=\"none\"d=\"M2.651,3.473L1.44,2.774C1.369,2.732,1.279,2.757,1.238,2.828C1.197,2.899,1.221,2.989,1.292,3.031l1.21,0.699c0.023,0.013,0.049,0.02,0.074,0.02c0.051,0,0.101-0.026,0.129-0.075C2.747,3.604,2.722,3.514,2.651,3.473z\"></path><path fill=\"none\"d=\"M8.704,6.968L7.493,6.269c-0.07-0.041-0.162-0.016-0.201,0.055c-0.041,0.07-0.018,0.162,0.053,0.203l1.211,0.699c0.023,0.012,0.049,0.02,0.074,0.02c0.051,0,0.102-0.027,0.129-0.074C8.8,7.101,8.776,7.009,8.704,6.968z\"</path></g></svg><svg version=\"1.1\" id=\"cloud\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"x=\"0px\" y=\"0px\" width=\"110px\" height=\"110px\" viewBox=\"0 0 10 10\" enable-background=\"new 0 0 10 10\"xml:space=\"preserve\"><path fill=\"none\"d=\"M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z\"></path></svg><div class=\"rain\"><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span></div><div class=\"artitalk_loading_text\" id=\"loading_txt\">" + loadingTxT + '</div></div></div>';
-  var atOpHtml = "<div id=\"shade\" class=\"c1\" style='display: none'></div><div id=\"shuoshuo-modal\" class=\"c2\" style='display: none' ><center><p>" + text7 + '：<input type="text" class="shuoshuo_input_log" id="username"/></p><p>' + text8 + '：<input type="password" class="shuoshuo_input_log"  id="pwd"/></p><p><input type="button" value="' + text9 + "\" class=\"at_button\" id='login'>&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\"" + text10 + "\"  class=\"at_button\" id = 'celLogin'></p></center><center><div id=\"logw\" style='color: red'></div></center></div><div id=\"userinfo\" class=\"c2\" style='display: none'><center><p><div id=\"status\"></div></p><p><input type=\"button\" class=\"at_button\" value=\"" + text5 + '" id="hideuser">&nbsp;&nbsp;&nbsp;&nbsp;<input id="tui" type="button" value="' + text6 + "\" class=\"at_button\" style=\"display: none;\" onclick=\"Logout();\"></p></center></div><div id=\"shanchu\" class=\"c2\" style='display: none'><center><p>" + text20 + '</p><p><input type="button" class="at_button" value="' + text5 + "\" id=\"deleteSus\"></p><center></div><div id=\"shanchur\" class=\"c2\" style='display: none'><center><p>" + text19 + "</p><p><div id=\"delete1\"></div></p><center></div><div id='clickForPreview'></div>";
+  var atHtml = "<div id='artitalk_part1'><div id=\"shuoshuo_content\"><div id=\"ccontent\"></div><div id='readButton' style=''><center><button id=\"readmore\" class=\"at_button\" style=\"margin-bottom: 15px;display: none\">" + loadMore + '</button></center></div></div><div id="shuoshuo_input" class="shuoshuo_active" style="display: none;"><div id="shuoshuo_edit"><textarea class="shuoshuo_text" oninput="preview()" id="neirong" placeholder="' + shuoPla + '"style="background-image: url(' + bgImg + ");z-index: 0\"></textarea><span id=\"drag_area\" class=\"z-index: -1;\"></span></div><div id=\"shuoshuo_parttwo\" class=\"shuoshuo_parttwo\"><div id=\"shuoshuo_emoji_Tieba\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_BiliBili\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_QQ\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_custom\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emojiswitch\" class=\"shuoshuo_emojiswitch\" style='display: none'><div id=\"switch_1\" class=\"shuoshuo_emoji_part zuiliangdezai\">Tieba</div><div id=\"switch_2\" class=\"shuoshuo_emoji_part\">BiliBili</div><div id=\"switch_3\" class=\"shuoshuo_emoji_part\">QQ</div><div id=\"switch_4\" class=\"shuoshuo_emoji_part\">Custom</div></div><div id=\"preview\" class=\"preview_now\"></div></div><div class=\"shuoshuo_submit\"><div class=\"shuoshuo_row\"><input class=\"artitalk_child shuoshuo_inputs\" style='display: none' id=\"email\" value=\"\"  placeholder=\" " + avatarUrl + '"><input class="artitalk_child shuoshuo_inputs" style="display: none" id="commentNick" value="" placeholder="' + avatarUrl + "\"><div class=\"artitalk_child\"><button class=\"at_button\" id='atSave' style=\"float: right;\">" + publish + "</button><button class=\"at_button\" id='commentSave' style=\"display:none;float: right;\">" + publish + "</button><button class=\"at_button\" id='atPreview' style=\"float: right;\">" + preview + "</button><button class=\"at_button\" id='loadEmoji' style=\"float: right;\">" + emoji + '</button></div></div></div></div></div><div class="power"><div style="font-size: 25px;display: none; cursor: pointer" id="pubComment"><svg t="1591347684072" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9731" width="30" height="30" style=""><path d="M512 0C229.23 0 0 229.23 0 512s229.23 512 512 512 512-229.23 512-512S794.77 0 512 0z m0 953.62C268.49 953.62 70.38 755.51 70.38 512S268.49 70.38 512 70.38 953.62 268.49 953.62 512 755.51 953.62 512 953.62z" p-id="9732" fill="#707070"></path><path d="M771.1 726.4H514.8c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23h256.3c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM771.1 654.55H587.92c-15.56 0-28.23 12.66-28.23 28.23S572.35 711 587.92 711H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.22-28.23-28.22zM771.1 582.69H654.22c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM809.25 361.96c0-14.79-5.74-28.68-16.17-39.1L657.66 187.45c-10.43-10.43-24.32-16.17-39.1-16.17s-28.67 5.74-39.1 16.17L207.23 559.67c-5.06 5.06-7.88 12.06-7.72 19.21l3.61 172.49a26.32 26.32 0 0 0 25.8 25.83l172.6 3.81c0.22 0.01 0.44 0.01 0.67 0.01 6.95 0 13.76-2.82 18.66-7.73l372.22-372.22c10.43-10.43 16.18-24.32 16.18-39.11z m-53.5 1.79L391.5 727.99l-136.14-3-2.85-135.96 364.25-364.26c0.99-0.98 2.59-0.98 3.58-0.01l135.4 135.41c0.99 0.99 0.99 2.59 0.01 3.58z" p-id="9733" fill="#707070"></path></svg></div><div style="font-size: 25px;display: inline; cursor: pointer" id="pubShuo"title="' + postTalk + '"><svg t="1591347684072"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9731" width="30" height="30"  style="display: inline"><path d="M512 0C229.23 0 0 229.23 0 512s229.23 512 512 512 512-229.23 512-512S794.77 0 512 0z m0 953.62C268.49 953.62 70.38 755.51 70.38 512S268.49 70.38 512 70.38 953.62 268.49 953.62 512 755.51 953.62 512 953.62z" p-id="9732" fill="#707070"></path><path d="M771.1 726.4H514.8c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23h256.3c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM771.1 654.55H587.92c-15.56 0-28.23 12.66-28.23 28.23S572.35 711 587.92 711H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.22-28.23-28.22zM771.1 582.69H654.22c-15.57 0-28.23 12.66-28.23 28.23s12.66 28.23 28.23 28.23H771.1c15.57 0 28.23-12.66 28.23-28.23s-12.67-28.23-28.23-28.23zM809.25 361.96c0-14.79-5.74-28.68-16.17-39.1L657.66 187.45c-10.43-10.43-24.32-16.17-39.1-16.17s-28.67 5.74-39.1 16.17L207.23 559.67c-5.06 5.06-7.88 12.06-7.72 19.21l3.61 172.49a26.32 26.32 0 0 0 25.8 25.83l172.6 3.81c0.22 0.01 0.44 0.01 0.67 0.01 6.95 0 13.76-2.82 18.66-7.73l372.22-372.22c10.43-10.43 16.18-24.32 16.18-39.11z m-53.5 1.79L391.5 727.99l-136.14-3-2.85-135.96 364.25-364.26c0.99-0.98 2.59-0.98 3.58-0.01l135.4 135.41c0.99 0.99 0.99 2.59 0.01 3.58z" p-id="9733" fill="#707070"></path></svg></div><div style="font-size: 25px;display: inline; cursor: pointer" id="switchUser" title="' + login + '"><svg t="1591347848063"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12288" width="30" height="30"  style="display: inline"><path d="M515.541449 7.082899c-280.359429 0-508.458551 228.120391-508.458551 508.458551s228.120391 508.458551 508.458551 508.458551 508.458551-228.120391 508.458551-508.458551S795.900879 7.082899 515.541449 7.082899zM515.541449 981.864196c-257.132626 0-466.301477-209.190121-466.301477-466.322747 0-257.132626 209.168851-466.322747 466.301477-466.322747s466.301477 209.190121 466.301477 466.322747S772.674075 981.864196 515.541449 981.864196zM614.574414 524.177056 614.574414 524.177056c47.751075-31.96876 79.230625-86.398604 79.230625-148.187857 0-98.437405-79.804915-178.24232-178.24232-178.24232-98.437405 0-178.24232 79.804915-178.24232 178.24232 0 61.810523 31.479551 116.219097 79.251895 148.187857-100.266622 39.519598-171.244501 137.170014-171.244501 251.453545 0 0.23397 0 0.446669 0.02127 0.659369 0 0.04254-0.02127 0.10635-0.02127 0.14889 0 15.612155 12.65563 28.246516 28.267786 28.246516 15.590885 0 21.886796-12.63436 21.886796-28.246516 0-0.340319-0.08508-0.659369-0.10635-1.020958 0.10635-118.005774 102.159649-219.995264 220.207964-219.995264 118.112124 0 220.207964 102.095839 220.207964 220.207964 0 0.14889-1.467628 29.054774 21.971875 29.054774 15.505806 0 28.076356-12.57055 28.076356-28.055086 0-0.06381-0.02127-0.12762-0.02127-0.2127 0-0.25524 0.02127-0.510479 0.02127-0.786989C785.797645 661.34707 714.798496 563.696654 614.574414 524.177056zM515.541449 510.734437c-74.402343 0-134.723968-60.321625-134.723968-134.723968 0-74.423613 60.321625-134.723968 134.723968-134.723968 74.423613 0 134.723968 60.321625 134.723968 134.723968S589.943792 510.734437 515.541449 510.734437z" p-id="12289" fill="#707070"></path></svg></div><div style="font-size: 25px;display: inline; cursor: pointer" id="uploadSource" title="" + add + ""><svg t="1606385459524" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2943" width="30" height="30" style="display: inline"><path d="M275.815618 476.43815a20.004001 20.004001 0 0 1-14.139971-34.143972l251.284545-251.295976 249.387023 249.387023a20.004001 20.004001 0 0 1-28.291373 28.291373L512.960192 247.580948 289.955589 470.585551a19.946847 19.946847 0 0 1-14.139971 5.852599z" p-id="2944" fill="#707070"></path><path d="M512.011431 854.730956a20.004001 20.004001 0 0 1-20.004001-20.004001V225.279344a20.004001 20.004001 0 1 1 40.008002 0v609.390456a20.004001 20.004001 0 0 1-20.004001 20.061156z" p-id="2945" fill="#707070"></path><path d="M512.011431 1023.999097a510.467814 510.467814 0 1 1 199.297004-40.24805 508.810339 508.810339 0 0 1-199.297004 40.24805z m0-983.991095a470.459811 470.459811 0 1 0 183.659591 37.081703A469.030954 469.030954 0 0 0 512.011431 40.008002z" p-id="2946" fill="#707070"></path></svg></div><br>Powered By <a href="https://artitalk-docs.hclonely.com/" target="_blank">Artitalk</a><br>' + atVersion + "</div><input type='file' id='realUpload' onchange='atEvery.prototype.beginUpload(this.files[0])' style=\"width: 0;height: 0;display: none\"></input></div>";
+  var motionHtml = "<div id='lazy'><div class=\"preloader\" style=\"opacity: 1; \"><svg version=\"1.1\" id=\"sun\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\"y=\"0px\" width=\"10px\" height=\"10px\" viewBox=\"0 0 10 10\" enable-background=\"new 0 0 10 10\" xml:space=\"preserve\"style=\"opacity: 1; margin-left: 0px; margin-top: 0px;\"><g><path fill=\"none\"d=\"M6.942,3.876c-0.4-0.692-1.146-1.123-1.946-1.123c-0.392,0-0.779,0.104-1.121,0.301c-1.072,0.619-1.44,1.994-0.821,3.067C3.454,6.815,4.2,7.245,5,7.245c0.392,0,0.779-0.104,1.121-0.301C6.64,6.644,7.013,6.159,7.167,5.581C7.321,5,7.243,4.396,6.942,3.876z M6.88,5.505C6.745,6.007,6.423,6.427,5.973,6.688C5.676,6.858,5.34,6.948,5,6.948c-0.695,0-1.343-0.373-1.69-0.975C2.774,5.043,3.093,3.849,4.024,3.312C4.32,3.14,4.656,3.05,4.996,3.05c0.695,0,1.342,0.374,1.69,0.975C6.946,4.476,7.015,5,6.88,5.505z\"></path><path fill=\"none\"d=\"M8.759,2.828C8.718,2.757,8.626,2.732,8.556,2.774L7.345,3.473c-0.07,0.041-0.094,0.132-0.053,0.202C7.319,3.723,7.368,3.75,7.419,3.75c0.025,0,0.053-0.007,0.074-0.02l1.211-0.699C8.774,2.989,8.8,2.899,8.759,2.828z\"></path><path fill=\"none\"d=\"M1.238,7.171c0.027,0.047,0.077,0.074,0.128,0.074c0.025,0,0.051-0.008,0.074-0.02l1.211-0.699c0.071-0.041,0.095-0.133,0.054-0.203S2.574,6.228,2.503,6.269l-1.21,0.699C1.221,7.009,1.197,7.101,1.238,7.171z\"></path><path fill=\"none\"d=\"M6.396,2.726c0.052,0,0.102-0.026,0.13-0.075l0.349-0.605C6.915,1.976,6.89,1.885,6.819,1.844c-0.07-0.042-0.162-0.017-0.202,0.054L6.269,2.503C6.228,2.574,6.251,2.666,6.322,2.706C6.346,2.719,6.371,2.726,6.396,2.726z\"></path><path fill=\"none\"d=\"M3.472,7.347L3.123,7.952c-0.041,0.07-0.017,0.162,0.054,0.203C3.2,8.169,3.226,8.175,3.25,8.175c0.052,0,0.102-0.027,0.129-0.074l0.349-0.605c0.041-0.07,0.017-0.16-0.054-0.203C3.603,7.251,3.513,7.276,3.472,7.347z\"></path><path fill=\"none\"d=\"M3.601,2.726c0.025,0,0.051-0.007,0.074-0.02C3.746,2.666,3.77,2.574,3.729,2.503l-0.35-0.604C3.338,1.828,3.248,1.804,3.177,1.844C3.106,1.886,3.082,1.976,3.123,2.047l0.35,0.604C3.5,2.7,3.549,2.726,3.601,2.726z\"></path><path fill=\"none\"d=\"M6.321,7.292c-0.07,0.043-0.094,0.133-0.054,0.203l0.351,0.605c0.026,0.047,0.076,0.074,0.127,0.074c0.025,0,0.051-0.006,0.074-0.02c0.072-0.041,0.096-0.133,0.055-0.203l-0.35-0.605C6.483,7.276,6.393,7.253,6.321,7.292z\"></path><path fill=\"none\"d=\"M2.202,5.146c0.082,0,0.149-0.065,0.149-0.147S2.284,4.851,2.202,4.851H1.503c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147H2.202z\"></path><path fill=\"none\"d=\"M8.493,4.851H7.794c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147l0,0h0.699c0.082,0,0.148-0.065,0.148-0.147S8.575,4.851,8.493,4.851L8.493,4.851z\"></path><path fill=\"none\"d=\"M5.146,2.203V0.805c0-0.082-0.066-0.148-0.148-0.148c-0.082,0-0.148,0.066-0.148,0.148v1.398c0,0.082,0.066,0.149,0.148,0.149C5.08,2.352,5.146,2.285,5.146,2.203z\"></path><path fill=\"none\"d=\"M4.85,7.796v1.396c0,0.082,0.066,0.15,0.148,0.15c0.082,0,0.148-0.068,0.148-0.15V7.796c0-0.082-0.066-0.148-0.148-0.148C4.917,7.647,4.85,7.714,4.85,7.796z\"></path><path fill=\"none\"d=\"M2.651,3.473L1.44,2.774C1.369,2.732,1.279,2.757,1.238,2.828C1.197,2.899,1.221,2.989,1.292,3.031l1.21,0.699c0.023,0.013,0.049,0.02,0.074,0.02c0.051,0,0.101-0.026,0.129-0.075C2.747,3.604,2.722,3.514,2.651,3.473z\"></path><path fill=\"none\"d=\"M8.704,6.968L7.493,6.269c-0.07-0.041-0.162-0.016-0.201,0.055c-0.041,0.07-0.018,0.162,0.053,0.203l1.211,0.699c0.023,0.012,0.049,0.02,0.074,0.02c0.051,0,0.102-0.027,0.129-0.074C8.8,7.101,8.776,7.009,8.704,6.968z\"</path></g></svg><svg version=\"1.1\" id=\"cloud\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"x=\"0px\" y=\"0px\" width=\"110px\" height=\"110px\" viewBox=\"0 0 10 10\" enable-background=\"new 0 0 10 10\"xml:space=\"preserve\"><path fill=\"none\"d=\"M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z\"></path></svg><div class=\"rain\"><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span></div><div class=\"artitalk_loading_text\" id=\"loading_txt\">" + loading + '</div></div></div>';
+  var atOpHtml = "<div id=\"shade\" class=\"c1\" style='display: none'></div><div id=\"shuoshuo-modal\" class=\"c2\" style='display: none' ><center><p>" + username + '：<input type="text" class="shuoshuo_input_log" id="username"/></p><p>' + password + '：<input type="password" class="shuoshuo_input_log"  id="pwd"/></p><p><input type="button" value="' + login + "\" class=\"at_button\" id='login'>&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\"" + cancel + "\"  class=\"at_button\" id = 'celLogin'></p></center><center><div id=\"logw\" style='color: red'></div></center></div><div id=\"userinfo\" class=\"c2\" style='display: none'><center><p><div id=\"status\"></div></p><p><input type=\"button\" class=\"at_button\" value=\"" + confirm + '" id="hideuser">&nbsp;&nbsp;&nbsp;&nbsp;<input id="tui" type="button" value="' + signOut + "\" class=\"at_button\" style=\"display: none;\" onclick=\"Logout();\"></p></center></div><div id=\"shanchu\" class=\"c2\" style='display: none'><center><p>" + deleteSuccess + '</p><p><input type="button" class="at_button" value="' + confirm + "\" id=\"deleteSus\"></p><center></div><div id=\"shanchur\" class=\"c2\" style='display: none'><center><p>" + confirmDelete + "</p><p><div id=\"delete1\"></div></p><center></div><div id='clickForPreview'></div>";
   var atOp = document.createElement('div');
   atOp.id = 'operare_artitalk';
   document.body.append(atOp);
@@ -314,7 +124,7 @@ atEvery.prototype._init = function () {
   const pubButton = document.getElementById('pubShuo');// publish shuo
   const switchLogin = document.getElementById('switchUser');// login or exit
   const cancelLogin = document.getElementById('celLogin');// cancel Login
-  const login = document.getElementById('login');// Login
+  const loginButton = document.getElementById('login');// Login
   const hideUser = document.getElementById('hideuser');
   const loadEmoji = document.getElementById('loadEmoji');// Loading emoji
   const switchTb = document.getElementById('switch_1');// Tieba emoji
@@ -344,7 +154,7 @@ atEvery.prototype._init = function () {
         fadeIn('shuoshuo_input');
       }
     } else {
-      document.getElementById('logw').innerHTML = '<center><pre><code>' + text15 + '</code></pre></center>';
+      document.getElementById('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
       Show();
     }
   };
@@ -354,7 +164,7 @@ atEvery.prototype._init = function () {
     fadeIn('shade');
     if (currentUser) {
       fadeIn('userinfo');
-      document.getElementById('status').innerHTML = text4 + ':\t' + currentUser.attributes.username;
+      document.getElementById('status').innerHTML = loggedIn + ':\t' + currentUser.attributes.username;
       fadeIn('tui');
     } else {
       fadeIn('tui');
@@ -365,19 +175,19 @@ atEvery.prototype._init = function () {
   cancelLogin.onclick = function () {
     Hide();
   };
-  login.onclick = function () {
+  loginButton.onclick = function () {
     const passWord = document.getElementById('pwd').value;
     document.getElementById('logw').style.color = 'black';
     document.getElementById('logw').innerHTML = 'loading...';
     if (passWord === '') {
       document.getElementById('logw').style.color = 'red';
-      document.getElementById('logw').innerHTML = text37;
+      document.getElementById('logw').innerHTML = passwordRequired;
       return;
     }
     const userName = document.getElementById('username').value;
     if (userName === '') {
       document.getElementById('logw').style.color = 'red';
-      document.getElementById('logw').innerHTML = text36;
+      document.getElementById('logw').innerHTML = usernameRequired;
       return;
     }
     ArtitalkData.login(userName, passWord).then((user) => {
@@ -392,13 +202,13 @@ atEvery.prototype._init = function () {
       document.getElementById('logw').style.color = 'red';
       // console.log(errLogin);
       if (errLogin.indexOf('mismatch') != -1) {
-        errLogin = text43;
+        errLogin = credentialsMismatch;
       } else if (errLogin.indexOf('terminated') != -1) {
-        errLogin = text44;
+        errLogin = loginRequestError;
       } else if (errLogin.indexOf('Could not find user.') != -1) {
-        errLogin = text45;
+        errLogin = userNotFound;
       } else if (errLogin.indexOf('Please try later or reset your password.') != -1) {
-        errLogin = text46;
+        errLogin = tooManyLoginAttempts;
       }
       document.getElementById('logw').innerHTML = errLogin;
     });
@@ -518,7 +328,7 @@ atEvery.prototype._init = function () {
     if (currentUser) {
       // console.log(currentUser);
     } else {
-      document.getElementById('logw').innerHTML = '<center><pre><code>' + text15 + '</code></pre></center>';
+      document.getElementById('logw').innerHTML = '<center><pre><code>' + loginRequired + '</code></pre></center>';
       Show();
       return;
     }
@@ -537,7 +347,7 @@ atEvery.prototype._init = function () {
     const currentUser = ArtitalkData.currentUser();
     if (currentUser) {
       fadeIn('shade'); fadeIn('shanchur');
-      document.getElementById('delete1').innerHTML = '<input type="button" class="at_button" value="' + text5 + '" id="Delete"><input type="button" class="at_button" value="' + text10 + '" id="cancelDelete">';
+      document.getElementById('delete1').innerHTML = '<input type="button" class="at_button" value="' + confirm + '" id="Delete"><input type="button" class="at_button" value="' + cancel + '" id="cancelDelete">';
     } else {
       const pubButton = document.getElementById('pubShuo');
       pubButton.click();

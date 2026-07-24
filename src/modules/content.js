@@ -14,163 +14,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     onCommentsPublished
   } = root.config;
   lang = ArtitalkI18n.normalizeLanguage(lang);
-  var messages = ArtitalkI18n.getMessages(lang, 'content');
-  var { text0, text00, text1, text2, text3, text4, text5, text6, text7, text8, text9, text10, text11, text12, text14, text15, text16, text17, text18, text19, text20, text21, text22, text23, text24, text25, text26, text27, text28, text29, text30, text31, text32, text33, text34, text35, textup, loadingTxT, text36, text37, text38, text39, text40, text41, text42, text43, text44, text45, text46 } = messages;
-  if (false) switch (lang) {
-    case 'zh':
-      var text0 = '由';
-      var text00 = '发表';
-      var text1 = '加载更多...';
-      var text2 = '预览';
-      var text3 = '发布';
-      var text4 = '已登录';
-      var text5 = '确定';
-      var text6 = '退出登录';
-      var text7 = '用户';
-      var text8 = '密码';
-      var text9 = '登录';
-      var text10 = '取消';
-      var text11 = '发布说说';
-      var text12 = '添加图片，视频，音乐';
-      var text14 = '(上传失败，若非网络原因，请联系Artitalk开发人员)';
-      var text15 = '请先登录';
-      var text16 = '内容不能为空';
-      var text17 = '登陆失败，请检查用户名及密码是否正确';
-      var text18 = '头像url';
-      var text19 = '确定删除本条说说吗？';
-      var text20 = '删除成功';
-      var text21 = '请拖拽图片到此处';
-      var text22 = '表情';
-      var text23 = '删除';
-      var text24 = '如果你看到这条说说，恭喜你已经配置成功并且可以正常使用了。当你发布一个说说之后，我将会自动消失。快去探索Artitalk吧<br>欢迎加入Artitalk的QQ交流群：1104585229<br>觉得本项目不错的话可以推荐给你的好友或者去GitHub点一个star，感谢支持';
-      var text25 = '上传中';
-      var text26 = '图片';
-      var text27 = '音乐';
-      var text28 = '视频';
-      var text29 = '添加';
-      var text30 = '上传的图片最大支持5M，请压缩后或换一个继续上传';
-      var text31 = '上传的音乐最大支持10M，请压缩后或换一个继续上传';
-      var text32 = '上传的视频最大支持30M，请压缩后或换一个继续上传';
-      var text33 = '图片格式错误，请不要上传其他类型的文件';
-      var text34 = '音频格式错误，请不要上传其他类型的文件';
-      var text35 = '视频格式错误，请不要上传其他类型的文件';
-      var textup = '上传ing';
-      var loadingTxT = '加载中';
-      var text36 = '用户名不能为空';
-      var text37 = '密码不能为空';
-      var text38 = '请在下方输入框进行修改然后点击保存即可';
-      var text39 = '保存';
-      var text40 = '评论';
-      var text41 = '邮箱';
-      var text42 = '昵称';
-      var text43 = '用户名与密码不匹配';
-      var text44 = "登陆失败，常见错误有<br><li style='text-align:left;'>网络错误</li><li style='text-align:left;'>域名不在leancloud的域名白名单中被限制登录</li><li style='text-align:left;'>当前页面使用了其他leancloud应用导致登录到了其他应用所以失败</li>";
-      var text45 = '未找到此用户';
-      var text46 = '尝试错误密码次数过多，请稍后再试';
-      break;
-    case 'en':
-      var text0 = 'Published by';
-      var text00 = '';
-      var text1 = 'load more...';
-      var text2 = 'Preview';
-      var text3 = 'Publish';
-      var text4 = 'logged';
-      var text5 = 'Ok';
-      var text6 = 'Sign out';
-      var text7 = 'Username';
-      var text8 = 'Password';
-      var text9 = 'Log in';
-      var text10 = 'Cancel';
-      var text11 = 'Post talk';
-      var text12 = 'Add pictures, videos, music';
-      var text14 = '(Upload failed, if not for network reasons, please contact Artitalk developers)';
-      var text15 = 'Please log in first';
-      var text16 = 'Content can not be blank';
-      var text17 = 'Login failed, please check if the username and password are correct';
-      var text18 = 'Avatar url';
-      var text19 = 'Are you sure you want to devare this article?';
-      var text20 = 'Successfully devared';
-      var text21 = 'Please drag and drop pictures here';
-      var text22 = 'emoji';
-      var text23 = 'Devare';
-      var text24 = 'If you see this, congratulations, you have successfully configured and can be used normally. When you post one shuoshuo, I will disappear automatically. Quickly explore Artitalk.<br>Welcome to Artitalk’s QQ group: 1104585229<br>If you think this project is good, you can recommend it to your friends or go to GitHub to order a star.';
-      var text25 = 'uploading';
-      var text26 = 'image';
-      var text27 = 'music';
-      var text28 = 'video';
-      var text29 = 'Add';
-      var text30 = 'The uploaded image supports a maximum of 5M, please compress or change another one to continue uploading';
-      var text31 = 'The uploaded music supports a maximum of 10M, please compress or change another one to continue uploading';
-      var text32 = 'The uploaded video supports a maximum of 30M, please compress or change another one to continue uploading';
-      var text33 = 'Picture format error, please do not upload other types of files';
-      var text34 = 'The audio format is wrong, please do not upload other types of files';
-      var text35 = 'Video format error, please do not upload other types of files';
-      var textup = 'Uploading';
-      var loadingTxT = 'Loading';
-      var text36 = 'Username can not be empty';
-      var text37 = 'Password can not be empty';
-      var text38 = 'Please modify it in the input box below and click save';
-      var text39 = 'save';
-      var text40 = 'comments';
-      var text41 = 'Mailbox';
-      var text42 = 'Nickname';
-      var text43 = 'The username and password mismatch.';
-      var text44 = 'Request has been terminated Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.c';
-      var text45 = 'Could not find user.';
-      var text46 = 'You have entered incorrect passwords for too many times. Please try later or reset your password.';
-      break;
-    case 'es':
-      var text0 = 'Publicado por';
-      var text00 = '';
-      var text1 = 'Carga más...';
-      var text2 = 'Avance';
-      var text3 = 'Lanzamiento';
-      var text4 = 'Registrado';
-      var text5 = 'Determinar';
-      var text6 = 'Desconectar';
-      var text7 = 'Usuario';
-      var text8 = 'Contraseña';
-      var text9 = 'Iniciar sesión';
-      var text10 = 'Cancelar';
-      var text11 = 'Publicar charla';
-      var text12 = 'Agrega fotos, videos, música';
-      var text14 = '(Carga fallida, si no es por razones de red, comuníquese con los desarrolladores de Artitalk)';
-      var text15 = 'Por favor ingresa primero';
-      var text16 = 'El contenido no puede estar en blanco';
-      var text17 = 'Error de inicio de sesión, compruebe si el nombre de usuario y la contraseña son correctos';
-      var text18 = 'URL del avatar';
-      var text19 = '¿Estás seguro de que deseas eliminar este artículo?';
-      var text20 = 'Eliminado con éxito';
-      var text21 = 'Arrastra y suelta fotos aquí';
-      var text22 = 'expresión';
-      var text23 = 'Eliminar';
-      var text24 = 'Si ve este artículo, felicidades, se ha configurado correctamente y se puede usar normalmente. Cuando publiques un comentario, desapareceré automáticamente. Explore rápidamente Artitalk. <br> Bienvenido al grupo QQ de Artitalk: 1104585229 <br> Si cree que este proyecto es bueno, puede recomendarlo a sus amigos o ir a GitHub para pedir una estrella, gracias por su apoyo.';
-      var text25 = 'cargando';
-      var text26 = 'imagen';
-      var text27 = 'música';
-      var text28 = 'vídeo';
-      var text29 = 'Añadir';
-      var text30 = 'La imagen cargada admite un máximo de 5 M, comprima o cambie otra para continuar cargando';
-      var text31 = 'La música cargada admite un máximo de 10 M, comprime o cambia otra para continuar cargando';
-      var text32 = 'El video subido admite un máximo de 30 M, comprima o cambie otro para continuar subiendo';
-      var text33 = 'Error de formato de imagen, no suba otros tipos de archivos';
-      var text34 = 'El formato de audio es incorrecto, no suba otros tipos de archivos';
-      var text35 = 'Error de formato de video, no suba otros tipos de archivos';
-      var textup = 'Cargando';
-      var loadingTxT = 'Cargando';
-      var text36 = 'El nombre de usuario no puede estar vacío';
-      var text37 = 'la contraseña no puede estar en blanco';
-      var text38 = 'Por favor, introduzca las modificaciones en el cuadro de abajo y haga clic en guardar';
-      var text39 = 'guardar';
-      var text40 = 'comentarios';
-      var text41 = 'Buzón';
-      var text42 = 'Apodo';
-      var text43 = 'El nombre de usuario y la contraseña no coinciden.';
-      var text44 = 'La solicitud ha sido cancelada Posibles causas: la red está fuera de línea, Access-Control-Allow-Origin no permite Origin, la página se está descargando, etc.c';
-      var text45 = 'No se pudo encontrar el usuario.';
-      var text46 = 'Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña.';
-      break;
-  }
+  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts } = ArtitalkI18n.getMessages(lang);
   color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
   color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
   color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
@@ -258,7 +102,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     originString += mid + '</ul>';
     // console.log(originString);
     if (shuoNum === 0 && pageNum === 0) {
-      originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + text24 + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;"><svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10" style="display: inline"></svg> 2020-04-10 20:35:25</span></p></span></li></ul>';
+      originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;"><svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10" style="display: inline"></svg> 2020-04-10 20:35:25</span></p></span></li></ul>';
     }
     document.getElementById('ccontent').innerHTML = originString;
     if (atComment !== 0) {
@@ -291,11 +135,11 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     fadeIn('lazy');
     ArtitalkData.queryTalkById(id).then(res => {
       res.forEach(function (atom) {
-        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + text38 + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;"><svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10" style="display: inline"></svg> 2020-04-10 20:35:25</span></p></span></li></ul>';
+        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + editInstructions + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;"><svg t="1591350675688"  viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28653" width="10" height="10" style="display: inline"></svg> 2020-04-10 20:35:25</span></p></span></li></ul>';
         document.getElementById('ccontent').innerHTML = originString;
         const changeId = document.getElementById('atSave');
         changeId.id = 'atEditsaveButton';
-        document.getElementById('atEditsaveButton').innerHTML = text39;
+        document.getElementById('atEditsaveButton').innerHTML = save;
         fadeOut('readmore');
         changeId.setAttribute('onclick', 'atEvery.prototype.atEditsave("' + id + '")');
         pubShuo.click();
@@ -316,38 +160,6 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         preCon.classList.add('preview_now');
       }
     };
-    function translate (beforTran) {
-      if (typeof beforTran === 'undefined') return;
-      for (const key in atEmojiQQ) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiQQ[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      for (const key in atEmojiTB) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiTB[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      for (const key in atEmojiBB) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiBB[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      for (const key in atEmoji) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmoji[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      return beforTran;
-    }
     let shuoshuoContent = document.getElementById('neirong').value;
     const shuoshuoContentMd = shuoshuoContent;
     const atEditOver = ArtitalkData.talkById(id);
@@ -373,39 +185,6 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     }
     function fadeOut (id) {
       ArtitalkDom.hide(id);
-    }
-    function translate (beforTran) {
-      if (typeof beforTran === 'undefined') return;
-      for (const key in atEmojiQQ) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiQQ[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      for (const key in atEmojiTB) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiTB[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      for (const key in atEmojiBB) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmojiBB[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      // console.log(atEmoji);
-      for (const key in atEmoji) {
-        const keyAt = '[' + key + ']';
-        const emojiAt = "<img class='atemoji gallery-group-img' src='" + atEmoji[key] + "'/>";
-        while (beforTran.indexOf(keyAt) != -1) {
-          beforTran = beforTran.replace(keyAt, emojiAt);
-        }
-      }
-      return beforTran;
     }
     fadeIn('lazy');
     let comContent = document.getElementById('neirong').value;
@@ -497,7 +276,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     fadeOut(countId);
     document.getElementById(initButton).setAttribute('onclick', 'location.reload()');
     fadeIn('commentNick'); fadeOut('atSave'); fadeIn('commentSave'); fadeIn('lazy'); fadeIn('pubComment'); fadeOut('readmore'); fadeOut('pubShuo'); fadeOut('switchUser');
-    document.getElementById('pubComment').title = text40;
+    document.getElementById('pubComment').title = comments;
     document.getElementById('pubComment').style.display = 'inline';
     const nowButton = document.getElementById('pubComment');
     nowButton.onclick = function () {
@@ -507,8 +286,8 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         fadeIn('shuoshuo_input');
       }
     };
-    document.getElementById('email').placeholder = text41;
-    document.getElementById('commentNick').placeholder = text42;
+    document.getElementById('email').placeholder = email;
+    document.getElementById('commentNick').placeholder = nickname;
     const originShuo = document.getElementById('atId' + id).innerHTML;
     const originAvatar = document.getElementById('atAvatar' + id).src;
     const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="' + originAvatar + '" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel">' + originShuo + '</p></span></li></ul>';

@@ -318,234 +318,227 @@
 // # sourceMappingURL=showdown.min.js.map
 ;
 'use strict';
-
 const atVersion = '4.0.2';
-
-// if (typeof (appID) !== 'undefined') {
-//   const update = confirm('　　3.x版本更新需要修改一下配置，深感抱歉，但是为了更好的体验不得不这样。\n　　如果不想更换，可以继续使用2.4.2版本，这也是比较成熟的版本了，但是以后不会再维护。更换详情请点击确定前往文档查看');
-//   if (update == true) {
-//     location.href = 'https://artitalk.js.org/release.html';
-//   }
-// }
 ;
+"use strict";
 // emoji init
 const atEmojiQQ = {
-  qq_aini: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aini.gif',
-  qq_aixin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aixin.gif',
-  qq_aoman: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aoman.gif',
-  qq_baiyan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.gif',
-  qq_bangbangtang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bangbangtang.gif',
-  qq_baojin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baojin.gif',
-  qq_baoquan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baoquan.gif',
-  qq_bishi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.gif',
-  qq_bizui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.gif',
-  qq_cahan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/cahan.gif',
-  qq_caidao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/caidao.gif',
-  qq_chi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/chi.gif',
-  qq_ciya: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ciya.gif',
-  qq_dabing: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dabing.gif',
-  qq_daku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/daku.gif',
-  qq_dan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dan.gif',
-  qq_deyi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/deyi.gif',
-  qq_doge: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/doge.gif',
-  qq_fadai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fadai.gif',
-  qq_fanu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fanu.gif',
-  qq_fendou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fendou.gif',
-  qq_ganga: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ganga.gif',
-  qq_gouyin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/gouyin.gif',
-  qq_guzhang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/guzhang.gif',
-  qq_haixiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haixiu.gif',
-  qq_hanxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/hanxiao.gif',
-  qq_haobang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haobang.gif',
-  qq_haqian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haqian.gif',
-  qq_hecai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/hecai.gif',
-  qq_hexie: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/hexie.gif',
-  qq_huaixiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/huaixiao.gif',
-  qq_jie: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jie.gif',
-  qq_jingkong: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingkong.gif',
-  qq_jingxi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingxi.gif',
-  qq_jingya: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingya.gif',
-  qq_juhua: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/juhua.gif',
-  qq_keai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/keai.gif',
-  qq_kelian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kelian.gif',
-  qq_koubi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/koubi.gif',
-  qq_ku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ku.gif',
-  qq_kuaikule: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kuaikule.gif',
-  qq_kulou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kulou.gif',
-  qq_kun: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kun.gif',
-  qq_lanqiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/lanqiu.gif',
-  qq_leiben: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/leiben.gif',
-  qq_lenghan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/lenghan.gif',
-  qq_liuhan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liuhan.gif',
-  qq_liulei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liulei.gif',
-  qq_nanguo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/nanguo.gif',
-  qq_OK: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/OK.gif',
-  qq_penxue: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/penxue.gif',
-  qq_piezui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/piezui.gif',
-  qq_pijiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/pijiu.gif',
-  qq_qiang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qiang.gif',
-  qq_qiaoda: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qiaoda.gif',
-  qq_qinqin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qinqin.gif',
-  qq_qiudale: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qiudale.gif',
-  qq_quantou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/quantou.gif',
-  qq_saorao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/saorao.gif',
-  qq_se: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/se.gif',
-  qq_shengli: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shengli.gif',
-  qq_shouqiang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shouqiang.gif',
-  qq_shuai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shuai.gif',
-  qq_shui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shui.gif',
-  qq_tiaopi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tiaopi.gif',
-  qq_touxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/touxiao.gif',
-  qq_tu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tu.gif',
-  qq_tuosai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tuosai.gif',
-  qq_weiqu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/weiqu.gif',
-  qq_weixiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/weixiao.gif',
-  qq_woshou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/woshou.gif',
-  qq_wozuimei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/wozuimei.gif',
-  qq_wunai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/wunai.gif',
-  qq_xia: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xia.gif',
-  qq_xiaojiujie: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaojiujie.gif',
-  qq_xiaoku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaoku.gif',
-  qq_xiaoyanger: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaoyanger.gif',
-  qq_xieyanxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xieyanxiao.gif',
-  qq_xigua: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xigua.gif',
-  qq_xu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xu.gif',
-  qq_yangtuo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yangtuo.gif',
-  qq_yinxian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yinxian.gif',
-  qq_yiwen: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yiwen.gif',
-  qq_youhengheng: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/youhengheng.gif',
-  qq_youling: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/youling.gif',
-  qq_yun: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yun.gif',
-  qq_zaijian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zaijian.gif',
-  qq_zhayanjian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhayanjian.gif',
-  qq_zhemo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhemo.gif',
-  qq_zhouma: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhouma.gif',
-  qq_zhuakuang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhuakuang.gif',
-  qq_zuohengheng: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zuohengheng.gif'
+    qq_aini: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aini.gif',
+    qq_aixin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aixin.gif',
+    qq_aoman: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aoman.gif',
+    qq_baiyan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.gif',
+    qq_bangbangtang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bangbangtang.gif',
+    qq_baojin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baojin.gif',
+    qq_baoquan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baoquan.gif',
+    qq_bishi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.gif',
+    qq_bizui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.gif',
+    qq_cahan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/cahan.gif',
+    qq_caidao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/caidao.gif',
+    qq_chi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/chi.gif',
+    qq_ciya: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ciya.gif',
+    qq_dabing: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dabing.gif',
+    qq_daku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/daku.gif',
+    qq_dan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dan.gif',
+    qq_deyi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/deyi.gif',
+    qq_doge: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/doge.gif',
+    qq_fadai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fadai.gif',
+    qq_fanu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fanu.gif',
+    qq_fendou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fendou.gif',
+    qq_ganga: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ganga.gif',
+    qq_gouyin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/gouyin.gif',
+    qq_guzhang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/guzhang.gif',
+    qq_haixiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haixiu.gif',
+    qq_hanxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/hanxiao.gif',
+    qq_haobang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haobang.gif',
+    qq_haqian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haqian.gif',
+    qq_hecai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/hecai.gif',
+    qq_hexie: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/hexie.gif',
+    qq_huaixiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/huaixiao.gif',
+    qq_jie: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jie.gif',
+    qq_jingkong: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingkong.gif',
+    qq_jingxi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingxi.gif',
+    qq_jingya: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingya.gif',
+    qq_juhua: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/juhua.gif',
+    qq_keai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/keai.gif',
+    qq_kelian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kelian.gif',
+    qq_koubi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/koubi.gif',
+    qq_ku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ku.gif',
+    qq_kuaikule: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kuaikule.gif',
+    qq_kulou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kulou.gif',
+    qq_kun: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kun.gif',
+    qq_lanqiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/lanqiu.gif',
+    qq_leiben: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/leiben.gif',
+    qq_lenghan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/lenghan.gif',
+    qq_liuhan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liuhan.gif',
+    qq_liulei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liulei.gif',
+    qq_nanguo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/nanguo.gif',
+    qq_OK: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/OK.gif',
+    qq_penxue: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/penxue.gif',
+    qq_piezui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/piezui.gif',
+    qq_pijiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/pijiu.gif',
+    qq_qiang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qiang.gif',
+    qq_qiaoda: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qiaoda.gif',
+    qq_qinqin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qinqin.gif',
+    qq_qiudale: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qiudale.gif',
+    qq_quantou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/quantou.gif',
+    qq_saorao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/saorao.gif',
+    qq_se: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/se.gif',
+    qq_shengli: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shengli.gif',
+    qq_shouqiang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shouqiang.gif',
+    qq_shuai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shuai.gif',
+    qq_shui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shui.gif',
+    qq_tiaopi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tiaopi.gif',
+    qq_touxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/touxiao.gif',
+    qq_tu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tu.gif',
+    qq_tuosai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tuosai.gif',
+    qq_weiqu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/weiqu.gif',
+    qq_weixiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/weixiao.gif',
+    qq_woshou: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/woshou.gif',
+    qq_wozuimei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/wozuimei.gif',
+    qq_wunai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/wunai.gif',
+    qq_xia: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xia.gif',
+    qq_xiaojiujie: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaojiujie.gif',
+    qq_xiaoku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaoku.gif',
+    qq_xiaoyanger: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaoyanger.gif',
+    qq_xieyanxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xieyanxiao.gif',
+    qq_xigua: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xigua.gif',
+    qq_xu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xu.gif',
+    qq_yangtuo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yangtuo.gif',
+    qq_yinxian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yinxian.gif',
+    qq_yiwen: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yiwen.gif',
+    qq_youhengheng: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/youhengheng.gif',
+    qq_youling: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/youling.gif',
+    qq_yun: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yun.gif',
+    qq_zaijian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zaijian.gif',
+    qq_zhayanjian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhayanjian.gif',
+    qq_zhemo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhemo.gif',
+    qq_zhouma: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhouma.gif',
+    qq_zhuakuang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhuakuang.gif',
+    qq_zuohengheng: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zuohengheng.gif'
 };
 const atEmojiTB = {
-  OK: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/OK.png',
-  what: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/what.png',
-  不高兴: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/不高兴.png',
-  乖: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/乖.png',
-  你懂的: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/你懂的.png',
-  便便: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/便便.png',
-  勉强: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/勉强.png',
-  吐: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/吐.png',
-  吐舌: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/吐舌.png',
-  呀咩爹: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/呀咩爹.png',
-  呵呵: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/呵呵.png',
-  哈哈: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/哈哈.png',
-  啊: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/啊.png',
-  喷: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/喷.png',
-  大拇指: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/大拇指.png',
-  太开心: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/太开心.png',
-  太阳: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/太阳.png',
-  委屈: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/委屈.png',
-  小乖: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/小乖.png',
-  小红脸: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/小红脸.png',
-  彩虹: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/彩虹.png',
-  心碎: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/心碎.png',
-  怒: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/怒.png',
-  惊哭: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/惊哭.png',
-  惊讶: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/惊讶.png',
-  懒得理: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/懒得理.png',
-  手纸: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/手纸.png',
-  挖鼻: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/挖鼻.png',
-  捂嘴笑: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/捂嘴笑.png',
-  星星月亮: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/星星月亮.png',
-  汗: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/汗.png',
-  沙发: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/沙发.png',
-  泪: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/泪.png',
-  滑稽: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/滑稽.png',
-  灯泡: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/灯泡.png',
-  爱心: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/爱心.png',
-  犀利: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/犀利.png',
-  狂汗: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/狂汗.png',
-  玫瑰: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/玫瑰.png',
-  疑问: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/疑问.png',
-  真棒: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/真棒.png',
-  睡觉: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/睡觉.png',
-  礼物: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/礼物.png',
-  笑尿: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/笑尿.png',
-  笑眼: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/笑眼.png',
-  红领巾: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/红领巾.png',
-  胜利: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/胜利.png',
-  花心: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/花心.png',
-  茶杯: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/茶杯.png',
-  药丸: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/药丸.png',
-  蛋糕: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/蛋糕.png',
-  蜡烛: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/蜡烛.png',
-  鄙视: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/鄙视.png',
-  酷: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/酷.png',
-  酸爽: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/酸爽.png',
-  钱币: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/钱币.png',
-  阴险: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/阴险.png',
-  音乐: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/音乐.png',
-  香蕉: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/香蕉.png',
-  黑线: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/黑线.png'
+    OK: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/OK.png',
+    what: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/what.png',
+    不高兴: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/不高兴.png',
+    乖: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/乖.png',
+    你懂的: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/你懂的.png',
+    便便: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/便便.png',
+    勉强: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/勉强.png',
+    吐: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/吐.png',
+    吐舌: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/吐舌.png',
+    呀咩爹: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/呀咩爹.png',
+    呵呵: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/呵呵.png',
+    哈哈: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/哈哈.png',
+    啊: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/啊.png',
+    喷: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/喷.png',
+    大拇指: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/大拇指.png',
+    太开心: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/太开心.png',
+    太阳: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/太阳.png',
+    委屈: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/委屈.png',
+    小乖: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/小乖.png',
+    小红脸: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/小红脸.png',
+    彩虹: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/彩虹.png',
+    心碎: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/心碎.png',
+    怒: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/怒.png',
+    惊哭: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/惊哭.png',
+    惊讶: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/惊讶.png',
+    懒得理: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/懒得理.png',
+    手纸: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/手纸.png',
+    挖鼻: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/挖鼻.png',
+    捂嘴笑: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/捂嘴笑.png',
+    星星月亮: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/星星月亮.png',
+    汗: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/汗.png',
+    沙发: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/沙发.png',
+    泪: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/泪.png',
+    滑稽: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/滑稽.png',
+    灯泡: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/灯泡.png',
+    爱心: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/爱心.png',
+    犀利: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/犀利.png',
+    狂汗: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/狂汗.png',
+    玫瑰: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/玫瑰.png',
+    疑问: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/疑问.png',
+    真棒: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/真棒.png',
+    睡觉: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/睡觉.png',
+    礼物: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/礼物.png',
+    笑尿: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/笑尿.png',
+    笑眼: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/笑眼.png',
+    红领巾: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/红领巾.png',
+    胜利: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/胜利.png',
+    花心: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/花心.png',
+    茶杯: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/茶杯.png',
+    药丸: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/药丸.png',
+    蛋糕: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/蛋糕.png',
+    蜡烛: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/蜡烛.png',
+    鄙视: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/鄙视.png',
+    酷: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/酷.png',
+    酸爽: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/酸爽.png',
+    钱币: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/钱币.png',
+    阴险: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/阴险.png',
+    音乐: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/音乐.png',
+    香蕉: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/香蕉.png',
+    黑线: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/黑线.png'
 };
 const atEmojiBB = {
-  baiyan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.png',
-  bishi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.png',
-  bizui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.png',
-  chan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/chan.png',
-  daku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/daku.png',
-  dalao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalao.png',
-  dalian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalian.png',
-  dianzan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dianzan.png',
-  doge: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/doge.png',
-  facai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/facai.png',
-  fadai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fadai.png',
-  fanu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fanu.png',
-  ganga: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ganga.png',
-  guilian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/guilian.png',
-  guzhang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/guzhang.png',
-  haixiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haixiu.png',
-  heirenwenhao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/heirenwenhao.png',
-  huaixiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/huaixiao.png',
-  jingxia: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingxia.png',
-  keai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/keai.png',
-  koubi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/koubi.png',
-  kun2: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kun2.png',
-  lengmo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/lengmo.png',
-  liubixue: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liubixue.png',
-  liuhan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liuhan.png',
-  liulei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liulei.png',
-  mudengkoudai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/mudengkoudai.png',
-  nanguo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/nanguo.png',
-  outu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/outu.png',
-  qinqin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qinqin.png',
-  se: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/se.png',
-  shengbing: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shengbing.png',
-  shengqi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shengqi.png',
-  shuizhao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shuizhao.png',
-  sikao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/sikao.png',
-  tiaokan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tiaokan.png',
-  tiaopi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tiaopi.png',
-  touxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/touxiao.png',
-  tuxue: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tuxue.png',
-  weiqu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/weiqu.png',
-  wunai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/wunai.png',
-  xiaoku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaoku.png',
-  xieyanxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xieyanxiao.png',
-  yiwen: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yiwen.png',
-  yun: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yun.png',
-  zaijian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zaijian.png',
-  zhoumei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhoumei.png',
-  zhuakuang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhuakuang.png'
+    baiyan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.png',
+    bishi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.png',
+    bizui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.png',
+    chan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/chan.png',
+    daku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/daku.png',
+    dalao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalao.png',
+    dalian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalian.png',
+    dianzan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dianzan.png',
+    doge: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/doge.png',
+    facai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/facai.png',
+    fadai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fadai.png',
+    fanu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fanu.png',
+    ganga: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/ganga.png',
+    guilian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/guilian.png',
+    guzhang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/guzhang.png',
+    haixiu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/haixiu.png',
+    heirenwenhao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/heirenwenhao.png',
+    huaixiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/huaixiao.png',
+    jingxia: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/jingxia.png',
+    keai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/keai.png',
+    koubi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/koubi.png',
+    kun2: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/kun2.png',
+    lengmo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/lengmo.png',
+    liubixue: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liubixue.png',
+    liuhan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liuhan.png',
+    liulei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/liulei.png',
+    mudengkoudai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/mudengkoudai.png',
+    nanguo: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/nanguo.png',
+    outu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/outu.png',
+    qinqin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/qinqin.png',
+    se: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/se.png',
+    shengbing: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shengbing.png',
+    shengqi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shengqi.png',
+    shuizhao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/shuizhao.png',
+    sikao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/sikao.png',
+    tiaokan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tiaokan.png',
+    tiaopi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tiaopi.png',
+    touxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/touxiao.png',
+    tuxue: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/tuxue.png',
+    weiqu: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/weiqu.png',
+    wunai: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/wunai.png',
+    xiaoku: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xiaoku.png',
+    xieyanxiao: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/xieyanxiao.png',
+    yiwen: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yiwen.png',
+    yun: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/yun.png',
+    zaijian: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zaijian.png',
+    zhoumei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhoumei.png',
+    zhuakuang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhuakuang.png'
 };
 var atEmojiQ = '';
 var atEmojiT = '';
 var atEmojiB = '';
 for (const key in atEmojiQQ) {
-  atEmojiQ = atEmojiQ + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiQQ[key] + "'/>";
+    atEmojiQ = atEmojiQ + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiQQ[key] + "'/>";
 }
 for (const key in atEmojiTB) {
-  atEmojiT = atEmojiT + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiTB[key] + "'/>";
+    atEmojiT = atEmojiT + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiTB[key] + "'/>";
 }
 for (const key in atEmojiBB) {
-  atEmojiB = atEmojiB + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiBB[key] + "'/>";
+    atEmojiB = atEmojiB + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiBB[key] + "'/>";
 }
 ;
 const ArtitalkLocales = {"zh":{"authorPrefix":"由","authorSuffix":"发表","loadMore":"加载更多...","preview":"预览","publish":"发布","loggedIn":"已登录","confirm":"确定","signOut":"退出登录","username":"用户","password":"密码","login":"登录","cancel":"取消","postTalk":"发布说说","addMedia":"添加图片，视频，音乐","uploadFailed":"(上传失败，若非网络原因，请联系Artitalk开发人员)","loginRequired":"请先登录","contentRequired":"内容不能为空","loginFailed":"登陆失败，请检查用户名及密码是否正确","avatarUrl":"头像url","confirmDelete":"确定删除本条说说吗？","deleteSuccess":"删除成功","dragMediaHere":"请拖拽图片到此处","emoji":"表情","remove":"删除","emptyTalk":"如果你看到这条说说，恭喜你已经配置成功并且可以正常使用了。当你发布一个说说之后，我将会自动消失。快去探索Artitalk吧<br>欢迎加入Artitalk的QQ交流群：1104585229<br>觉得本项目不错的话可以推荐给你的好友或者去GitHub点一个star，感谢支持","uploading":"上传中","image":"图片","music":"音乐","video":"视频","add":"添加","imageSizeError":"上传的图片最大支持5M，请压缩后或换一个继续上传","musicSizeError":"上传的音乐最大支持10M，请压缩后或换一个继续上传","videoSizeError":"上传的视频最大支持30M，请压缩后或换一个继续上传","imageFormatError":"图片格式错误，请不要上传其他类型的文件","audioFormatError":"音频格式错误，请不要上传其他类型的文件","videoFormatError":"视频格式错误，请不要上传其他类型的文件","uploadInProgress":"上传ing","loading":"加载中","usernameRequired":"用户名不能为空","passwordRequired":"密码不能为空","editInstructions":"请在下方输入框进行修改然后点击保存即可","save":"保存","comments":"评论","email":"邮箱","nickname":"昵称","credentialsMismatch":"用户名与密码不匹配","loginRequestError":"登陆失败，常见错误有<br><li>网络错误</li><li>域名不在leancloud的域名白名单中被限制登录</li><li>当前页面使用了其他leancloud应用导致登录到了其他应用所以失败</li>","userNotFound":"未找到此用户","tooManyLoginAttempts":"尝试错误密码次数过多，请稍后再试","pin":"置顶","unpin":"取消置顶","pinned":"置顶","backgroundColor":"背景颜色","colorSaved":"配色已保存"},"en":{"authorPrefix":"Published by","authorSuffix":"","loadMore":"load more...","preview":"Preview","publish":"Publish","loggedIn":"logged","confirm":"Ok","signOut":"Sign out","username":"Username","password":"Password","login":"Log in","cancel":"Cancel","postTalk":"Post talk","addMedia":"Add pictures, videos, music","uploadFailed":"(Upload failed, if not for network reasons, please contact Artitalk developers)","loginRequired":"Please log in first","contentRequired":"Content can not be blank","loginFailed":"Login failed, please check if the username and password are correct","avatarUrl":"Avatar url","confirmDelete":"Are you sure you want to devare this article?","deleteSuccess":"Successfully devared","dragMediaHere":"Please drag and drop pictures here","emoji":"emoji","remove":"Devare","emptyTalk":"If you see this, congratulations, you have successfully configured and can be used normally. When you post one shuoshuo, I will disappear automatically. Quickly explore Artitalk.<br>Welcome to Artitalk’s QQ group: 1104585229<br>If you think this project is good, you can recommend it to your friends or go to GitHub to order a star.","uploading":"uploading","image":"image","music":"music","video":"video","add":"Add","imageSizeError":"The uploaded image supports a maximum of 5M, please compress or change another one to continue uploading","musicSizeError":"The uploaded music supports a maximum of 10M, please compress or change another one to continue uploading","videoSizeError":"The uploaded video supports a maximum of 30M, please compress or change another one to continue uploading","imageFormatError":"Picture format error, please do not upload other types of files","audioFormatError":"The audio format is wrong, please do not upload other types of files","videoFormatError":"Video format error, please do not upload other types of files","uploadInProgress":"Uploading","loading":"Loading","usernameRequired":"Username can not be empty","passwordRequired":"Password can not be empty","editInstructions":"Please modify it in the input box below and click save","save":"save","comments":"comments","email":"Mailbox","nickname":"Nickname","credentialsMismatch":"The username and password mismatch.","loginRequestError":"Request has been terminated Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.c","userNotFound":"Could not find user.","tooManyLoginAttempts":"You have entered incorrect passwords for too many times. Please try later or reset your password.","pin":"Pin","unpin":"Unpin","pinned":"Pinned","backgroundColor":"Background color","colorSaved":"Color saved"},"es":{"authorPrefix":"Publicado por","authorSuffix":"","loadMore":"Carga más...","preview":"Avance","publish":"Lanzamiento","loggedIn":"Registrado","confirm":"Determinar","signOut":"Desconectar","username":"Usuario","password":"Contraseña","login":"Iniciar sesión","cancel":"Cancelar","postTalk":"Publicar charla","addMedia":"Agrega fotos, videos, música","uploadFailed":"(Carga fallida, si no es por razones de red, comuníquese con los desarrolladores de Artitalk)","loginRequired":"Por favor ingresa primero","contentRequired":"El contenido no puede estar en blanco","loginFailed":"Error de inicio de sesión, compruebe si el nombre de usuario y la contraseña son correctos","avatarUrl":"URL del avatar","confirmDelete":"¿Estás seguro de que deseas eliminar este artículo?","deleteSuccess":"Eliminado con éxito","dragMediaHere":"Arrastra y suelta fotos aquí","emoji":"expresión","remove":"Eliminar","emptyTalk":"Si ve este artículo, felicidades, se ha configurado correctamente y se puede usar normalmente. Cuando publiques un comentario, desapareceré automáticamente. Explore rápidamente Artitalk. <br> Bienvenido al grupo QQ de Artitalk: 1104585229 <br> Si cree que este proyecto es bueno, puede recomendarlo a sus amigos o ir a GitHub para pedir una estrella, gracias por su apoyo.","uploading":"cargando","image":"imagen","music":"música","video":"vídeo","add":"Añadir","imageSizeError":"La imagen cargada admite un máximo de 5 M, comprima o cambie otra para continuar cargando","musicSizeError":"La música cargada admite un máximo de 10 M, comprime o cambia otra para continuar cargando","videoSizeError":"El video subido admite un máximo de 30 M, comprima o cambie otro para continuar subiendo","imageFormatError":"Error de formato de imagen, no suba otros tipos de archivos","audioFormatError":"El formato de audio es incorrecto, no suba otros tipos de archivos","videoFormatError":"Error de formato de video, no suba otros tipos de archivos","uploadInProgress":"Cargando","loading":"Cargando","usernameRequired":"El nombre de usuario no puede estar vacío","passwordRequired":"la contraseña no puede estar en blanco","editInstructions":"Por favor, introduzca las modificaciones en el cuadro de abajo y haga clic en guardar","save":"guardar","comments":"comentarios","email":"Buzón","nickname":"Apodo","credentialsMismatch":"El nombre de usuario y la contraseña no coinciden.","loginRequestError":"La solicitud ha sido cancelada Posibles causas: la red está fuera de línea, Access-Control-Allow-Origin no permite Origin, la página se está descargando, etc.c","userNotFound":"No se pudo encontrar el usuario.","tooManyLoginAttempts":"Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña.","pin":"Fijar","unpin":"Desfijar","pinned":"Fijado","backgroundColor":"Color de fondo","colorSaved":"Color guardado"}};
@@ -562,269 +555,290 @@ const ArtitalkSvg = {
   }
 };
 ;
+"use strict";
 const ArtitalkI18n = (function () {
-  function normalizeLanguage (language) { return typeof language === 'string' && ArtitalkLocales[language] ? language : 'zh'; }
-  function getMessages (language) { return ArtitalkLocales[normalizeLanguage(language)]; }
-  function translateEmojis (content, customEmojis) { if (typeof content === 'undefined') return; [atEmojiQQ, atEmojiTB, atEmojiBB, customEmojis || {}].forEach(function (set) { for (const key in set) { const token = '[' + key + ']'; const image = "<img class='atemoji gallery-group-img' src='" + set[key] + "'/>"; while (content.indexOf(token) !== -1) content = content.replace(token, image); } }); return content; }
-  return { normalizeLanguage: normalizeLanguage, getMessages: getMessages, translateEmojis: translateEmojis };
+    function normalizeLanguage(language) { return typeof language === 'string' && ArtitalkLocales[language] ? language : 'zh'; }
+    function getMessages(language) { return ArtitalkLocales[normalizeLanguage(language)]; }
+    function translateEmojis(content, customEmojis) { if (typeof content === 'undefined')
+        return; let translatedContent = content; [atEmojiQQ, atEmojiTB, atEmojiBB, customEmojis || {}].forEach(function (set) { for (const key in set) {
+        const token = '[' + key + ']';
+        const image = "<img class='atemoji gallery-group-img' src='" + set[key] + "'/>";
+        while (translatedContent.indexOf(token) !== -1)
+            translatedContent = translatedContent.replace(token, image);
+    } }); return translatedContent; }
+    return { normalizeLanguage: normalizeLanguage, getMessages: getMessages, translateEmojis: translateEmojis };
 }());
 ;
 'use strict';
-
 const ArtitalkDom = {
-  byId: function (id) {
-    return document.getElementById(id);
-  },
-  show: function (id) {
-    const ele = this.byId(id);
-    if (!ele) return;
-    ele.style.display = '';
-  },
-  hide: function (id) {
-    const ele = this.byId(id);
-    if (!ele) return;
-    ele.style.display = 'none';
-  },
-  setHtml: function (id, html) {
-    const ele = this.byId(id);
-    if (!ele) return;
-    ele.innerHTML = html;
-  },
-  html: function (id) {
-    const ele = this.byId(id);
-    return ele ? ele.innerHTML : '';
-  },
-  setValue: function (id, value) {
-    const ele = this.byId(id);
-    if (!ele) return;
-    ele.value = value;
-  },
-  value: function (id) {
-    const ele = this.byId(id);
-    return ele ? ele.value : '';
-  },
-  appendToBody: function (ele) {
-    document.body.appendChild(ele);
-  },
-  appendToHead: function (ele) {
-    document.head.appendChild(ele);
-  },
-  loadScript: function (src, onload) {
-    const script = document.createElement('script');
-    script.setAttribute('type', 'text/javascript');
-    script.src = src;
-    this.appendToBody(script);
-    if (window.ActiveXObject || 'ActiveXObject' in window) {
-      if (script.readyState) {
-        script.onreadystatechange = function () {
-          if (this.readyState === 'loaded' || this.readyState === 'complete') {
-            onload();
-          }
-        };
-      } else {
-        script.onload = onload;
-      }
-    } else {
-      script.onload = onload;
+    byId: function (id) {
+        return document.getElementById(id);
+    },
+    show: function (id) {
+        const ele = this.byId(id);
+        if (!ele)
+            return;
+        ele.style.display = '';
+    },
+    hide: function (id) {
+        const ele = this.byId(id);
+        if (!ele)
+            return;
+        ele.style.display = 'none';
+    },
+    setHtml: function (id, html) {
+        const ele = this.byId(id);
+        if (!ele)
+            return;
+        ele.innerHTML = html;
+    },
+    html: function (id) {
+        const ele = this.byId(id);
+        return ele ? ele.innerHTML : '';
+    },
+    setValue: function (id, value) {
+        const ele = this.byId(id);
+        if (!ele || !('value' in ele))
+            return;
+        ele.value = value;
+    },
+    value: function (id) {
+        const ele = this.byId(id);
+        return ele && 'value' in ele && typeof ele.value === 'string' ? ele.value : '';
+    },
+    appendToBody: function (ele) {
+        document.body.appendChild(ele);
+    },
+    appendToHead: function (ele) {
+        document.head.appendChild(ele);
+    },
+    loadScript: function (src, onload) {
+        const script = document.createElement('script');
+        script.setAttribute('type', 'text/javascript');
+        script.src = src;
+        this.appendToBody(script);
+        const legacyWindow = window;
+        const legacyScript = script;
+        if (legacyWindow.ActiveXObject || 'ActiveXObject' in window) {
+            if (legacyScript.readyState) {
+                legacyScript.onreadystatechange = function () {
+                    if (legacyScript.readyState === 'loaded' || legacyScript.readyState === 'complete') {
+                        onload();
+                    }
+                };
+            }
+            else {
+                script.onload = onload;
+            }
+        }
+        else {
+            script.onload = onload;
+        }
+        return script;
     }
-    return script;
-  }
 };
-
-function Logout () {
-  ArtitalkData.logout();
-  location.reload();
+function Logout() {
+    ArtitalkData.logout();
+    location.reload();
 }
-
-function insertEmoji (str) {
-  const now = ArtitalkDom.byId('neirong');
-  const nowlength = now.value.length;
-  now.focus();
-  if (typeof (document.selection) !== 'undefined') {
-    document.selection.createRange().text = str;
-  } else {
-    now.value = now.value.substr(0, now.selectionStart) + str + now.value.substring(now.selectionStart, nowlength);
-  }
-  preview();
+function insertEmoji(str) {
+    const now = ArtitalkDom.byId('neirong');
+    if (!now || !('value' in now) || typeof now.value !== 'string' || !(now instanceof HTMLTextAreaElement || now instanceof HTMLInputElement))
+        return;
+    const nowlength = now.value.length;
+    now.focus();
+    const legacyDocument = document;
+    if (typeof legacyDocument.selection !== 'undefined') {
+        legacyDocument.selection.createRange().text = str;
+    }
+    else {
+        const selectionStart = now.selectionStart || 0;
+        now.value = now.value.substr(0, selectionStart) + str + now.value.substring(selectionStart, nowlength);
+    }
+    preview();
 }
-
-function preview () {
-  const clickPre = ArtitalkDom.byId('clickForPreview');
-  clickPre.click();
+function preview() {
+    const clickPre = ArtitalkDom.byId('clickForPreview');
+    if (!clickPre)
+        return;
+    clickPre.click();
 }
 ;
+"use strict";
 var ArtitalkSanitizer = (function () {
-  const allowedTags = {
-    a: ['href', 'title'],
-    blockquote: [],
-    br: [],
-    code: [],
-    del: [],
-    em: [],
-    h1: [], h2: [], h3: [], h4: [], h5: [], h6: [],
-    hr: [],
-    img: ['src', 'alt', 'title', 'width', 'height'],
-    li: [],
-    ol: ['start'],
-    p: [],
-    pre: [],
-    strong: [],
-    table: [],
-    tbody: [],
-    td: [],
-    th: [],
-    thead: [],
-    tr: [],
-    ul: []
-  };
-  const discardTags = { base: true, embed: true, iframe: true, link: true, math: true, meta: true, object: true, script: true, style: true, svg: true };
-
-  function isSafeUrl (value, image) {
-    const url = String(value || '').trim();
-    if (url === '' || /[\u0000-\u001F\u007F]/.test(url)) return false;
-    if (/^(https?:|mailto:|tel:|\/|#|\.\.?\/)/i.test(url)) return true;
-    return image && /^data:image\/(?:gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/i.test(url);
-  }
-
-  function sanitizeHtml (html) {
-    const parser = new DOMParser();
-    const source = parser.parseFromString(String(html || ''), 'text/html');
-    const output = document.createElement('div');
-
-    function copyNodes (from, to) {
-      Array.prototype.forEach.call(from.childNodes, function (node) {
-        if (node.nodeType === 3) {
-          to.appendChild(document.createTextNode(node.nodeValue));
-          return;
-        }
-        if (node.nodeType !== 1) return;
-
-        const tag = node.tagName.toLowerCase();
-        if (discardTags[tag]) return;
-        if (!Object.prototype.hasOwnProperty.call(allowedTags, tag)) {
-          copyNodes(node, to);
-          return;
-        }
-
-        const clean = document.createElement(tag);
-        allowedTags[tag].forEach(function (attribute) {
-          if (!node.hasAttribute(attribute)) return;
-          const value = node.getAttribute(attribute);
-          if ((attribute === 'href' && !isSafeUrl(value, false)) || (attribute === 'src' && !isSafeUrl(value, true))) return;
-          clean.setAttribute(attribute, value);
-        });
-        copyNodes(node, clean);
-        to.appendChild(clean);
-      });
+    const allowedTags = {
+        a: ['href', 'title'],
+        blockquote: [],
+        br: [],
+        code: [],
+        del: [],
+        em: [],
+        h1: [], h2: [], h3: [], h4: [], h5: [], h6: [],
+        hr: [],
+        img: ['src', 'alt', 'title', 'width', 'height'],
+        li: [],
+        ol: ['start'],
+        p: [],
+        pre: [],
+        strong: [],
+        table: [],
+        tbody: [],
+        td: [],
+        th: [],
+        thead: [],
+        tr: [],
+        ul: []
+    };
+    const discardTags = { base: true, embed: true, iframe: true, link: true, math: true, meta: true, object: true, script: true, style: true, svg: true };
+    function isSafeUrl(value, image) {
+        const url = String(value || '').trim();
+        if (url === '' || /[\u0000-\u001F\u007F]/.test(url))
+            return false;
+        if (/^(https?:|mailto:|tel:|\/|#|\.\.?\/)/i.test(url))
+            return true;
+        return image && /^data:image\/(?:gif|jpe?g|png|webp);base64,[a-z0-9+/=\s]+$/i.test(url);
     }
-
-    copyNodes(source.body, output);
-    return output.innerHTML;
-  }
-
-  function markdownToHtml (markdown) {
-    const converter = new showdown.Converter();
-    converter.setOption('strikethrough', 1);
-    return sanitizeHtml(converter.makeHtml(markdown));
-  }
-
-  return { sanitizeHtml: sanitizeHtml, markdownToHtml: markdownToHtml };
+    function sanitizeHtml(html) {
+        const parser = new DOMParser();
+        const source = parser.parseFromString(String(html || ''), 'text/html');
+        const output = document.createElement('div');
+        function copyNodes(from, to) {
+            Array.prototype.forEach.call(from.childNodes, function (node) {
+                if (node.nodeType === 3) {
+                    to.appendChild(document.createTextNode(node.nodeValue || ''));
+                    return;
+                }
+                if (node.nodeType !== 1)
+                    return;
+                const element = node;
+                const tag = element.tagName.toLowerCase();
+                if (discardTags[tag])
+                    return;
+                if (!Object.prototype.hasOwnProperty.call(allowedTags, tag)) {
+                    copyNodes(node, to);
+                    return;
+                }
+                const clean = document.createElement(tag);
+                allowedTags[tag].forEach(function (attribute) {
+                    if (!element.hasAttribute(attribute))
+                        return;
+                    const value = element.getAttribute(attribute);
+                    if (value === null)
+                        return;
+                    if ((attribute === 'href' && !isSafeUrl(value, false)) || (attribute === 'src' && !isSafeUrl(value, true)))
+                        return;
+                    clean.setAttribute(attribute, value);
+                });
+                copyNodes(node, clean);
+                to.appendChild(clean);
+            });
+        }
+        copyNodes(source.body, output);
+        return output.innerHTML;
+    }
+    function markdownToHtml(markdown) {
+        const converter = new showdown.Converter();
+        converter.setOption('strikethrough', 1);
+        return sanitizeHtml(converter.makeHtml(markdown));
+    }
+    return { sanitizeHtml: sanitizeHtml, markdownToHtml: markdownToHtml };
 }());
 ;
 'use strict';
-
 const ArtitalkData = {
-  ensureReady: function (config, callback) {
-    if (window.AV) {
-      callback();
-      return;
+    ensureReady: function (config, callback) {
+        if (window.AV) {
+            callback();
+            return;
+        }
+    },
+    init: function (config) {
+        if (config.serverURL !== '') {
+            AV.init({
+                appId: config.appId,
+                appKey: config.appKey,
+                serverURL: config.serverURL
+            });
+        }
+        else {
+            AV.init({
+                appId: config.appId,
+                appKey: config.appKey
+            });
+        }
+    },
+    currentUser: function () {
+        return AV.User.current();
+    },
+    login: function (username, password) {
+        return AV.User.logIn(username, password);
+    },
+    logout: function () {
+        return AV.User.logOut();
+    },
+    updateCurrentUser: function (attributes) {
+        const currentUser = AV.User.current();
+        if (!currentUser)
+            return Promise.reject(new Error('User is not logged in'));
+        if (typeof currentUser.set === 'function' && typeof currentUser.save === 'function') {
+            Object.keys(attributes).forEach(function (key) {
+                currentUser.set(key, attributes[key]);
+            });
+            return currentUser.save();
+        }
+        currentUser.attributes = Object.assign({}, currentUser.attributes, attributes);
+        if (window.localStorage)
+            window.localStorage.setItem('artitalk:currentUser', JSON.stringify(currentUser));
+        return Promise.resolve(currentUser);
+    },
+    createTalk: function () {
+        const Shuoshuo = AV.Object.extend('shuoshuo');
+        return new Shuoshuo();
+    },
+    talkById: function (id) {
+        return AV.Object.createWithoutData('shuoshuo', id);
+    },
+    commentById: function () {
+        const Comment = AV.Object.extend('atComment');
+        return new Comment();
+    },
+    queryTalks: function (pageSize, pageNum) {
+        function sortTalks(talks) {
+            return talks.sort(function (first, second) {
+                const firstPinned = first.attributes.isPinned === true ? 1 : 0;
+                const secondPinned = second.attributes.isPinned === true ? 1 : 0;
+                if (firstPinned !== secondPinned)
+                    return secondPinned - firstPinned;
+                return new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime();
+            });
+        }
+        const query = new AV.Query('shuoshuo');
+        query.descending('isPinned');
+        query.addDescending('createdAt');
+        query.limit(pageSize);
+        query.skip(pageSize * pageNum);
+        return query.find().catch(function (error) {
+            if (!/Unsupported order field/.test(error.message || ''))
+                throw error;
+            const legacyQuery = new AV.Query('shuoshuo');
+            legacyQuery.descending('createdAt');
+            legacyQuery.limit(1000);
+            return legacyQuery.find().then(function (talks) {
+                return sortTalks(talks).slice(pageSize * pageNum, pageSize * (pageNum + 1));
+            });
+        });
+    },
+    queryTalkById: function (id) {
+        const query = new AV.Query('shuoshuo');
+        query.equalTo('objectId', id);
+        return query.find();
+    },
+    queryComments: function (talkId) {
+        const query = new AV.Query('atComment');
+        query.equalTo('atId', talkId);
+        query.descending('createdAt');
+        return query.find();
     }
-  },
-  init: function (config) {
-    if (config.serverURL !== '') {
-      AV.init({
-        appId: config.appId,
-        appKey: config.appKey,
-        serverURL: config.serverURL
-      });
-    } else {
-      AV.init({
-        appId: config.appId,
-        appKey: config.appKey
-      });
-    }
-  },
-  currentUser: function () {
-    return AV.User.current();
-  },
-  login: function (username, password) {
-    return AV.User.logIn(username, password);
-  },
-  logout: function () {
-    return AV.User.logOut();
-  },
-  updateCurrentUser: function (attributes) {
-    const currentUser = AV.User.current();
-    if (!currentUser) return Promise.reject(new Error('User is not logged in'));
-
-    if (typeof currentUser.set === 'function' && typeof currentUser.save === 'function') {
-      Object.keys(attributes).forEach(function (key) {
-        currentUser.set(key, attributes[key]);
-      });
-      return currentUser.save();
-    }
-
-    currentUser.attributes = Object.assign({}, currentUser.attributes, attributes);
-    if (window.localStorage) window.localStorage.setItem('artitalk:currentUser', JSON.stringify(currentUser));
-    return Promise.resolve(currentUser);
-  },
-  createTalk: function () {
-    const Shuoshuo = AV.Object.extend('shuoshuo');
-    return new Shuoshuo();
-  },
-  talkById: function (id) {
-    return AV.Object.createWithoutData('shuoshuo', id);
-  },
-  commentById: function () {
-    const Comment = AV.Object.extend('atComment');
-    return new Comment();
-  },
-  queryTalks: function (pageSize, pageNum) {
-    function sortTalks (talks) {
-      return talks.sort(function (first, second) {
-        const firstPinned = first.attributes.isPinned === true ? 1 : 0;
-        const secondPinned = second.attributes.isPinned === true ? 1 : 0;
-        if (firstPinned !== secondPinned) return secondPinned - firstPinned;
-        return new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime();
-      });
-    }
-
-    const query = new AV.Query('shuoshuo');
-    query.descending('isPinned');
-    query.addDescending('createdAt');
-    query.limit(pageSize);
-    query.skip(pageSize * pageNum);
-    return query.find().catch(function (error) {
-      if (!/Unsupported order field/.test(error.message || '')) throw error;
-      const legacyQuery = new AV.Query('shuoshuo');
-      legacyQuery.descending('createdAt');
-      legacyQuery.limit(1000);
-      return legacyQuery.find().then(function (talks) {
-        return sortTalks(talks).slice(pageSize * pageNum, pageSize * (pageNum + 1));
-      });
-    });
-  },
-  queryTalkById: function (id) {
-    const query = new AV.Query('shuoshuo');
-    query.equalTo('objectId', id);
-    return query.find();
-  },
-  queryComments: function (talkId) {
-    const query = new AV.Query('atComment');
-    query.equalTo('atId', talkId);
-    query.descending('createdAt');
-    return query.find();
-  }
 };
 ;
 function Artitalk (options) {

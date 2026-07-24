@@ -1,5 +1,5 @@
 // emoji init
-const atEmojiQQ = {
+const atEmojiQQ: ArtitalkEmojiMap = {
   qq_aini: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aini.gif',
   qq_aixin: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aixin.gif',
   qq_aoman: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/aoman.gif',
@@ -93,7 +93,7 @@ const atEmojiQQ = {
   qq_zhuakuang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhuakuang.gif',
   qq_zuohengheng: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zuohengheng.gif'
 };
-const atEmojiTB = {
+const atEmojiTB: ArtitalkEmojiMap = {
   OK: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/OK.png',
   what: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/what.png',
   不高兴: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/不高兴.png',
@@ -155,7 +155,7 @@ const atEmojiTB = {
   香蕉: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/香蕉.png',
   黑线: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/黑线.png'
 };
-const atEmojiBB = {
+const atEmojiBB: ArtitalkEmojiMap = {
   baiyan: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.png',
   bishi: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.png',
   bizui: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.png',
@@ -205,9 +205,9 @@ const atEmojiBB = {
   zhoumei: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhoumei.png',
   zhuakuang: 'https://fastly.jsdelivr.net/gh/Artitalk/Artitalk-emoji/zhuakuang.png'
 };
-var atEmojiQ = '';
-var atEmojiT = '';
-var atEmojiB = '';
+var atEmojiQ: string = '';
+var atEmojiT: string = '';
+var atEmojiB: string = '';
 for (const key in atEmojiQQ) {
   atEmojiQ = atEmojiQ + "<img alt='[" + key + "]' title='" + key + "' onclick='insertEmoji(\"[" + key + "]\")' class='atemoji gallery-group-img' src='" + atEmojiQQ[key] + "'/>";
 }

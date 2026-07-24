@@ -1,9 +1,4 @@
-interface AVRecord {
-  attributes: Record<string, unknown>;
-  createdAt: Date | string;
-  set?(key: string, value: unknown): void;
-  save?(): Promise<AVRecord>;
-}
+interface AVRecord extends ArtitalkRecord {}
 
 interface AVUser extends AVRecord {}
 
@@ -17,7 +12,7 @@ interface AVQuery {
 }
 
 interface AVNamespace {
-  init(options: { appId: string; appKey: string; serverURL?: string }): void;
+  init(options: { appId?: string; appKey?: string; serverURL?: string }): void;
   User: {
     current(): AVUser | null;
     logIn(username: string, password: string): Promise<AVUser>;
@@ -58,8 +53,12 @@ interface ArtitalkSvgModule {
   render(name: string, values?: Record<string, string | number>): string;
 }
 
+interface Window {
+  AV?: AVNamespace;
+}
+
 declare const AV: AVNamespace;
 declare const Client: ClientConstructor;
 declare const showdown: ShowdownStatic;
-declare const ArtitalkLocales: Record<string, Record<string, string>>;
+declare const ArtitalkLocales: Record<string, ArtitalkMessages>;
 declare const ArtitalkSvg: ArtitalkSvgModule;

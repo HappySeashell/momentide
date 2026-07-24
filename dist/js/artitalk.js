@@ -266,8 +266,10 @@
       }
     },
     judgeSystem: function () {
-      var ua = navigator.userAgent.toString();
-      var p = navigator.appVersion; // 判断操作系统
+      var ua = String(navigator.userAgent || '');
+      // navigator.appVersion is a legacy property and can be absent in Safari/iOS.
+      // The user agent contains the same operating-system tokens, so use it as a fallback.
+      var p = String(navigator.appVersion || ua); // 判断操作系统
       this.system.name = p.indexOf('Win') != -1 ? 'Windows' : this.system.name;
       this.system.name = p.indexOf('Mac') != -1 ? 'Mac' : this.system.name;
       this.system.name = p.indexOf('like Mac') != -1 ? 'like Mac' : this.system.name;

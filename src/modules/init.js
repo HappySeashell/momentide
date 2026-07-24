@@ -21,7 +21,7 @@ atEvery.prototype._init = function () {
     onCommentsPublished
   } = root.config;
   lang = ArtitalkI18n.normalizeLanguage(lang);
-  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoSizeError, imageFormatError, audioFormatError, videoFormatError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts } = ArtitalkI18n.getMessages(lang);
+  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoSizeError, imageFormatError, audioFormatError, videoFormatError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, backgroundColor, colorSaved } = ArtitalkI18n.getMessages(lang);
   bgImg = typeof (bgImg) === 'undefined' || bgImg === '' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp' : bgImg;
   let atEmojiDefault = '';
   for (const key in atEmoji) {
@@ -111,7 +111,7 @@ atEvery.prototype._init = function () {
   // Insert html part
   var atHtml = "<div id='artitalk_part1'><div id=\"shuoshuo_content\"><div id=\"ccontent\"></div><div id='readButton' style=''><center><button id=\"readmore\" class=\"at_button\" style=\"margin-bottom: 15px;display: none\">" + loadMore + '</button></center></div></div><div id="shuoshuo_input" class="shuoshuo_active" style="display: none;"><div id="shuoshuo_edit"><textarea class="shuoshuo_text" oninput="preview()" id="neirong" placeholder="' + shuoPla + '"style="background-image: url(' + bgImg + ");z-index: 0\"></textarea><span id=\"drag_area\" class=\"z-index: -1;\"></span></div><div id=\"shuoshuo_parttwo\" class=\"shuoshuo_parttwo\"><div id=\"shuoshuo_emoji_Tieba\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_BiliBili\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_QQ\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emoji_custom\" class=\"shuoshuo_emoji\" style='display: none'></div><div id=\"shuoshuo_emojiswitch\" class=\"shuoshuo_emojiswitch\" style='display: none'><div id=\"switch_1\" class=\"shuoshuo_emoji_part zuiliangdezai\">Tieba</div><div id=\"switch_2\" class=\"shuoshuo_emoji_part\">BiliBili</div><div id=\"switch_3\" class=\"shuoshuo_emoji_part\">QQ</div><div id=\"switch_4\" class=\"shuoshuo_emoji_part\">Custom</div></div><div id=\"preview\" class=\"preview_now\"></div></div><div class=\"shuoshuo_submit\"><div class=\"shuoshuo_row\"><input class=\"artitalk_child shuoshuo_inputs\" style='display: none' id=\"email\" value=\"\"  placeholder=\" " + avatarUrl + '"><input class="artitalk_child shuoshuo_inputs" style="display: none" id="commentNick" value="" placeholder="' + avatarUrl + "\"><div class=\"artitalk_child\"><button class=\"at_button\" id='atSave' style=\"float: right;\">" + publish + "</button><button class=\"at_button\" id='commentSave' style=\"display:none;float: right;\">" + publish + "</button><button class=\"at_button\" id='atPreview' style=\"float: right;\">" + preview + "</button><button class=\"at_button\" id='loadEmoji' style=\"float: right;\">" + emoji + '</button></div></div></div></div></div><div class="power"><div style="font-size: 25px;display: none; cursor: pointer" id="pubComment">' + ArtitalkSvg.render('publish') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="pubShuo"title="' + postTalk + '">' + ArtitalkSvg.render('publish') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="switchUser" title="' + login + '">' + ArtitalkSvg.render('user') + '</div><div style="font-size: 25px;display: inline; cursor: pointer" id="uploadSource" title="" + add + "">' + ArtitalkSvg.render('upload') + '</div><br>Powered By <a href="https://artitalk-docs.hclonely.com/" target="_blank">Artitalk</a><br>' + atVersion + "</div><input type='file' id='realUpload' onchange='atEvery.prototype.beginUpload(this.files[0])' style=\"width: 0;height: 0;display: none\"></input></div>";
   var motionHtml = "<div id='lazy'><div class=\"preloader\" style=\"opacity: 1; \">" + ArtitalkSvg.render('loading-sun') + "" + ArtitalkSvg.render('loading-cloud') + "<div class=\"rain\"><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span><span class=\"drop\"></span></div><div class=\"artitalk_loading_text\" id=\"loading_txt\">" + loading + '</div></div></div>';
-  var atOpHtml = "<div id=\"shade\" class=\"c1\" style='display: none'></div><div id=\"shuoshuo-modal\" class=\"c2\" style='display: none' ><center><p>" + username + '：<input type="text" class="shuoshuo_input_log" id="username"/></p><p>' + password + '：<input type="password" class="shuoshuo_input_log"  id="pwd"/></p><p><input type="button" value="' + login + "\" class=\"at_button\" id='login'>&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\"" + cancel + "\"  class=\"at_button\" id = 'celLogin'></p></center><center><div id=\"logw\" style='color: red'></div></center></div><div id=\"userinfo\" class=\"c2\" style='display: none'><center><p><div id=\"status\"></div></p><p><input type=\"button\" class=\"at_button\" value=\"" + confirm + '" id="hideuser">&nbsp;&nbsp;&nbsp;&nbsp;<input id="tui" type="button" value="' + signOut + "\" class=\"at_button\" style=\"display: none;\" onclick=\"Logout();\"></p></center></div><div id=\"shanchu\" class=\"c2\" style='display: none'><center><p>" + deleteSuccess + '</p><p><input type="button" class="at_button" value="' + confirm + "\" id=\"deleteSus\"></p><center></div><div id=\"shanchur\" class=\"c2\" style='display: none'><center><p>" + confirmDelete + "</p><p><div id=\"delete1\"></div></p><center></div><div id='clickForPreview'></div>";
+  var atOpHtml = "<div id=\"shade\" class=\"c1\" style='display: none'></div><div id=\"shuoshuo-modal\" class=\"c2\" style='display: none' ><center><p>" + username + '：<input type="text" class="shuoshuo_input_log" id="username"/></p><p>' + password + '：<input type="password" class="shuoshuo_input_log"  id="pwd"/></p><p><input type="button" value="' + login + "\" class=\"at_button\" id='login'>&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\"" + cancel + "\"  class=\"at_button\" id = 'celLogin'></p></center><center><div id=\"logw\" style='color: red'></div></center></div><div id=\"userinfo\" class=\"c2\" style='display: none'><center><p><div id=\"status\"></div></p><p><label for=\"userBackgroundColor\">" + backgroundColor + "：</label><input type=\"color\" id=\"userBackgroundColor\" class=\"user-background-color\" aria-label=\"" + backgroundColor + "\"><input type=\"button\" class=\"at_button\" value=\"" + save + "\" id=\"saveUserBackgroundColor\"></p><p id=\"userBackgroundColorStatus\" class=\"user-color-status\" aria-live=\"polite\"></p><p><input type=\"button\" class=\"at_button\" value=\"" + confirm + "\" id=\"hideuser\">&nbsp;&nbsp;&nbsp;&nbsp;<input id=\"tui\" type=\"button\" value=\"" + signOut + "\" class=\"at_button\" style=\"display: none;\" onclick=\"Logout();\"></p></center></div><div id=\"shanchu\" class=\"c2\" style='display: none'><center><p>" + deleteSuccess + '</p><p><input type="button" class="at_button" value="' + confirm + "\" id=\"deleteSus\"></p><center></div><div id=\"shanchur\" class=\"c2\" style='display: none'><center><p>" + confirmDelete + "</p><p><div id=\"delete1\"></div></p><center></div><div id='clickForPreview'></div>";
   var atOp = document.createElement('div');
   atOp.id = 'operare_artitalk';
   document.body.append(atOp);
@@ -127,6 +127,9 @@ atEvery.prototype._init = function () {
   const cancelLogin = document.getElementById('celLogin');// cancel Login
   const loginButton = document.getElementById('login');// Login
   const hideUser = document.getElementById('hideuser');
+  const userBackgroundColor = document.getElementById('userBackgroundColor');
+  const saveUserBackgroundColor = document.getElementById('saveUserBackgroundColor');
+  const userBackgroundColorStatus = document.getElementById('userBackgroundColorStatus');
   const loadEmoji = document.getElementById('loadEmoji');// Loading emoji
   const switchTb = document.getElementById('switch_1');// Tieba emoji
   const switchBB = document.getElementById('switch_2');// BiliBili emoji
@@ -166,6 +169,8 @@ atEvery.prototype._init = function () {
     if (currentUser) {
       fadeIn('userinfo');
       document.getElementById('status').innerHTML = loggedIn + ':\t' + currentUser.attributes.username;
+      userBackgroundColor.value = currentUser.attributes.backgroundColor || getUserBackgroundColor(currentUser.id, color1, color2);
+      userBackgroundColorStatus.innerHTML = '';
       fadeIn('tui');
     } else {
       fadeIn('tui');
@@ -217,6 +222,19 @@ atEvery.prototype._init = function () {
   hideUser.onclick = function () {
     fadeOut('shade');
     fadeOut('userinfo');
+  };
+  saveUserBackgroundColor.onclick = function () {
+    const selectedColor = userBackgroundColor.value;
+    saveUserBackgroundColor.disabled = true;
+    ArtitalkData.updateCurrentUser({ backgroundColor: selectedColor }).then(function () {
+      userBackgroundColorStatus.innerHTML = colorSaved;
+      document.getElementById('ccontent').innerHTML = '';
+      root.seeContent(0, root.config);
+    }).catch(function (error) {
+      userBackgroundColorStatus.innerHTML = error.message;
+    }).then(function () {
+      saveUserBackgroundColor.disabled = false;
+    });
   };
   loadEmoji.onclick = function () {
     document.getElementById('switch_1').classList.add('zuiliangdezai');
@@ -297,6 +315,7 @@ atEvery.prototype._init = function () {
     atObject.set('avatar', atAvatar);
     atObject.set('authorId', currentUser.id);
     atObject.set('authorName', currentUser.attributes.username);
+    atObject.set('authorColor', currentUser.attributes.backgroundColor || '');
     fadeIn('lazy');
     atObject.save().then(function (res) {
       document.getElementById('ccontent').innerHTML = '';

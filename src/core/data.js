@@ -30,6 +30,21 @@ const ArtitalkData = {
   logout: function () {
     return AV.User.logOut();
   },
+  updateCurrentUser: function (attributes) {
+    const currentUser = AV.User.current();
+    if (!currentUser) return Promise.reject(new Error('User is not logged in'));
+
+    if (typeof currentUser.set === 'function' && typeof currentUser.save === 'function') {
+      Object.keys(attributes).forEach(function (key) {
+        currentUser.set(key, attributes[key]);
+      });
+      return currentUser.save();
+    }
+
+    currentUser.attributes = Object.assign({}, currentUser.attributes, attributes);
+    if (window.localStorage) window.localStorage.setItem('artitalk:currentUser', JSON.stringify(currentUser));
+    return Promise.resolve(currentUser);
+  },
   createTalk: function () {
     const Shuoshuo = AV.Object.extend('shuoshuo');
     return new Shuoshuo();

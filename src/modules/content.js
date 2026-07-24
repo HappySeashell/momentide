@@ -22,8 +22,9 @@ function getUserBackgroundColor (userKey, color1, color2) {
   return colors[(hash >>> 0) % colors.length];
 }
 
-function getUserBackgroundAttributes (userKey, color1, color2) {
-  return ' data-user-background style="--artitalk-user-background:' + getUserBackgroundColor(userKey, color1, color2) + '"';
+function getUserBackgroundAttributes (userKey, color1, color2, userColor) {
+  const backgroundColor = userColor || getUserBackgroundColor(userKey, color1, color2);
+  return ' data-user-background style="--artitalk-user-background:' + backgroundColor + '"';
 }
 
 atEvery.prototype.seeContent = function (pageNum, option) {
@@ -124,7 +125,8 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       const shuoshuoPerContent = ArtitalkSanitizer.sanitizeHtml(atContent.attributes.atContentHtml);
       const commentSvg = '' + ArtitalkSvg.render('comment', { color: color3 }) + '';
       const authorKey = atContent.attributes.authorId || atContent.attributes.authorName || shuoAvatar;
-      const userBackgroundAttributes = getUserBackgroundAttributes(authorKey, color1, color2);
+      const authorColor = atContent.attributes.authorColor || (currentUser && currentUser.id === atContent.attributes.authorId ? currentUser.attributes.backgroundColor : '');
+      const userBackgroundAttributes = getUserBackgroundAttributes(authorKey, color1, color2, authorColor);
       const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "'" + userBackgroundAttributes + "><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
       mid += contengMid;
     });
@@ -293,6 +295,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     atComment.set('atId', id);
     atComment.set('commentContent', atCommentHtml);
     atComment.set('authorId', currentUser ? currentUser.id : comEmailMd5 || comNick);
+    atComment.set('authorColor', currentUser ? currentUser.attributes.backgroundColor : '');
     if (!currentUser) {
       atComment.set('email', comEmailMd5);
     }
@@ -300,7 +303,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     atComment.save().then(function (res) {
       const replySvg = '<span style="float: right">' + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
       const originComment = document.getElementById('ccontent').innerHTML;
-      const userBackgroundAttributes = getUserBackgroundAttributes(currentUser ? currentUser.id : comEmailMd5 || comNick, color1, color2);
+      const userBackgroundAttributes = getUserBackgroundAttributes(currentUser ? currentUser.id : comEmailMd5 || comNick, color1, color2, currentUser ? currentUser.attributes.backgroundColor : '');
       const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"' + userBackgroundAttributes + '>  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
       const positon = originComment.indexOf('</li>') + 5;
       const nowComment = originComment.slice(0, positon) + comList + originComment.slice(positon);
@@ -392,7 +395,8 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         }
         const comAvatar = atGravatar;
         const commenterKey = comment.attributes.authorId || comEmail || commentNick || comAvatar;
-        const userBackgroundAttributes = getUserBackgroundAttributes(commenterKey, color1, color2);
+        const commenterColor = comment.attributes.authorColor || (currentUser && currentUser.id === comment.attributes.authorId ? currentUser.attributes.backgroundColor : '');
+        const userBackgroundAttributes = getUserBackgroundAttributes(commenterKey, color1, color2, commenterColor);
 
         const replySvg = "<span style=\"float: right\" onclick=\"atEvery.prototype.atReply()\">" + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
 

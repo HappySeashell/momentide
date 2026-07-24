@@ -50,5 +50,7 @@
   "tooManyLoginAttempts": "Ha introducido contraseñas incorrectas demasiadas veces. Inténtelo más tarde o restablezca su contraseña.",
   "pin": "Fijar",
   "unpin": "Desfijar",
-  "pinned": "Fijado"
+  "pinned": "Fijado",
+  "backgroundColor": "Color de fondo",
+  "colorSaved": "Color guardado"
 }

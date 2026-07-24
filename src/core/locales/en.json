@@ -50,5 +50,7 @@
   "tooManyLoginAttempts": "You have entered incorrect passwords for too many times. Please try later or reset your password.",
   "pin": "Pin",
   "unpin": "Unpin",
-  "pinned": "Pinned"
+  "pinned": "Pinned",
+  "backgroundColor": "Background color",
+  "colorSaved": "Color saved"
 }

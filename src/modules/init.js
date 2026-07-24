@@ -20,9 +20,11 @@ atEvery.prototype._init = function () {
     onShuoPublished,
     onCommentsPublished
   } = root.config;
-  lang = typeof (lang) === 'undefined' || lang === '' ? 'zh' : lang;
+  lang = ArtitalkI18n.normalizeLanguage(lang);
+  var messages = ArtitalkI18n.getMessages(lang, 'init');
+  var { text0, text00, text1, text2, text3, text4, text5, text6, text7, text8, text9, text10, text11, text12, text14, text15, text16, text17, text18, text19, text20, text21, text22, text23, text24, text25, text26, text27, text28, text29, text30, text31, text32, text33, text34, text35, textup, loadingTxT, text36, text37, text38, text39, text40, text41, text42, text43, text44, text45, text46 } = messages;
   bgImg = typeof (bgImg) === 'undefined' || bgImg === '' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/20200409110727.webp' : bgImg;
-  switch (lang) {
+  if (false) switch (lang) {
     case 'zh':
       var text0 = '由';
       var text00 = '发表';
@@ -469,7 +471,7 @@ atEvery.prototype._init = function () {
     const atObject = ArtitalkData.createTalk();
     const shuoshuoContentMd = shuoshuoContent;
     atObject.set('atContentMd', shuoshuoContentMd);
-    shuoshuoContent = translate(shuoshuoContent);
+    shuoshuoContent = ArtitalkI18n.translateEmojis(shuoshuoContent, atEmoji);
     const converte = new showdown.Converter();
     converte.setOption('strikethrough', 1);
     const shuoshuoContentHtml = converte.makeHtml(shuoshuoContent);
@@ -496,7 +498,7 @@ atEvery.prototype._init = function () {
   };
   clickPre.onclick = function () {
     let unPre = document.getElementById('neirong').value;
-    unPre = translate(unPre);
+    unPre = ArtitalkI18n.translateEmojis(unPre, atEmoji);
     const converter = new showdown.Converter();
     converter.setOption('strikethrough', 1);
     const finishPre = converter.makeHtml(unPre);

@@ -25,6 +25,7 @@ const concatJS = () => (
         'src/plugins/*.js',
         'src/core/version.js',
         'src/core/emoji.js',
+        'src/core/i18n.js',
         'src/core/dom.js',
         'src/core/data.js',
         'src/main.js',

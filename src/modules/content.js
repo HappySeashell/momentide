@@ -41,17 +41,17 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       let osSvg = '';
       switch (atOs) {
         case 'windows':
-          osSvg = '' + ArtitalkSvg.render('icon-1591348521231', { color: color3 }) + '' + ' ';
+          osSvg = '' + ArtitalkSvg.render('os-windows', { color: color3 }) + '' + ' ';
         case 'Android':
-          osSvg = '' + ArtitalkSvg.render('icon-1591349177001', { color: color3 }) + '' + ' ';
+          osSvg = '' + ArtitalkSvg.render('os-android', { color: color3 }) + '' + ' ';
         case 'Linux':
-          osSvg = '' + ArtitalkSvg.render('icon-1591349455279', { color: color3 }) + '' + ' ';
+          osSvg = '' + ArtitalkSvg.render('os-linux', { color: color3 }) + '' + ' ';
         case 'iOS':
-          osSvg = '' + ArtitalkSvg.render('icon-1591349632686', { color: color3 }) + '' + ' ';
+          osSvg = '' + ArtitalkSvg.render('os-apple', { color: color3 }) + '' + ' ';
         case 'Max':
-          osSvg = '' + ArtitalkSvg.render('icon-1591349632686', { color: color3 }) + '' + ' ';
+          osSvg = '' + ArtitalkSvg.render('os-apple', { color: color3 }) + '' + ' ';
         default:
-          osSvg = '' + ArtitalkSvg.render('icon-1591349738696', { color: color3 }) + '' + ' ';
+          osSvg = '' + ArtitalkSvg.render('os-unknown', { color: color3 }) + '' + ' ';
       }
       // Avatar init
       let shuoAvatar = atContent.attributes.avatar;
@@ -70,21 +70,21 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       let timeSvg = '';
       switch (timeSvg) {
         case atHour >= 0 && atHour < 5:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350196611', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
         case atHour >= 5 && atHour < 6:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350273094', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
         case atHour >= 6 && atHour < 8:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350470149', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
         case atHour >= 8 && atHour < 11:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350526184', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
         case atHour >= 11 && atHour < 13:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350817881', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
         case atHour >= 13 && atHour < 17:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350596667', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
         case atHour >= 17 && atHour < 18:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350638906', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
         case atHour >= 18 && atHour < 21:
-          timeSvg = '' + ArtitalkSvg.render('icon-1591350675688', { color: color3 }) + '' + ' ';
+          timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
       }
       // Content process
       let atCommentTrue = '';
@@ -94,8 +94,8 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       const id = atContent.id;
       if (atContent.attributes.isPinned === true) pinnedTalkIds.push(id);
       const shuoshuoPerContent = ArtitalkSanitizer.sanitizeHtml(atContent.attributes.atContentHtml);
-      const commentSvg = '' + ArtitalkSvg.render('icon-1599605913184', { color: color3 }) + '';
-      const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "' ><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('icon-asset', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
+      const commentSvg = '' + ArtitalkSvg.render('comment', { color: color3 }) + '';
+      const contengMid = "<li><span class=\"shuoshuo_author_img\" onclick='atEvery.prototype.atEdit(\"" + id + "\")'><img  id='atAvatar" + id + "'  src=\"" + shuoAvatar + "\"class=\"artitalk_avatar gallery-group-img\" width=\"48\" height=\"48\"></span><span class=\"cbp_tmlabel\" id='atId" + id + "' ><div " + hideIcon + "id='operate" + id + "'  class=\"delete_right\">" + ArtitalkSvg.render('delete', { color: color3, id: id }) + "</div><div id='forEdit" + id + "'>" + shuoshuoPerContent + '</div><p class="shuoshuo_time">' + '<span style=""> ' + ' ' + osSvg + atOs + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + '' + "</span><span style='float: right'><span style='" + atCommentTrue + ";vertical-align:top;' onclick='atEvery.prototype.commentInit(\"" + id + "\")'  id='atCoInit" + id + "'>" + commentSvg + "<span style='padding: 0 0 0 8px;color:" + color3 + "'; id= 'coValue" + id + "'>loading</span></span>&nbsp<span style='vertical-align:top;' id='" + id + "'></span></p></span></li>";
       mid += contengMid;
     });
     let originString = document.getElementById('ccontent').innerHTML;
@@ -104,7 +104,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     originString += mid + '</ul>';
     // console.log(originString);
     if (shuoNum === 0 && pageNum === 0) {
-      originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('icon-1591350675688-2') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
+      originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + emptyTalk + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
     }
     document.getElementById('ccontent').innerHTML = originString;
     pinnedTalkIds.forEach(function (id) {
@@ -150,7 +150,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     fadeIn('lazy');
     ArtitalkData.queryTalkById(id).then(res => {
       res.forEach(function (atom) {
-        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + editInstructions + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('icon-1591350675688-2') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
+        const originString = '<ul class="cbp_tmtimeline" id="maina"><li><span class="shuoshuo_author_img"><img src="https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png" class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"><p>' + editInstructions + '</p><p class="shuoshuo_time"><span style=""> 由Artitalk发表</span><span style="float:right;">' + ArtitalkSvg.render('time-placeholder') + ' 2020-04-10 20:35:25</span></p></span></li></ul>';
         document.getElementById('ccontent').innerHTML = originString;
         const changeId = document.getElementById('atSave');
         changeId.id = 'atEditsaveButton';
@@ -238,21 +238,21 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     let timeSvg = '';
     switch (timeSvg) {
       case atHour >= 0 && atHour < 5:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350196611', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
       case atHour >= 5 && atHour < 6:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350273094', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
       case atHour >= 6 && atHour < 8:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350470149', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
       case atHour >= 8 && atHour < 11:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350526184', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
       case atHour >= 11 && atHour < 13:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350817881', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
       case atHour >= 13 && atHour < 17:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350596667', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
       case atHour >= 17 && atHour < 18:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350638906', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
       case atHour >= 18 && atHour < 21:
-        timeSvg = '' + ArtitalkSvg.render('icon-1591350675688', { color: color3 }) + '' + ' ';
+        timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
     }
     if (currentUser) {
       const adminAvatar = typeof (currentUser.attributes.img) === 'undefined' ? 'https://fastly.jsdelivr.net/gh/drew233/cdn/logol.png' : currentUser.attributes.img;
@@ -267,7 +267,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     }
     atComment.set('nick', comNick);
     atComment.save().then(function (res) {
-      const replySvg = '<span style="float: right">' + ArtitalkSvg.render('icon-1599635243920', { color: color3 }) + '</span>';
+      const replySvg = '<span style="float: right">' + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
       const originComment = document.getElementById('ccontent').innerHTML;
       const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + atGravatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"  >  <div>' + atCommentHtml + '</div><p class="shuoshuo_time">' + '<span>' + comNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
       const positon = originComment.indexOf('</li>') + 5;
@@ -330,21 +330,21 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         let timeSvg = '';
         switch (timeSvg) {
           case atHour >= 0 && atHour < 5:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350196611', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-pre-dawn', { color: color3 }) + '' + ' ';
           case atHour >= 5 && atHour < 6:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350273094', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-sunrise', { color: color3 }) + '' + ' ';
           case atHour >= 6 && atHour < 8:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350470149', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-early-morning', { color: color3 }) + '' + ' ';
           case atHour >= 8 && atHour < 11:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350526184', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-morning', { color: color3 }) + '' + ' ';
           case atHour >= 11 && atHour < 13:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350817881', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-noon', { color: color3 }) + '' + ' ';
           case atHour >= 13 && atHour < 17:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350596667', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-afternoon', { color: color3 }) + '' + ' ';
           case atHour >= 17 && atHour < 18:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350638906', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-evening', { color: color3 }) + '' + ' ';
           case atHour >= 18 && atHour < 21:
-            timeSvg = '' + ArtitalkSvg.render('icon-1591350675688', { color: color3 }) + '' + ' ';
+            timeSvg = '' + ArtitalkSvg.render('time-night', { color: color3 }) + '' + ' ';
         }
         const comContent = ArtitalkSanitizer.sanitizeHtml(comment.attributes.commentContent);
         const commentNick = comment.attributes.nick;
@@ -356,7 +356,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         }
         const comAvatar = atGravatar;
 
-        const replySvg = "<span style=\"float: right\">" + ArtitalkSvg.render('icon-asset-2', { color: color3 }) + '</span>';
+        const replySvg = "<span style=\"float: right\" onclick=\"atEvery.prototype.atReply()\">" + ArtitalkSvg.render('reply', { color: color3 }) + '</span>';
 
         const comList = '<li style="margin: 0 0 0 48px"><span class="shuoshuo_author_img"><img src="' + comAvatar + '"class="artitalk_avatar gallery-group-img" width="48" height="48"></span><span class="cbp_tmlabel"  >  <div>' + comContent + '</div><p class="shuoshuo_time">' + '<span>' + commentNick + '</span><span>&nbsp&nbsp' + timeSvg + resDate + ' ' + resTime + replySvg + '</span></p></span></li>';
         mid += comList;

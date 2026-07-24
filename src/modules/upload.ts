@@ -43,7 +43,7 @@ atEvery.prototype.beginUpload = function (file: File): void {
   xhr.withCredentials = false;
   xhr.addEventListener('readystatechange', function () {
     if (this.readyState === 4 && this.status === 200) {
-      const sourceUrl = eval('(' + this.responseText + ')') as ArtitalkUploadResponse;
+      const sourceUrl = JSON.parse(this.responseText) as ArtitalkUploadResponse;
       // let Md = "![]("+imgUrl.data.url+")";
       let sourceMd = '';
       // insertEmoji(imgMd);

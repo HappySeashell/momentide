@@ -16,8 +16,8 @@
   "dependencies": {
     "@rollup/plugin-terser": "^1.0.0",
     "cssnano": "^8.0.2",
+    "postcss": "^8.5.22",
     "rollup": "^4.62.2",
-    "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.93.2"
   },
   "devDependencies": {

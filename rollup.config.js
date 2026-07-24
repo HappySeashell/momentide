@@ -2,8 +2,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const typescript = require('typescript');
 const terser = require('@rollup/plugin-terser');
-const postcss = require('rollup-plugin-postcss');
+const postcss = require('postcss');
 const cssnano = require('cssnano');
+const sass = require('sass');
 const { syncVersion } = require('./scripts/sync-version');
 const { createSvgModule } = require('./scripts/create-svg-module');
 
@@ -78,9 +79,29 @@ function orderedGlobalSources () {
   };
 }
 
-function removeCssStub () {
+function compileStyles () {
   return {
-    name: 'remove-css-stub',
+    name: 'compile-styles',
+    async transform (_code, id) {
+      if (id !== path.resolve(root, 'src/css/main.scss')) return null;
+
+      const result = await sass.compileAsync(id);
+      const minified = await postcss([cssnano({
+        preset: ['default', {
+          overrideBrowserslist: ['ie 8'],
+          reduceTransforms: false,
+          convertValues: { angle: false, length: false }
+        }]
+      })]).process(result.css, { from: id });
+
+      this.emitFile({
+        type: 'asset',
+        fileName: 'artitalk.min.css',
+        source: minified.css
+      });
+
+      return { code: 'export default {};', map: null };
+    },
     generateBundle (outputOptions, bundle) {
       delete bundle[path.basename(outputOptions.file)];
     }
@@ -137,18 +158,7 @@ module.exports = [
     input: 'src/css/main.scss',
     output: { file: 'dist/css/.artitalk-css-stub.js', format: 'es' },
     plugins: [
-      postcss({
-        extract: path.join(root, 'dist/css/artitalk.min.css'),
-        plugins: [cssnano({
-          preset: ['default', {
-            overrideBrowserslist: ['ie 8'],
-            reduceTransforms: false,
-            convertValues: { angle: false, length: false }
-          }]
-        })],
-        use: ['sass']
-      }),
-      removeCssStub()
+      compileStyles()
     ]
   }
 ];

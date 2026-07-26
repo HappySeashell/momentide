@@ -1,6 +1,6 @@
 {
   "name": "@hclonely/artitalk",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "entry": "dist/js/artitalk.min.js",
   "main": "dist/js/artitalk.min.js",
   "scripts": {

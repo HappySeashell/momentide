@@ -15,8 +15,10 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 
 - 发布、预览、删除说说内容
 - 支持 Markdown/HTML 内容渲染
+- 支持动态置顶、账户背景色与自动区分作者配色
 - 支持图片、音乐、视频等媒体上传入口
 - 支持评论、表情
+- 对动态、评论和预览内容进行 HTML 净化
 - 提供 Vercel 服务端，支持从 LeanCloud 数据迁移
 
 ## 快速开始
@@ -52,7 +54,7 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 │  ├─ css/main.scss              # 组件样式
 │  ├─ html/                      # HTML 片段
 │  ├─ modules/                   # TypeScript：初始化、内容渲染、上传等 UI 模块
-│  ├─ plugins/                   # JavaScript：Markdown、MD5、浏览器识别和 AV 兼容层
+│  ├─ plugins/                   # 第三方依赖及 TypeScript：浏览器识别、AV 兼容层等
 │  ├─ types/                     # 浏览器全局变量和第三方库声明
 │  └─ main.ts                    # TypeScript Artitalk 入口
 ├─ test/test_page.html           # 前端集成测试页面
@@ -76,7 +78,7 @@ Artitalk 是一个轻量级说说/动态发布组件，适合嵌入个人博客�
 
 ## 开发与验证
 
-`src/` 中的核心逻辑和 UI 模块以 TypeScript 维护；`src/plugins/` 保留第三方 JavaScript 文件。安装依赖后，提交前请运行：
+`src/` 中的业务逻辑以 TypeScript 维护；第三方依赖文件保留其原始 JavaScript 格式。项目使用 Rollup 构建，安装依赖后，提交前请运行：
 
 ```bash
 npm run typecheck

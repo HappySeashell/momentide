@@ -1,6 +1,9 @@
 {
   "name": "@happyseashell/momentide",
   "version": "0.1.0",
+  "engines": {
+    "node": "24.x"
+  },
   "entry": "dist/js/artitalk.min.js",
   "main": "dist/js/artitalk.min.js",
   "module": "dist/js/artitalk.esm.js",

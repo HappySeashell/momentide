@@ -20,7 +20,7 @@ new Artitalk({
 </script>
 ```
 
-The component targets the independent `momentide-server` HTTP contract. That
+The component targets the independent `blog-api` HTTP contract. That
 server uses standard PostgreSQL; the public browser API is not tied to
 Supabase or any other database vendor.
 
@@ -37,8 +37,9 @@ Supabase or any other database vendor.
 ## Build outputs
 
 `npm run build` creates the compatible IIFE files, an ESM script, and standalone
-CSS under `dist/`. Production sites should vendor a fixed release instead of
-loading the latest version from a CDN.
+CSS under `dist/`. For the first blog release, the minified IIFE and CSS are
+served from the same origin. If a CDN is used later, pin an exact release and
+never reference `latest` or a mutable branch.
 
 ## Attribution and license
 

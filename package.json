@@ -3,6 +3,23 @@
   "version": "0.1.0",
   "entry": "dist/js/artitalk.min.js",
   "main": "dist/js/artitalk.min.js",
+  "module": "dist/js/artitalk.esm.js",
+  "unpkg": "dist/js/artitalk.min.js",
+  "jsdelivr": "dist/js/artitalk.min.js",
+  "files": [
+    "dist/css/artitalk.min.css",
+    "dist/js/artitalk.esm.js",
+    "dist/js/artitalk.min.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/js/artitalk.esm.js",
+      "default": "./dist/js/artitalk.min.js"
+    },
+    "./artitalk.min.css": "./dist/css/artitalk.min.css"
+  },
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "typecheck": "tsc --noEmit",
@@ -13,16 +30,14 @@
     "type": "git",
     "url": "git+https://github.com/HappySeashell/momentide.git"
   },
-  "dependencies": {
+  "devDependencies": {
     "@rollup/plugin-terser": "^1.0.0",
     "cssnano": "^8.0.2",
-    "postcss": "^8.5.22",
-    "rollup": "^4.62.2",
-    "sass": "^1.93.2"
-  },
-  "devDependencies": {
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
+    "postcss": "^8.5.22",
+    "rollup": "^4.62.2",
+    "sass": "^1.93.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.65.0"
   },

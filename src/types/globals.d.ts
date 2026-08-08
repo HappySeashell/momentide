@@ -71,6 +71,10 @@ interface ArtitalkTemplateModule {
 interface Window {
   AV?: AVNamespace;
   Client: ClientConstructor;
+  turnstile?: {
+    render(target: HTMLElement, options: Record<string, unknown>): string;
+    reset(widgetId?: string): void;
+  };
 }
 
 declare const AV: AVNamespace;

@@ -34,6 +34,7 @@ const sourceFiles = [
   firstPartySource('src/core/i18n'),
   firstPartySource('src/core/dom'),
   firstPartySource('src/core/sanitize'),
+  firstPartySource('src/core/turnstile'),
   firstPartySource('src/core/data'),
   firstPartySource('src/main'),
   firstPartySource('src/modules/init'),
@@ -171,6 +172,11 @@ module.exports = [
         name: 'artitalk',
         outro: exposeGlobals,
         plugins: [terser({ maxWorkers: 1 })]
+      },
+      {
+        file: 'dist/js/artitalk.esm.js',
+        format: 'es',
+        outro: exposeGlobals
       }
     ],
     plugins: [

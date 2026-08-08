@@ -1,17 +1,17 @@
 {
-  "name": "@hclonely/artitalk",
-  "version": "4.1.0",
+  "name": "@happyseashell/momentide",
+  "version": "0.1.0",
   "entry": "dist/js/artitalk.min.js",
   "main": "dist/js/artitalk.min.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "typecheck": "tsc --noEmit",
-    "test": "npm run typecheck && eslint src --ext .ts",
+    "test": "npm run typecheck && eslint src --ext .ts && node --test test/*.test.mjs",
     "lint:fix": "eslint src --fix"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HCLonely/artitalk.git"
+    "url": "git+https://github.com/HappySeashell/momentide.git"
   },
   "dependencies": {
     "@rollup/plugin-terser": "^1.0.0",

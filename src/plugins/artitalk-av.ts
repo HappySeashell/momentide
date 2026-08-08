@@ -15,6 +15,7 @@
 
   interface RequestOptions extends RequestInit {
     params?: QueryParameters;
+    authenticated?: boolean;
   }
 
   interface QueryParameters {
@@ -42,7 +43,9 @@
     new (className: string): AVQuery;
   }
 
-  interface AVUser extends AVObjectRecord {}
+  interface AVUser extends AVObjectRecord {
+    sessionToken?: string;
+  }
 
   interface AVNamespace {
     init(options?: ApiConfig): void;
@@ -61,6 +64,17 @@
   let config: ApiConfig = { serverURL: '' };
   const storageKey = 'artitalk:currentUser';
 
+  function storedUser (): AVUser | null {
+    const raw = global.localStorage && global.localStorage.getItem(storageKey);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as AVUser;
+    } catch {
+      global.localStorage.removeItem(storageKey);
+      return null;
+    }
+  }
+
   function baseUrl (): string {
     return (config.serverURL || '').replace(/\/$/, '');
   }
@@ -73,6 +87,11 @@
   function request<T> (path: string, options?: RequestOptions): Promise<T> {
     options = options || {};
     options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+    if (options.authenticated) {
+      const token = storedUser()?.sessionToken;
+      if (token) (options.headers as Record<string, string>)['X-LC-Session'] = token;
+    }
+    delete options.authenticated;
     return global.fetch(apiUrl(path, options.params), options).then(function (response): Promise<T> {
       return response.json().then(function (json: T & { error?: string }): T {
         if (!response.ok) {
@@ -117,7 +136,8 @@
       const self = this;
       return request<ApiRecord>(path, {
         method: method,
-        body: JSON.stringify(this.attributes)
+        body: JSON.stringify(this.attributes),
+        authenticated: this.className !== 'atComment' || storedUser() !== null
       }).then(function (raw): typeof self {
         const saved = inflateObject(self.className, raw);
         self.id = saved.id;
@@ -130,7 +150,8 @@
 
     destroy (): Promise<unknown> {
       return request<unknown>('/classes/' + encodeURIComponent(this.className) + '/' + encodeURIComponent(this.id), {
-        method: 'DELETE'
+        method: 'DELETE',
+        authenticated: true
       });
     }
   }
@@ -196,21 +217,29 @@
     },
     User: {
       current: function (): AVUser | null {
-        const raw = global.localStorage && global.localStorage.getItem(storageKey);
-        return raw ? JSON.parse(raw) as AVUser : null;
+        return storedUser();
       },
       logIn: function (username: string, password: string): Promise<AVUser> {
         return request<AVUser>('/login', {
           method: 'POST',
           body: JSON.stringify({ username: username, password: password })
-        }).then(function (user): AVUser {
+        }).then(function (response): AVUser {
+          const raw = response as AVUser & { objectId?: string; username?: string };
+          const user = {
+            id: raw.id || raw.objectId,
+            createdAt: raw.createdAt,
+            updatedAt: raw.updatedAt,
+            attributes: Object.assign({}, raw.attributes || {}, { username: raw.username || raw.attributes?.username }),
+            sessionToken: raw.sessionToken
+          } as AVUser;
           if (global.localStorage) global.localStorage.setItem(storageKey, JSON.stringify(user));
           return user;
         });
       },
       logOut: function (): Promise<void> {
-        if (global.localStorage) global.localStorage.removeItem(storageKey);
-        return request<void>('/logout', { method: 'POST' });
+        return request<void>('/logout', { method: 'POST', authenticated: true }).then(function (): void {
+          if (global.localStorage) global.localStorage.removeItem(storageKey);
+        });
       }
     },
     Object: {

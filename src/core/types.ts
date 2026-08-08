@@ -11,6 +11,8 @@ interface ArtitalkOptions {
   appId?: string;
   appKey?: string;
   serverURL?: string;
+  turnstileSiteKey?: string;
+  mediaUploadEnabled?: boolean;
   lang?: string;
   pageSize?: number | string;
   atEmoji?: ArtitalkEmojiMap;
@@ -49,6 +51,16 @@ interface ArtitalkRecordAttributes {
   email?: string;
   nick?: string;
   adminAvatar?: string;
+  _turnstileToken?: string;
+  _idempotencyKey?: string;
+  _honeypot?: string;
+}
+
+interface ArtitalkTurnstileApi {
+  configure(siteKey?: string): void;
+  show(containerId: string): void;
+  token(): string;
+  reset(): void;
 }
 
 interface ArtitalkRecord {

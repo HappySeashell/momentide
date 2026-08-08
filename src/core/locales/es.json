@@ -52,5 +52,6 @@
   "unpin": "Desfijar",
   "pinned": "Fijado",
   "backgroundColor": "Color de fondo",
-  "colorSaved": "Color guardado"
+  "colorSaved": "Color guardado",
+  "verificationRequired": "Complete la verificación primero"
 }

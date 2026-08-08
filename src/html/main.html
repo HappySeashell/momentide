@@ -21,11 +21,13 @@
     <div class="shuoshuo_submit"><div class="shuoshuo_row">
       <input class="artitalk_child shuoshuo_inputs" style="display: none" id="email" value="" placeholder="{{avatarUrl}}">
       <input class="artitalk_child shuoshuo_inputs" style="display: none" id="commentNick" value="" placeholder="{{avatarUrl}}">
+      <input id="momentide-honeypot" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position: absolute; left: -10000px; width: 1px; height: 1px">
+      <div id="momentide-turnstile" class="artitalk_child" style="display: none"></div>
       <div class="artitalk_child"><button class="at_button" id="atSave" style="float: right">{{publish}}</button><button class="at_button" id="commentSave" style="display: none; float: right">{{publish}}</button><button class="at_button" id="atPreview" style="float: right">{{preview}}</button><button class="at_button" id="loadEmoji" style="float: right">{{emoji}}</button></div>
     </div></div>
   </div>
 </div>
 <div class="power">
-  <div style="font-size: 25px; display: none; cursor: pointer" id="pubComment">{{publishSvg}}</div><div style="font-size: 25px; display: inline; cursor: pointer" id="pubShuo" title="{{postTalk}}">{{publishSvg}}</div><div style="font-size: 25px; display: inline; cursor: pointer" id="switchUser" title="{{login}}">{{userSvg}}</div><div style="font-size: 25px; display: inline; cursor: pointer" id="uploadSource" title="{{add}}">{{uploadSvg}}</div><br>Powered By <a href="https://artitalk-docs.hclonely.com/" target="_blank">Artitalk</a><br>{{version}}
+  <div style="font-size: 25px; display: none; cursor: pointer" id="pubComment">{{publishSvg}}</div><div style="font-size: 25px; display: inline; cursor: pointer" id="pubShuo" title="{{postTalk}}">{{publishSvg}}</div><div style="font-size: 25px; display: inline; cursor: pointer" id="switchUser" title="{{login}}">{{userSvg}}</div><div style="font-size: 25px; display: {{uploadDisplay}}; cursor: pointer" id="uploadSource" title="{{add}}">{{uploadSvg}}</div><br>Powered By <a href="https://github.com/HappySeashell/momentide" target="_blank" rel="noopener">Momentide</a><br>{{version}}
 </div>
 <input type="file" id="realUpload" onchange="atEvery.prototype.beginUpload(this.files[0])" style="width: 0; height: 0; display: none">

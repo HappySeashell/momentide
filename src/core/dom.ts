@@ -63,8 +63,11 @@ const ArtitalkDom: ArtitalkDom = {
 };
 
 function Logout (): void {
-  ArtitalkData.logout();
-  location.reload();
+  ArtitalkData.logout().then(function () {
+    location.reload();
+  }).catch(function (error: Error) {
+    console.error('Momentide logout failed', error.message);
+  });
 }
 
 function insertEmoji (str: string): void {

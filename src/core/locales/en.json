@@ -52,5 +52,6 @@
   "unpin": "Unpin",
   "pinned": "Pinned",
   "backgroundColor": "Background color",
-  "colorSaved": "Color saved"
+  "colorSaved": "Color saved",
+  "verificationRequired": "Please complete the verification first"
 }

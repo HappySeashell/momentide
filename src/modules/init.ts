@@ -17,6 +17,8 @@ atEvery.prototype._init = function () {
     shuoPla,
     avatarPla,
     serverURL,
+    turnstileSiteKey,
+    mediaUploadEnabled,
     color1,
     color2,
     color3,
@@ -43,6 +45,8 @@ atEvery.prototype._init = function () {
   onLogin = typeof (onLogin) === 'function' ? onLogin : function () { };
   onShuoPublished = typeof (onShuoPublished) === 'function' ? onShuoPublished : function () { };
   onCommentsPublished = typeof (onCommentsPublished) === 'function' ? onCommentsPublished : function () { };
+  mediaUploadEnabled = mediaUploadEnabled === true;
+  ArtitalkTurnstile.configure(turnstileSiteKey);
 
   const apiUrl = '';
   try {
@@ -97,6 +101,7 @@ atEvery.prototype._init = function () {
     userSvg: ArtitalkSvg.render('user'),
     login,
     uploadSvg: ArtitalkSvg.render('upload'),
+    uploadDisplay: mediaUploadEnabled ? 'inline' : 'none',
     add,
     version: atVersion
   });

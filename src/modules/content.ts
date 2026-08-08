@@ -47,10 +47,11 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     color2,
     color3,
     atComment,
+    turnstileSiteKey,
     onCommentsPublished
   } = root.config;
   lang = ArtitalkI18n.normalizeLanguage(lang);
-  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, pin, unpin, pinned } = ArtitalkI18n.getMessages(lang);
+  const { authorPrefix, authorSuffix, loadMore, preview, publish, loggedIn, confirm, signOut, username, password, login, cancel, postTalk, addMedia, uploadFailed, loginRequired, contentRequired, loginFailed, avatarUrl, confirmDelete, deleteSuccess, dragMediaHere, emoji, remove, emptyTalk, uploading, image, music, video, add, imageSizeError, musicSizeError, videoFormatError, imageFormatError, audioFormatError, videoSizeError, uploadInProgress, loading, usernameRequired, passwordRequired, editInstructions, save, comments, email, nickname, credentialsMismatch, loginRequestError, userNotFound, tooManyLoginAttempts, pin, unpin, pinned, verificationRequired } = ArtitalkI18n.getMessages(lang);
   color1 = typeof (color1) === 'undefined' || color1 === '' ? 'RGBA(255, 125, 73, 0.75)' : color1;
   color2 = typeof (color2) === 'undefined' || color2 === '' ? '#9BCD9B' : color2;
   color3 = typeof (color3) === 'undefined' || color3 === '' ? 'white' : color3;
@@ -274,7 +275,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     comContent = ArtitalkI18n.translateEmojis(comContent, atEmoji) || '';
     const atCommentHtml = ArtitalkSanitizer.markdownToHtml(comContent);
     const currentUser = ArtitalkData.currentUser();
-    const comEmail = requiredElement<HTMLInputElement>('email').value;
+    const comEmail = requiredElement<HTMLInputElement>('email').value.trim().toLowerCase();
     let comNick = requiredElement<HTMLInputElement>('commentNick').value;
     const comEmailMd5 = md5(comEmail);
     if (!currentUser) {
@@ -284,6 +285,19 @@ atEvery.prototype.seeContent = function (pageNum, option) {
         fadeOut('lazy');
         return;
       }
+      const verificationToken = ArtitalkTurnstile.token();
+      if (turnstileSiteKey && !verificationToken) {
+        const contentInput = requiredElement<HTMLTextAreaElement>('neirong');
+        contentInput.value = verificationRequired + '\n' + contentInput.value;
+        fadeOut('lazy');
+        return;
+      }
+      const randomId = window.crypto && typeof window.crypto.randomUUID === 'function'
+        ? window.crypto.randomUUID()
+        : Date.now().toString(36) + Math.random().toString(36).slice(2);
+      atComment.set('_turnstileToken', verificationToken);
+      atComment.set('_idempotencyKey', randomId);
+      atComment.set('_honeypot', requiredElement<HTMLInputElement>('momentide-honeypot').value);
     }
     let atGravatar = 'https://cdn.staticdn.net/avatar/' + comEmailMd5 + '?d=mp&s=80';
     const nowDate = new Date();
@@ -352,8 +366,13 @@ atEvery.prototype.seeContent = function (pageNum, option) {
       requiredElement('ccontent').innerHTML = nowComment;
       fadeOut('preview');
       fadeOut('lazy');
+      ArtitalkTurnstile.reset();
 
       onCommentsPublished(comNick, comContent);
+    }).catch(function (error: Error) {
+      fadeOut('lazy');
+      ArtitalkTurnstile.reset();
+      requiredElement<HTMLTextAreaElement>('neirong').value = error.message + '\n' + comContent;
     });
   };
   atEvery.prototype.atReply = function () {
@@ -398,6 +417,7 @@ atEvery.prototype.seeContent = function (pageNum, option) {
     requiredElement('ccontent').innerHTML = originString;
     let mid = '';
     const currentUser = ArtitalkData.currentUser();
+    if (!currentUser && turnstileSiteKey) ArtitalkTurnstile.show('momentide-turnstile');
     ArtitalkData.queryComments(id).then(res => {
       res.forEach(function (comment) {
         const timeForm = comment.createdAt;

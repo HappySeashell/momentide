@@ -52,5 +52,6 @@
   "unpin": "取消置顶",
   "pinned": "置顶",
   "backgroundColor": "背景颜色",
-  "colorSaved": "配色已保存"
+  "colorSaved": "配色已保存",
+  "verificationRequired": "请先完成人机验证"
 }

@@ -11,23 +11,26 @@
         body {
             width: 70vw;
             margin: 0 auto;
+            /* background: #1f1f1f;
+            color: #f5f5f5; */
         }
         #artitalk_main {
             margin-top: 5vh;
         }
     </style>
-    <script src="../src/plugins/showdown.min.js"></script>
+    <!-- <script src="../src/plugins/showdown.min.js"></script>
     <script src="../src/plugins/md5.js"></script>
-    <script src="../src/plugins/browser.js"></script>
-    <script src="../src/main.js"></script>
+    <script src="../src/plugins/browser.js"></script> -->
+    <script src="../dist/js/artitalk.js?v=dev"></script>
     <div id="artitalk_main"></div>
     <script>
         // Username: Test
         // Password: Test123456
         new Artitalk({
-            appId: "1niyPOfWinhKctVmU3b3ViDH-MdYXbMMI",
-            appKey: "eQ4dPpuRgEA3BSuEngLAtIFY",
-            blackAndWhiteTheme: true,
+            backend: 'vercel',
+            serverURL: 'https://artitalk-server-test.vercel.app/',
+            cssUrl: '../dist/css/artitalk.min.css',
+            blackAndWhiteTheme: false,
             onLogin: function(user) {
                 console.log("Login !");
                 console.log(`User: ${user}`)

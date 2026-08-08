@@ -1,0 +1,649 @@
+@use "sass:list";
+
+$color-primary: rgba(255, 125, 73, 0.75);
+$color-secondary: #9bcd9b;
+$color-on-primary: #fff;
+$color-border: #ccc;
+$color-muted: #999;
+$color-weather: #9ea1a4;
+$radius: 6px;
+$transition: 0.35s ease-in-out;
+
+@mixin input-base {
+  outline: none;
+  border: 1px solid $color-border;
+  background-color: transparent;
+  color: $color-muted;
+}
+
+@mixin icon-size {
+  display: inline;
+  max-height: 28px;
+  width: 28px;
+  vertical-align: middle;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateZ(0);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes drop {
+  50% {
+    height: 45px;
+    opacity: 0;
+  }
+
+  51% {
+    opacity: 0;
+  }
+
+  to {
+    height: 1px;
+    opacity: 0;
+  }
+}
+
+#artitalk_main {
+  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+
+  .shuoshuo_row {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+
+    .col {
+      &.col-80 {
+        float: left;
+        width: 80%;
+      }
+
+      &.col-20 {
+        float: right;
+        width: 20%;
+        text-align: right;
+      }
+    }
+  }
+
+  .artitalk_child {
+    width: 100%;
+  }
+
+  #shuoshuo_content {
+    padding: 10px;
+
+    #readButton {
+      text-align: center;
+    }
+  }
+
+  .cbp_tmtimeline {
+    display: inline;
+    position: relative;
+    margin: 30px 0 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+      .cbp_tmtime {
+        display: block;
+        position: absolute;
+        max-width: 70px;
+
+        span {
+          display: block;
+          text-align: right;
+
+          &:first-child {
+            color: #bdd0db;
+            font-size: 0.9em;
+          }
+
+          &:last-child {
+            color: $color-secondary;
+            font-size: 1.2em;
+          }
+        }
+      }
+
+      .cbp_tmlabel {
+        display: block;
+        position: relative;
+        z-index: 1;
+        margin: 0 0 45px 65px;
+        padding: 0.8em 1.2em 0.4em;
+        border-radius: 5px;
+        background: var(--artitalk-user-background, $color-secondary);
+        color: $color-on-primary;
+        font-weight: 300;
+        line-height: 1.4;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 15px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        &::after {
+          position: absolute;
+          top: 4px;
+          right: 100%;
+          z-index: -1;
+          width: 0;
+          height: 0;
+          border: 10px solid transparent;
+          border-right-color: var(--artitalk-user-background, $color-secondary);
+          content: "";
+          pointer-events: none;
+        }
+      }
+
+    }
+  }
+
+  .cbp_tmlabel > p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  em {
+    overflow-wrap: break-word;
+    word-break: break-all;
+  }
+
+  div.cbp_tmlabel > p {
+    margin-bottom: 0;
+  }
+
+  p.shuoshuo_time {
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px dashed $color-on-primary;
+    font-size: 12px;
+
+    > span > a {
+      color: blue;
+      text-decoration: none;
+
+      &:hover {
+        color: red;
+      }
+    }
+  }
+
+  .shuoshuo_author_img img {
+    float: left;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 64px;
+    transition: all 1s;
+  }
+
+  .artitalk_avatar {
+    border-radius: 100%;
+    transition: transform 0.4s ease-out;
+
+    &:hover {
+      transform: rotateZ(360deg);
+    }
+  }
+
+  .shuoshuo_text {
+    @include input-base;
+
+    width: 100%;
+    height: 130px;
+    padding: 8px 16px;
+    border-radius: $radius;
+    background-position: right;
+    background-repeat: no-repeat;
+    resize: none;
+    transition: all $transition;
+  }
+
+  .shuoshuo_inputs {
+    @include input-base;
+
+    width: 40%;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .at_button {
+    display: inline-block;
+    height: auto;
+    margin-left: 5px;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 12px;
+    outline: none;
+    background-color: $color-primary;
+    color: $color-on-primary;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $color-secondary;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.19);
+    }
+  }
+
+  #article-container {
+    ul p {
+      margin: 0 0 1rem;
+    }
+
+    img {
+      margin: 0;
+    }
+  }
+
+  .power {
+    margin-top: 10px;
+    padding: 0.5em 0;
+    color: $color-muted;
+    font-size: 0.75em;
+    text-align: right;
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: #1abc9c;
+      cursor: pointer;
+      font-size: 0.75em;
+      text-decoration: none;
+    }
+  }
+
+  #preview {
+    float: left;
+    width: 100%;
+    margin: 0.5rem 0 0;
+    padding: 7px;
+    box-shadow: 0 0 1px #f0f0f0;
+
+    > p > .atemoji {
+      display: inline;
+    }
+  }
+
+  #lazy {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: $color-on-primary;
+  }
+
+  .preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 110px;
+    height: 110px;
+    margin-top: -100px;
+    margin-left: -55px;
+
+    > svg {
+      > path,
+      > g > path {
+        stroke: $color-weather;
+        stroke-width: 0.25;
+      }
+    }
+  }
+
+  #cloud {
+    position: relative;
+    z-index: 2;
+
+    path {
+      fill: #efefef;
+    }
+  }
+
+  #sun {
+    position: absolute;
+    top: 15px;
+    left: 45px;
+    z-index: 1;
+    width: 60px;
+    height: 60px;
+    margin-top: 6px;
+    margin-left: -10px;
+    opacity: 0;
+    animation: rotate 16s linear infinite;
+
+    path {
+      fill: $color-weather;
+      stroke-width: 0.18;
+    }
+  }
+
+  .rain {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    margin-top: -32px;
+    margin-left: 19px;
+  }
+
+  .drop {
+    display: block;
+    float: left;
+    width: 3px;
+    height: 10px;
+    margin-left: 4px;
+    border-radius: 0 0 6px 6px;
+    background: $color-weather;
+    opacity: 1;
+    animation: drop 350ms infinite;
+
+    $drop-delays: -130ms, -240ms, -390ms, -525ms, -640ms, -790ms, -900ms, -1050ms, -1130ms, -1300ms;
+
+    @for $index from 1 through list.length($drop-delays) {
+      &:nth-child(#{$index}) {
+        animation-delay: list.nth($drop-delays, $index);
+      }
+    }
+  }
+
+  .artitalk_loading_text {
+    width: 200px;
+    margin-top: 20px;
+    margin-left: -43px;
+    color: #a0a0a0;
+    font-family: Helvetica, "Helvetica Neue", sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .shuoshuoimg {
+    z-index: 2;
+    cursor: pointer;
+    transition: all 1s;
+
+    &:hover {
+      transform: scale(3.5);
+    }
+  }
+
+  .hide,
+  .preview_now {
+    display: none;
+  }
+
+  .delete_right {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .at-pin-button {
+    padding: 2px 6px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .at-pinned-badge {
+    display: inline-block;
+    margin: 0 0 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 125, 73, 0.2);
+    color: inherit;
+    font-size: 12px;
+  }
+
+  svg {
+    display: inline;
+  }
+
+  .shuoshuo_emoji {
+    height: 120px;
+    margin-top: 10px;
+    overflow: auto;
+    border: 1px solid $color-border;
+    border-bottom: 0;
+    border-radius: $radius $radius 0 0;
+
+    > .atemoji {
+      display: inline;
+      margin-left: 10px;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.5);
+      }
+    }
+
+    > a {
+      display: inline;
+    }
+  }
+
+  .atemoji,
+  img.atemoji {
+    @include icon-size;
+  }
+
+  i > .atemoji {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  #shuoshuo_emojiswitch {
+    width: auto;
+    height: 40px;
+    border: 1px solid $color-border;
+    border-top: 0;
+    border-radius: 0 0 $radius $radius;
+    border-collapse: collapse;
+  }
+
+  .shuoshuo_emoji_part {
+    width: 25%;
+    cursor: pointer;
+    line-height: 40px;
+    text-align: center;
+
+    &:hover {
+      background-color: $color-border;
+      color: $color-on-primary;
+    }
+  }
+
+  .zuiliangdezai {
+    background-color: $color-border;
+    color: $color-on-primary;
+  }
+
+  .pingjun {
+    display: flex;
+  }
+
+  #loading_txt {
+    font-size: 20px;
+  }
+
+  audio {
+    display: block;
+    width: 100%;
+    outline: none;
+    opacity: 0.8;
+  }
+
+  video {
+    z-index: 0;
+  }
+
+  textarea#neirong:focus {
+    background-position-y: 150px;
+    transition: all $transition;
+  }
+
+  span.cbp_tmlabel > p {
+    overflow: unset;
+  }
+
+  ul#maina > li {
+    list-style: none;
+  }
+
+  .c2 > center > p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+}
+
+#artitalk_main.artitalk-black-and-white {
+  margin-top: 5vh;
+
+  .cbp_tmtimeline > li .cbp_tmlabel {
+    border-radius: 12px;
+    background: #fff !important;
+    box-shadow: 0 1px 12px rgb(0 0 0 / 30%);
+    color: #3d3d3d;
+    font-size: large;
+    font-weight: 400;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  p.shuoshuo_time {
+    border-top: 1px dashed;
+    font-size: small;
+  }
+
+  .shuoshuo_author_img img {
+    border: 0;
+    box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+  }
+
+  .shuoshuo_text,
+  .shuoshuo_inputs {
+    border: 0;
+    box-shadow: 0 0 12px rgb(0 0 0 / 30%);
+    color: #3d3d3d;
+  }
+
+  .at_button {
+    border: 0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+    color: #3d3d3d;
+  }
+}
+
+body.theme-dark {
+  #artitalk_main {
+    .cbp_tmtimeline::before {
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+}
+
+#operare_artitalk {
+  .hide {
+    display: none;
+  }
+
+  .at_button {
+    display: inline-block;
+    height: auto;
+    margin-left: 5px;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 12px;
+    outline: none;
+    background-color: $color-primary;
+    color: $color-on-primary;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $color-secondary;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.19);
+    }
+  }
+
+  .c1 {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .c2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    width: 400px;
+    height: auto;
+    margin-top: -150px;
+    margin-left: -200px;
+    border: 0;
+    border-radius: 10px;
+    background-color: $color-on-primary;
+    box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+    opacity: 0.85;
+  }
+
+  .shuoshuo_input_log {
+    @include input-base;
+
+    margin-top: 10px;
+    padding: 8px 16px;
+    border-radius: $radius;
+    font-size: 12px;
+  }
+
+  .user-background-color {
+    width: 44px;
+    height: 32px;
+    margin-left: 8px;
+    padding: 2px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  .user-color-status {
+    min-height: 1.4em;
+    color: $color-muted;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 65.375em) {
+  #artitalk_main .cbp_tmtimeline > li .cbp_tmtime span:last-child {
+    font-size: 1.2em;
+  }
+}

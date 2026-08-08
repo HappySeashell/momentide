@@ -1,27 +1,47 @@
 {
-  "name": "artitalk",
-  "version": "2.4.2",
-  "entry": "./dist/js/artitalk.min.js",
+  "name": "@happyseashell/momentide",
+  "version": "0.1.0",
+  "entry": "dist/js/artitalk.min.js",
+  "main": "dist/js/artitalk.min.js",
+  "module": "dist/js/artitalk.esm.js",
+  "unpkg": "dist/js/artitalk.min.js",
+  "jsdelivr": "dist/js/artitalk.min.js",
+  "files": [
+    "dist/css/artitalk.min.css",
+    "dist/js/artitalk.esm.js",
+    "dist/js/artitalk.min.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/js/artitalk.esm.js",
+      "default": "./dist/js/artitalk.min.js"
+    },
+    "./artitalk.min.css": "./dist/css/artitalk.min.css"
+  },
   "scripts": {
-    "build": "gulp --config gulpfile.js",
-    "lint": "eslint src",
+    "build": "rollup --config rollup.config.js",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && eslint src --ext .ts && node --test test/*.test.mjs",
     "lint:fix": "eslint src --fix"
   },
-  "dependencies": {
-    "gulp": "^4.0.2",
-    "gulp-clean": "^0.4.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-rename": "^2.0.0",
-    "gulp-uglify-es": "^2.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HappySeashell/momentide.git"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.8.1",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "@rollup/plugin-terser": "^1.0.0",
+    "cssnano": "^8.0.2",
+    "eslint": "^10.5.0",
+    "globals": "^17.6.0",
+    "postcss": "^8.5.22",
+    "rollup": "^4.62.2",
+    "sass": "^1.93.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

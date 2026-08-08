@@ -1,46 +1,47 @@
-# Artitalk.js
+# Momentide
 
-![](https://img.shields.io/github/stars/Drew233/Artitalk)
-![](https://img.shields.io/npm/dm/artitalk.svg)
-![](https://img.shields.io/npm/v/artitalk.svg)
-![](https://img.shields.io/badge/language-JavaScript-red)
+Momentide is an independent community fork of the MIT-licensed
+[Artitalk](https://github.com/ArtitalkJS/Artitalk) project. It is not an
+official successor and is not affiliated with the original maintainers.
 
-### 详细使用教程请移步 [文档](https://artitalk.js.org/)
+Version 0.1 keeps the Artitalk 4.1 browser API and UI so existing static sites
+can migrate without rewriting their page:
 
-## 👀 特性
-
-- 实时发布，点击删除
-- 支持 Markdown/HTML 语法
-- 方便引用
-
-## 📃 目录树
-
-```
-src
-├─ artitalk.js
-├─ css
-│    └─ main.css                # Artitalk 的 CSS
-├─ html
-│    ├─ lazy.html               # 加载动画的 HTML 片段
-│    └─ main.html               # Artitalk 的主要 HTML 片段
-├─ main.js                      # Artitalk 的主要 js 部分
-└─ plugins                      # 第三方 js
-       ├─ av-min.js             # LeanCloud 提供的 SDK
-       ├─ browser.js            # 返回用户操作系统
-       ├─ md5.js                # md5转码
-       └─ showdown.min.js       # Markdown 转换
+```html
+<link rel="stylesheet" href="/vendor/momentide/0.1.0/artitalk.min.css">
+<script src="/vendor/momentide/0.1.0/artitalk.min.js"></script>
+<div id="artitalk_main"></div>
+<script>
+new Artitalk({
+  serverURL: 'http://127.0.0.1:3000',
+  turnstileSiteKey: '1x00000000000000000000AA',
+  pageSize: 10
+});
+</script>
 ```
 
-## 🎨 资源说明
+The component targets the independent `blog-api` HTTP contract. That
+server uses standard PostgreSQL; the public browser API is not tied to
+Supabase or any other database vendor.
 
-- **av-min.js**: 由 LeanCloud 提供：https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js
-- **lazy.html**: 加载动画源自 CodePen：https://codepen.io/tholman/pen/yenku
-- **showdown.min.js**: https://github.com/showdownjs/showdown
-- **browser.js**: https://github.com/ok-dok/judge-browser/blob/master/judge-browser.js
-- **md5.js**: https://github.com/blueimp/JavaScript-MD5
+## Security changes
 
-## ✨ 参与贡献
+- Administrator writes carry a revocable `X-LC-Session` token.
+- Anonymous comments carry a Turnstile response and an idempotency key.
+- Email input is normalized and MD5-hashed in the browser for avatar lookup;
+  raw email is never submitted.
+- HTML produced from Markdown is sanitized before rendering.
+- Third-party media upload is disabled unless `mediaUploadEnabled: true` is
+  explicitly configured.
 
-1. Fork 本项目
-2. 在 dev 分支下修改想修改的部分
-3. 向 dev 分支发起 PR
+## Build outputs
+
+`npm run build` creates the compatible IIFE files, an ESM script, and standalone
+CSS under `dist/`. For the first blog release, the minified IIFE and CSS are
+served from the same origin. If a CDN is used later, pin an exact release and
+never reference `latest` or a mutable branch.
+
+## Attribution and license
+
+Momentide retains the original MIT license and copyright notices. The 0.1
+baseline is HCLonely/Artitalk 4.1.0, which itself is derived from Artitalk.
